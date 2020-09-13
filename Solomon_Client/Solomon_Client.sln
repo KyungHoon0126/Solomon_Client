@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solomon.Core.Member", "Solo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solomon.Core.Member.Test", "Solomon.Core.Member.Test\Solomon.Core.Member.Test.csproj", "{38E6712A-D061-420B-826F-CFD4818AA59B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solomon.Core.Login", "Solomon.Core.Login\Solomon.Core.Login.csproj", "{CBE2B32C-D7A2-4A21-B4FD-174CE5E1BD68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Solomon.Core.Login.Test", "Solomon.Core.Test\Solomon.Core.Login.Test.csproj", "{5ED9E8D0-00BD-4A1F-A403-7BE6690A9A3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{38E6712A-D061-420B-826F-CFD4818AA59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38E6712A-D061-420B-826F-CFD4818AA59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38E6712A-D061-420B-826F-CFD4818AA59B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE2B32C-D7A2-4A21-B4FD-174CE5E1BD68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE2B32C-D7A2-4A21-B4FD-174CE5E1BD68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE2B32C-D7A2-4A21-B4FD-174CE5E1BD68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE2B32C-D7A2-4A21-B4FD-174CE5E1BD68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ED9E8D0-00BD-4A1F-A403-7BE6690A9A3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ED9E8D0-00BD-4A1F-A403-7BE6690A9A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ED9E8D0-00BD-4A1F-A403-7BE6690A9A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ED9E8D0-00BD-4A1F-A403-7BE6690A9A3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

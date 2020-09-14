@@ -1,9 +1,12 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using Solomon.Core.Login.Service;
+using Solomon.Network.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Windows.Input;
 
 namespace Solomon.Core.Login.ViewModel
 {
@@ -52,5 +55,70 @@ namespace Solomon.Core.Login.ViewModel
             set => SetProperty(ref _progressRingActivated, value);
         }
         #endregion
+
+        #region Delegate 
+        public delegate void OnLoginResultRecievedHandler(object sender, bool success);
+        public event OnLoginResultRecievedHandler OnLoginResultRecieved;
+        #endregion
+
+        #region Command
+        public ICommand LoginCommand { get; set; }
+        #endregion
+
+        public LoginViewModel()
+        {
+            LoginCommand = new DelegateCommand(OnLogin);
+            //_btnLoginEnabled = true;
+        }
+
+        internal async void OnLogin()
+        {
+            if (!NetworkInterface.GetIsNetworkAvailable())
+            {
+                SendOnLoginResultRecievedEvent(false);
+
+                Desc = "네트워크 상태를 확인해주세요!!";
+                return;
+            }
+
+            BtnLoginEnabled = false;
+            ProgressRingActivated = true;
+
+            Debug.WriteLine($"{_btnLoginEnabled} OnLogin");
+
+            Response<TokenInfo> loginArgs = null;
+            var loginService = new LoginService();
+            try
+            {
+                loginService.SettingHttpRequest(ServerAddress);
+
+                loginArgs = await loginService.Login(Id, Password);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+                loginArgs = null;
+            }
+
+            if (loginArgs == null || loginArgs.Status != (int)HttpStatusCode.OK)  
+            {
+                SendOnLoginResultRecievedEvent(false);
+                Desc = "로그인에 실패하였습니다!";
+                Debug.WriteLine(Desc);
+            }
+            else
+            {
+                SendOnLoginResultRecievedEvent(true);
+                Desc = "로그인에 성공하였습니다!";
+                Debug.WriteLine(Desc);
+            }
+            BtnLoginEnabled = true;
+            ProgressRingActivated = false;
+        }
+
+        private void SendOnLoginResultRecievedEvent(bool success)
+        {
+            OnLoginResultRecieved?.Invoke(this, success);
+        }
     }
 }

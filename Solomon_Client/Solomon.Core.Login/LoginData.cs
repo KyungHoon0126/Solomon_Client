@@ -1,9 +1,4 @@
 ﻿using Solomon.Core.Login.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Solomon.Core.Login
 {
@@ -13,7 +8,7 @@ namespace Solomon.Core.Login
 
         public void Login()
         {
-
+            loginViewModel.OnLogin();
         }
     }
 }

@@ -10,6 +10,7 @@
         Title="Solomon" Height="850" Width="1280">
     
     <Grid>
-        <control:LoginControl Visibility="Visible"/>
+        <control:LoginControl x:Name="CtrlLogin" Visibility="Visible"
+                              OnLoginResultRecieved="LoginCtrl_OnLoginResultRecieved"/>
     </Grid>
 </Window>

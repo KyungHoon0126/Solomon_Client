@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Solomon_Client.Controls"
              xmlns:control="clr-namespace:Solomon_Client.Controls"
              mc:Ignorable="d" 
+             KeyDown="UserControl_KeyDown"
              d:DesignHeight="850" d:DesignWidth="1280">
     
     <UserControl.Resources>
@@ -56,7 +57,8 @@
 
         <Grid Grid.Column="0" Margin="5">
             <StackPanel x:Name="Login" 
-                        VerticalAlignment="Center" HorizontalAlignment="Center">
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center">
                 <TextBlock Margin="10">
                     <Run Text="Sign in" FontSize="40" FontWeight="Bold"/>
                     
@@ -64,23 +66,49 @@
                     
                     <Run Text="or"/>
                     
-                    <Button Margin="0,0,0,-3" Style="{DynamicResource RemoveButtonHighLightStyle}" 
-                            Background="Transparent" BorderThickness="0" FocusVisualStyle="{x:Null}">
+                    <Button Margin="0,0,0,-3" 
+                            Click="tbSignUp_Click"
+                            Style="{DynamicResource RemoveButtonHighLightStyle}" 
+                            Background="Transparent" BorderThickness="0" 
+                            FocusVisualStyle="{x:Null}">
                         <Button.Content>
-                            <TextBlock Text="create an account" Foreground="#1d65ff"/>
+                            <TextBlock Text="create an account" 
+                                       Foreground="#1d65ff"/>
                         </Button.Content>
                     </Button> 
                 </TextBlock>
 
-                <TextBox x:Name="tbId" Margin="10" Tag="Email" MaxWidth="500"
-                         Style="{DynamicResource tbWatermarkStyle}"/>
-                <PasswordBox x:Name="pbPw" Margin="5" Tag="Password" PasswordChar="●"
-                             Width="400" MaxWidth="500"/>
+                <TextBox x:Name="tbId" Margin="10"
+                         Text="{Binding Id}"
+                         Tag="Email"
+                         MaxWidth="500"
+                         Style="{DynamicResource tbWatermarkStyle}"
+                         TextChanged="tb_TextChanged"/>
+                <PasswordBox x:Name="pbPw" Margin="5" 
+                             Tag="Password" 
+                             PasswordChar="●"
+                             Width="400" MaxWidth="500" 
+                             PasswordChanged="tb_TextChanged"
+                             local:PasswordHelper.Attach="True"
+                             local:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"/>
 
-                <Button x:Name="btnLogin" Content="Sign in" Margin="10"
-                        FontSize="15" BorderThickness="0"
+                <CheckBox x:Name="cbAutoLogin" 
+                          Margin="10,0,0,0"
+                          Content="Remember me" 
+                          Foreground="#C2C2C2" 
+                          Checked="CbAutologin_Checked"/>
+
+                <Button x:Name="btnLogin" 
+                        Margin="10"
+                        Content="Sign in" 
+                        FontSize="15" 
+                        BorderThickness="0"
                         Height="50" Width="400" MaxWidth="500"
-                        Background="#1d65ff" Foreground="White"/>
+                        Background="#1d65ff" 
+                        Foreground="White"
+                        FocusVisualStyle="{x:Null}"
+                        Command="{Binding LoginCommand, Mode=TwoWay}"
+                        IsEnabled="{Binding BtnLoginEnabled, Mode=TwoWay}"/>
             </StackPanel>
         </Grid>
 

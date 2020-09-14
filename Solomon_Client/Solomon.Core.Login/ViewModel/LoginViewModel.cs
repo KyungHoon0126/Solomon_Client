@@ -99,7 +99,7 @@ namespace Solomon.Core.Login.ViewModel
                 Debug.WriteLine(e.StackTrace);
                 loginArgs = null;
             }
-
+            Debug.WriteLine(loginArgs.Status);
             if (loginArgs == null || loginArgs.Status != (int)HttpStatusCode.OK)  
             {
                 SendOnLoginResultRecievedEvent(false);
@@ -112,6 +112,7 @@ namespace Solomon.Core.Login.ViewModel
                 Desc = "로그인에 성공하였습니다!";
                 Debug.WriteLine(Desc);
             }
+
             BtnLoginEnabled = true;
             ProgressRingActivated = false;
         }

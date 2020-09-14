@@ -6,7 +6,7 @@ using System.Threading.Tasks;
  
 namespace Solomon.Core.Bulletin.Model
 {
-    class BulletinModel
+    public class BulletinModel
     {
     }
 }

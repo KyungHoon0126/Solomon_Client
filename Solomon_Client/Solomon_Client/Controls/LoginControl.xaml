@@ -4,8 +4,49 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Solomon_Client.Controls"
+             xmlns:control="clr-namespace:Solomon_Client.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="850" d:DesignWidth="1280">
+    
+    <UserControl.Resources>
+        <Style TargetType="{x:Type PasswordBox}">
+            <Setter Property="local:PasswordBoxMonitor.IsMonitoring"
+                    Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type PasswordBox}">
+                        <Border x:Name="Border"
+                                Padding="0 0 0 0"
+                                CornerRadius="0"
+                                Background="Transparent"
+                                BorderBrush="#F1F1F1"
+                                BorderThickness="1" >
+                            <Grid Height="50">
+                                <Grid Margin="0 0 0 0">
+                                    <Grid Grid.Column="1" Margin="15 0 20 0">
+                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                      VerticalAlignment="Center"
+                                                      Margin="0" Cursor="IBeam"/>
+                                        <TextBlock x:Name="WaterMark" Foreground="#C2C2C2"
+                                                   Margin="2 0 0 0"
+                                                   FontWeight="Medium"
+                                                   VerticalAlignment="Center"
+                                                   Visibility="Collapsed"
+                                                   Text="{TemplateBinding Tag}"/>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="local:PasswordBoxMonitor.PasswordLength" Value="0">
+                                <Setter TargetName="WaterMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     
     <Grid Background="White">
         <Grid.ColumnDefinitions>
@@ -13,14 +54,38 @@
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0">
-            <StackPanel x:Name="Login">
-                
+        <Grid Grid.Column="0" Margin="5">
+            <StackPanel x:Name="Login" 
+                        VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Margin="10">
+                    <Run Text="Sign in" FontSize="40" FontWeight="Bold"/>
+                    
+                    <LineBreak/>
+                    
+                    <Run Text="or"/>
+                    
+                    <Button Margin="0,0,0,-3" Style="{DynamicResource RemoveButtonHighLightStyle}" 
+                            Background="Transparent" BorderThickness="0" FocusVisualStyle="{x:Null}">
+                        <Button.Content>
+                            <TextBlock Text="create an account" Foreground="#1d65ff"/>
+                        </Button.Content>
+                    </Button> 
+                </TextBlock>
+
+                <TextBox x:Name="tbId" Margin="10" Tag="Email" MaxWidth="500"
+                         Style="{DynamicResource tbWatermarkStyle}"/>
+                <PasswordBox x:Name="pbPw" Margin="5" Tag="Password" PasswordChar="●"
+                             Width="400" MaxWidth="500"/>
+
+                <Button x:Name="btnLogin" Content="Sign in" Margin="10"
+                        FontSize="15" BorderThickness="0"
+                        Height="50" Width="400" MaxWidth="500"
+                        Background="#1d65ff" Foreground="White"/>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Column="1">
-            
+            <Image Width="450" Source="/Assets/LoginControl/LoginBackGround.JPG" Margin="0,50,0,0"/>
         </Grid>
     </Grid>
 </UserControl>

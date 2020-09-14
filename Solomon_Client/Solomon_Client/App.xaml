@@ -3,7 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Solomon_Client"
              StartupUri="View/MainWindow.xaml">
+
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--HintBox Style-->
+                <ResourceDictionary Source="ResourceDictionaries/TextBoxWatermarkStyle.xaml"/>
+                
+                <!--RemoveBtn Highlight Style-->
+                <ResourceDictionary Source="ResourceDictionaries/RemoveBtnHighlightStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

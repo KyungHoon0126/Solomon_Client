@@ -15,10 +15,10 @@ namespace Solomon_Client.Controls
         private bool isAutoLogin = false;
 
         public delegate void OnSignUpRecievedHandler(object sender, RoutedEventArgs e);
-        public event OnSignUpRecievedHandler OnSignUpReceived;
+        public event OnSignUpRecievedHandler SignUpReceived;
 
         public delegate void OnLoginResultRecievedHandler(object sender, bool success);
-        public event OnLoginResultRecievedHandler OnLoginResultRecieved;
+        public event OnLoginResultRecievedHandler LoginResultRecieved;
 
         public LoginControl()
         {
@@ -49,7 +49,7 @@ namespace Solomon_Client.Controls
                 Setting.IsAutoLogin = true;
             }
 
-            OnLoginResultRecieved?.Invoke(this, success);
+            LoginResultRecieved?.Invoke(this, success);
         }
 
         private void SetUserData(string id, string pw)
@@ -140,7 +140,7 @@ namespace Solomon_Client.Controls
 
         private void tbSignUp_Click(object sender, RoutedEventArgs e)
         {
-            OnSignUpReceived?.Invoke(this, e);
+            SignUpReceived?.Invoke(this, e);
         }
     }
 

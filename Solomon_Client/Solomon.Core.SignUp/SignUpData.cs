@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Solomon.Core.SignUp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace Solomon.Core.SignUp
 {
     public class SignUpData
     {
+        public SignUpViewModel signUpViewModel = new SignUpViewModel();
     }
 }

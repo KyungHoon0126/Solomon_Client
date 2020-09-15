@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="Solomon_Client.Controls.SignUp.SignUpControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Solomon_Client.Controls.SignUp"
+             xmlns:control_Signup="clr-namespace:Solomon_Client.Controls.SignUp"
+             mc:Ignorable="d" 
+             d:DesignHeight="850" d:DesignWidth="1280">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="5">
+
+            </Grid>
+
+            <Grid Grid.Row="1" Margin="5">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="400"
+                            MaxWidth="500">
+                    <TextBlock Margin="10">
+                        <Run Text="Sign up" FontSize="40" FontWeight="Bold"/>
+                    </TextBlock>
+
+                    <TextBox x:Name="tbId" Margin="10"
+                             Tag="Id"
+                             Text="{Binding InputId}"
+                             Style="{DynamicResource tbWatermarkStyle}"/>
+                    <TextBox x:Name="tbPw" Margin="10"
+                             Tag="Password"
+                             Text="{Binding InputPw}"
+                             Style="{DynamicResource tbWatermarkStyle}"/>
+                    <TextBox x:Name="tbPwVerification" Margin="10"
+                             Tag="Password Again"
+                             Text="{Binding InputPwAgain}"
+                             Style="{DynamicResource tbWatermarkStyle}"/>
+                    <TextBox x:Name="tbName" Margin="10"
+                             Tag="Name"
+                             Text="{Binding InputName}"
+                             Style="{DynamicResource tbWatermarkStyle}"/>
+                    <TextBox x:Name="tbEmail" Margin="10"
+                             Tag="Email"
+                             Text="{Binding InputEmail, Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}"
+                             Style="{DynamicResource tbWatermarkStyle}"/>
+
+                    <Button x:Name="btnSignUp" 
+                            Margin="10"
+                            Content="Sign up" 
+                            FontSize="15" 
+                            BorderThickness="0"
+                            Height="50" MaxWidth="500"
+                            Background="#1d65ff" 
+                            Foreground="White"
+                            FocusVisualStyle="{x:Null}"
+                            Command="{Binding SignUpCommand}"
+                            IsEnabled="{Binding IsEnable}"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="5">
+                
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

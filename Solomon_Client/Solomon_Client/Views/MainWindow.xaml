@@ -5,12 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Solomon_Client"
         xmlns:control="clr-namespace:Solomon_Client.Controls"
+        xmlns:control_Signup="clr-namespace:Solomon_Client.Controls.SignUp"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"    
         Title="Solomon" Height="850" Width="1280">
     
     <Grid>
         <control:LoginControl x:Name="CtrlLogin" Visibility="Visible"
-                              OnLoginResultRecieved="LoginCtrl_OnLoginResultRecieved"/>
+                              LoginResultRecieved="LoginCtrl_OnLoginResultRecieved"/>
+
+        <control_Signup:SignUpControl x:Name="CtrlSignup" Visibility="Collapsed"/>
     </Grid>
 </Window>

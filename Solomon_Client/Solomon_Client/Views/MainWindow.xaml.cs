@@ -28,9 +28,17 @@ namespace Solomon_Client
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            CtrlLogin.SignUpReceived += CtrlLogin_SignUpReceived;
         }
 
+        // 회원가입
+        private void CtrlLogin_SignUpReceived(object sender, RoutedEventArgs e)
+        {
+            CtrlLogin.Visibility = Visibility.Collapsed;
+            CtrlSignup.Visibility = Visibility.Visible;
+        }
+
+        // 로그인
         private void LoginCtrl_OnLoginResultRecieved(object sender, bool success)
         {
             if (success)

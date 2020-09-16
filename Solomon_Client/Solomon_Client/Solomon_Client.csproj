@@ -127,9 +127,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\SplashScreen\SplashScreenImg.JPG" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Solomon.Core.Login\Solomon.Core.Login.csproj">
       <Project>{CBE2B32C-D7A2-4A21-B4FD-174CE5E1BD68}</Project>
       <Name>Solomon.Core.Login</Name>
@@ -138,6 +135,14 @@
   <ItemGroup>
     <Resource Include="Assets\LoginControl\LoginBackGround.JPG" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\SignUp\SignUpBackground.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\SplashScreen\SplashScreenImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Common\backspaceImg.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

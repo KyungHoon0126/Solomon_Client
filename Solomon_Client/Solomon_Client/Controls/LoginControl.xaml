@@ -66,9 +66,9 @@
                     
                     <Run Text="or"/>
                     
-                    <Button Margin="0,0,0,-3" 
+                    <Button Margin="0,0,0,-4" 
                             Click="tbSignUp_Click"
-                            Style="{DynamicResource RemoveButtonHighLightStyle}" 
+                            Style="{DynamicResource RemoveBtnHighLightStyle}" 
                             Background="Transparent" BorderThickness="0" 
                             FocusVisualStyle="{x:Null}">
                         <Button.Content>

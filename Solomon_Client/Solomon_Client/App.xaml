@@ -7,7 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!--HintBox Style-->
+                <!--TextBox Watermark Style-->
                 <ResourceDictionary Source="ResourceDictionaries/TextBoxWatermarkStyle.xaml"/>
                 
                 <!--RemoveBtn Highlight Style-->

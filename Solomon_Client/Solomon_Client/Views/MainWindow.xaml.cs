@@ -29,6 +29,7 @@ namespace Solomon_Client
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             CtrlLogin.SignUpReceived += CtrlLogin_SignUpReceived;
+            CtrlSignup.BackWardLoginPage += CtrlSignup_BackWardLoginPage;
         }
 
         // 회원가입
@@ -36,6 +37,13 @@ namespace Solomon_Client
         {
             CtrlLogin.Visibility = Visibility.Collapsed;
             CtrlSignup.Visibility = Visibility.Visible;
+        }
+
+        // 회원가입 뒤로가기
+        private void CtrlSignup_BackWardLoginPage(object sender, RoutedEventArgs e)
+        {
+            CtrlSignup.Visibility = Visibility.Collapsed;
+            CtrlLogin.Visibility = Visibility.Visible;
         }
 
         // 로그인

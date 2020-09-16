@@ -13,12 +13,12 @@
     <Grid>
         <StackPanel VerticalAlignment="Center" 
                     HorizontalAlignment="Center">
-            <Image Source="/Assets/SplashScreen/SplashScreenImg.JPG"
-                   Height="150"/>
+            <Image Source="/Assets/SplashScreen/SplashScreenImage.jpg"
+                   Width="400"/>
             <Label Content="Solomon" 
                    FontSize="50"
                    HorizontalAlignment="Center"
-                   FontWeight="SemiBold"/>
+                   FontWeight="ExtraLight"/>
         </StackPanel>
     </Grid>
 </Window>

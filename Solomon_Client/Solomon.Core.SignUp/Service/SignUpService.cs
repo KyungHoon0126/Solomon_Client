@@ -2,9 +2,6 @@
 using RestSharp;
 using Solomon.Network;
 using Solomon.Network.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,17 +18,10 @@ namespace Solomon.Core.SignUp.Service
         #endregion
 
         public const string SIGNUP_URL = "/auth/register";
+        public const string CHECK_EMAIL_OVERLAP_URL = "/auth/check/email?email=";
 
         public NetworkManager networkManager = new NetworkManager();
 
-        /// <summary>
-        /// 회원가입 메서드
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="pw"></param>
-        /// <param name="name"></param>
-        /// <param name="email"></param>
-        /// <returns></returns>
         public async Task<Response<Nothing>> SignUp(string id, string pw, string name, string email)
         {
             JObject jObject = new JObject();
@@ -42,9 +32,11 @@ namespace Solomon.Core.SignUp.Service
             return await networkManager.GetResponse<Nothing>(SIGNUP_URL, Method.POST, jObject.ToString());
         }
 
-        // TODO : 이메일 중복 확인 메서드 제작.
-
-        // TODO : 전화번호 중복 확인 메서드 제작.
+        public async Task<Response<Nothing>> CheckEmailOverlap(string email)
+        {
+            string requestUrl = CHECK_EMAIL_OVERLAP_URL + email;
+            return await networkManager.GetResponse<Nothing>(requestUrl, Method.GET, null);
+        }
 
         public void SettingHttpRequest(string serverUrl)
         {

@@ -35,9 +35,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.7.2.0.1422\lib\net45\Prism.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -118,6 +124,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -130,6 +137,14 @@
     <ProjectReference Include="..\Solomon.Core.Login\Solomon.Core.Login.csproj">
       <Project>{CBE2B32C-D7A2-4A21-B4FD-174CE5E1BD68}</Project>
       <Name>Solomon.Core.Login</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Solomon.Core.SignUp\Solomon.Core.SignUp.csproj">
+      <Project>{53A27FF6-BC24-4634-8ABB-F6064383CA89}</Project>
+      <Name>Solomon.Core.SignUp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Solomon.Network\Solomon.Network.csproj">
+      <Project>{A5270080-2E2E-4111-BDCF-8096EE0A266F}</Project>
+      <Name>Solomon.Network</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

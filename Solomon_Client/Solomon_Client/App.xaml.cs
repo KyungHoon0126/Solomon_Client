@@ -1,4 +1,5 @@
 ﻿using Solomon.Core.Login;
+using Solomon.Core.SignUp;
 using Solomon_Client.Common;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Solomon_Client
     public partial class App : Application
     {
         public static LoginData loginData = new LoginData();
+        public static SignUpData signUpData = new SignUpData();
 
         public App()
         {

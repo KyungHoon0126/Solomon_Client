@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Solomon.Network.Data;
+using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Solomon_Client
 {
@@ -29,14 +18,27 @@ namespace Solomon_Client
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             CtrlLogin.SignUpReceived += CtrlLogin_SignUpReceived;
+            App.signUpData.signUpViewModel.SignUpResultRecieved += this.SignUpViewModel_SignUpResultRecieved;
             CtrlSignup.BackWardLoginPage += CtrlSignup_BackWardLoginPage;
         }
 
-        // 회원가입
+        // 로그인
         private void CtrlLogin_SignUpReceived(object sender, RoutedEventArgs e)
         {
             CtrlLogin.Visibility = Visibility.Collapsed;
             CtrlSignup.Visibility = Visibility.Visible;
+        }
+
+        // 회원가입
+        private void SignUpViewModel_SignUpResultRecieved(Response<Nothing> signUpArgs)
+        {
+            if (signUpArgs.Status == (int)HttpStatusCode.Created)
+            {
+                CtrlSignup.Visibility = Visibility.Collapsed;
+                MessageBox.Show("회원가입을 성공하였습니다.");
+                CtrlLogin.Visibility = Visibility.Visible;
+                App.signUpData.signUpViewModel.InitVariables();
+            }
         }
 
         // 회원가입 뒤로가기
@@ -53,6 +55,8 @@ namespace Solomon_Client
             {
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 MessageBox.Show("로그인에 성공하셨습니다!");
+
+                tbTemp.Visibility = Visibility.Visible;
 
                 //ctrlNavi.Visibility = Visibility.Visible;
                 //ctrlNavi.InitView();

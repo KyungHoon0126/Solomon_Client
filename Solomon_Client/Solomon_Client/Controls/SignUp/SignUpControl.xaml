@@ -82,24 +82,44 @@
                              Tag="Id"
                              Text="{Binding InputId}"
                              Style="{DynamicResource tbWatermarkStyle}"/>
+                    
                     <PasswordBox x:Name="pbPw" Margin="10"
                                  Tag="Password"
                                  PasswordChar="●"
                                  local:PasswordHelper.Attach="True"
                                  local:PasswordHelper.Password="{Binding InputPw, Mode=TwoWay}"/>
-                    <PasswordBox x:Name="tbPwVerification" Margin="10"
+                    
+                    <StackPanel>
+                        <PasswordBox x:Name="tbPwVerification" Margin="10"
                                  Tag="Password Again"
                                  local:PasswordHelper.Attach="True"
                                  local:PasswordHelper.Password="{Binding InputPwAgain, Mode=TwoWay}"/>
+
+                        <TextBlock x:Name="tbPwDesc"
+                                   Text="{Binding PwDesc}"
+                                   Foreground="{Binding PwDescForeground}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                    
                     <TextBox x:Name="tbName" Margin="10"
                              Tag="Name"
                              Text="{Binding InputName}"
                              Style="{DynamicResource tbWatermarkStyle}"/>
-                    <TextBox x:Name="tbEmail" Margin="10"
+
+                    <StackPanel>
+                        <TextBox x:Name="tbEmail" Margin="10"
                              Tag="Email"
                              Text="{Binding InputEmail, Mode=TwoWay,
                                             UpdateSourceTrigger=PropertyChanged}"
                              Style="{DynamicResource tbWatermarkStyle}"/>
+                        
+                        <TextBlock x:Name="tbEmailDesc"
+                                   Text="{Binding EmailDesc}"
+                                   Foreground="{Binding EmailDescForeground}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
 
                     <Button x:Name="btnSignUp" 
                             Margin="10"
@@ -123,10 +143,10 @@
                             BorderBrush="#C2C2C2"
                             Click="btnBackWard_Click"/>
                 </StackPanel>
-            </Grid>
+            </Grid> 
 
             <Grid Grid.Row="2" Margin="5">
-
+                
             </Grid>
         </Grid>
     </Grid>

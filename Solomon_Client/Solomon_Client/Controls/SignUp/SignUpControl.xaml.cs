@@ -26,6 +26,12 @@ namespace Solomon_Client.Controls.SignUp
         public SignUpControl()
         {
             InitializeComponent();
+            Loaded += SignUpControl_Loaded;
+        }
+
+        private void SignUpControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = App.signUpData.signUpViewModel;
         }
 
         private void btnBackWard_Click(object sender, RoutedEventArgs e)

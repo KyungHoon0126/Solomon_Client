@@ -1,14 +1,14 @@
 ﻿using Solomon.Core.SignUp.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Solomon.Core.SignUp
 {
     public class SignUpData
     {
         public SignUpViewModel signUpViewModel = new SignUpViewModel();
+
+        public void InitVariables()
+        {
+            signUpViewModel.InitVariables();
+        }
     }
 }

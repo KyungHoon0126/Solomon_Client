@@ -1,12 +1,14 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
+using Solomon.Core.SignUp.Common;
 using Solomon.Core.SignUp.Service;
+using Solomon.Network.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Solomon.Core.SignUp.ViewModel
 {
@@ -14,74 +16,152 @@ namespace Solomon.Core.SignUp.ViewModel
     {
         SignUpService signUpService = new SignUpService();
 
+        private bool CheckPasswordLength = false;
+        private bool CheckEmailOverLap = false;
+
+        #region Delegate & Event
+        public delegate void OnSignUpResultReceivedHandler(Response<Nothing> signUpArgs);
+        public event OnSignUpResultReceivedHandler SignUpResultRecieved;
+        #endregion
+
         #region Properties
-        private string inputId;
+        private string _inputId;
         public string InputId
         {
-            get => inputId;
+            get => _inputId;
             set
             {
-                SetProperty(ref inputId, value);
+                SetProperty(ref _inputId, value);
             }
         }
 
-        private string inputPw;
+        private string _inputPw;
         public string InputPw
         {
-            get => inputPw;
+            get => _inputPw;
             set
             {
-                SetProperty(ref inputPw, value);
+                SetProperty(ref _inputPw, value);
+                PasswordValidation(value);
             }
         }
 
-        private string inputPwAgain;
+        private void PasswordValidation(string value)
+        {
+            if (value.Length >= 8 && value.Length <= 20)
+            {
+                PwDesc = string.Empty;
+                CheckPasswordLength = true;
+            }
+            else
+            {
+                SetDescProperty("Pw", "Please verify password length.", Brushes.Red);
+            }
+        }
+
+        private string _inputPwAgain;
         public string InputPwAgain
         {
-            get => inputPwAgain;
+            get => _inputPwAgain;
             set
             {
-                SetProperty(ref inputPwAgain, value);
+                SetProperty(ref _inputPwAgain, value);
+                PasswordValidation(value);
+
+                if (CheckPasswordLength)
+                {
+                    if (InputPwAgain == InputPw)
+                    {
+                        SetDescProperty("Pw", "This password is available.", ConvertHexToRgb("#1d65ff"));
+                    }
+                    else
+                    {
+                        SetDescProperty("Pw", "The passowrd does not match.", Brushes.Red);
+                    }
+                }
             }
         }
 
-        private string inputName;
+        private string _inputName;
         public string InputName
         {
-            get => inputName;
+            get => _inputName;
             set
             {
-                SetProperty(ref inputName, value);
+                SetProperty(ref _inputName, value);
             }
         }
 
-        private string inputEmail;
+        private string _inputEmail;
         public string InputEmail
         {
-            get => inputEmail;
+            get => _inputEmail;
             set
             {
-                SetProperty(ref inputEmail, value);
+                SetProperty(ref _inputEmail, value);
+                CheckEmailOverlap();
             }
         }
 
-        private string serverAddress;
-        public string ServerAddress
-        {
-            get => serverAddress;
-            set
-            {
-                SetProperty(ref serverAddress, value);
-            }
-        }
+        //private string _serverAddress;
+        //public string ServerAddress
+        //{
+        //    get => _serverAddress;
+        //    set
+        //    {
+        //        SetProperty(ref _serverAddress, value);
+        //    }
+        //}
 
-        private bool isEnable = true;
+        private bool _isEnable = true;
         public bool IsEnable
         {
-            get => isEnable;
+            get => _isEnable;
             set
             {
-                SetProperty(ref isEnable, value);
+                SetProperty(ref _isEnable, value);
+            }
+        }
+
+        // 패스워드 Description
+        private string _pwDesc;
+        public string PwDesc
+        {
+            get => _pwDesc;
+            set
+            {
+                SetProperty(ref _pwDesc, value);
+            }
+        }
+
+        private System.Windows.Media.Brush _pwDescForeground;
+        public System.Windows.Media.Brush PwDescForeground
+        {
+            get => _pwDescForeground;
+            set
+            {
+                SetProperty(ref _pwDescForeground, value);
+            }
+        }
+
+        // 이메일 Description
+        private string _eamilDesc;
+        public string EmailDesc
+        {
+            get => _eamilDesc;
+            set
+            {
+                SetProperty(ref _eamilDesc, value);
+            }
+        }
+
+        private System.Windows.Media.Brush _emailDescForeground;
+        public System.Windows.Media.Brush EmailDescForeground
+        {
+            get => _emailDescForeground;
+            set
+            {
+                SetProperty(ref _emailDescForeground, value);
             }
         }
         #endregion
@@ -95,6 +175,11 @@ namespace Solomon.Core.SignUp.ViewModel
             SignUpCommand = new DelegateCommand(OnSignUp, CanSignUp).ObservesProperty(() => InputEmail);
         }
 
+        private Brush ConvertHexToRgb(string hex)
+        {
+            return new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
+        }
+
         private bool CanSignUp()
         {
             return (InputEmail != null) && (InputEmail != null) && (InputEmail != null) && (InputEmail != null);
@@ -102,16 +187,102 @@ namespace Solomon.Core.SignUp.ViewModel
 
         private void OnSignUp()
         {
-
+            IsEnable = false;
+            SignUp();
+            IsEnable = true;
         }
 
-        private void SignUp()
+        private bool IsValidSignUpInformation()
         {
-            IsEnable = false;
+            return (InputId != null && InputPw != null && InputPwAgain != null && InputName != null && InputEmail != null);
+        }
 
+        private async void SignUp()
+        {
+            Response<Nothing> signUpArgs = null;
 
+            if (CheckEmailOverLap && IsValidSignUpInformation())
+            {
+                try
+                {
+                    signUpService.SettingHttpRequest(ComDef.SERVER_ADDRESS);
+                    signUpArgs = await signUpService.SignUp(InputId, InputPw, InputName, InputEmail);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("SIGN UP ERROR : " + e.Message);
+                }
+            
+                SignUpResultRecieved?.Invoke(signUpArgs);
+            }
+        }
 
-            IsEnable = true;
+        private void SetDescProperty(string property, string desc, Brush color)
+        {
+            if (property == "Pw")
+            {
+                PwDesc = desc;
+                PwDescForeground = color;
+            }
+            else
+            {
+                EmailDesc = desc;
+                EmailDescForeground = color;
+            }
+        }
+
+        private bool IsValidEmailAddress(string email)
+        {
+            Regex regex = new Regex(@"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                                    @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-0-9a-z]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", RegexOptions.IgnoreCase);
+            Match match = regex.Match(email);
+
+            if (match.Success)
+            {
+                return true;
+            }
+            else
+            {
+                SetDescProperty("Email", "Invalid Email format.", Brushes.Red);
+                return false;
+            }
+        }
+
+        private async void CheckEmailOverlap()
+        {
+            if (IsValidEmailAddress(InputEmail))
+            {
+                try
+                {
+                    signUpService.SettingHttpRequest(ComDef.SERVER_ADDRESS);
+                    var resp = await signUpService.CheckEmailOverlap(InputEmail);
+                    if (resp.Status == (int)HttpStatusCode.Conflict)
+                    {
+                        CheckEmailOverLap = false;
+                        SetDescProperty("Email", "Invalid Email format.", Brushes.Red);
+                    }
+                    else
+                    {
+                        CheckEmailOverLap = true;
+                        SetDescProperty("Email", "This email address is available.", ConvertHexToRgb("#1d65ff"));
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+            }
+        }
+
+        public void InitVariables()
+        {
+            InputId = string.Empty;
+            InputPw = string.Empty;
+            InputPwAgain = string.Empty;
+            InputName = string.Empty;
+            InputEmail = string.Empty;
+            PwDesc = string.Empty;
+            EmailDesc = string.Empty;
         }
     }
 }

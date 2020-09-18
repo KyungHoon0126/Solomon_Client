@@ -55,7 +55,7 @@ namespace Solomon.Network
 
             if (token != null)
             {
-                restRequest.AddHeader("x-access-token", token.Token);
+                restRequest.AddHeader("token", token.Token);
             }
             return restRequest;
         }

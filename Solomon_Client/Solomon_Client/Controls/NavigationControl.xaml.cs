@@ -81,6 +81,7 @@ namespace Solomon_Client.Controls
                     break;
                 case NaviMenu.Bulletin:
                     page = ctrlBulletin;
+                    ctrlBulletin.LoadDataAsync();
                     break;
                 case NaviMenu.Option:
                     page = ctrlOption;

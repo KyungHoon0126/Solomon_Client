@@ -171,6 +171,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Solomon.Core.Bulletin\Solomon.Core.Bulletin.csproj">
+      <Project>{2C013673-3DDA-42BC-9575-0EAC1380B54D}</Project>
+      <Name>Solomon.Core.Bulletin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Solomon.Core.Login\Solomon.Core.Login.csproj">
       <Project>{CBE2B32C-D7A2-4A21-B4FD-174CE5E1BD68}</Project>
       <Name>Solomon.Core.Login</Name>

@@ -31,5 +31,10 @@ namespace Solomon_Client.Controls.BulletinControl
         {
             return Title;
         }
+
+        public async void LoadDataAsync()
+        {
+            await App.bulletinData.LoadDataAsync();
+        }
     }
 }

@@ -22,14 +22,18 @@ namespace Solomon_Client
             CtrlSignup.BackWardLoginPage += CtrlSignup_BackWardLoginPage;
         }
 
-        // 로그인
         private void CtrlLogin_SignUpReceived(object sender, RoutedEventArgs e)
         {
             CtrlLogin.Visibility = Visibility.Collapsed;
             CtrlSignup.Visibility = Visibility.Visible;
         }
 
-        // 회원가입
+        private void CtrlSignup_BackWardLoginPage(object sender, RoutedEventArgs e)
+        {
+            CtrlSignup.Visibility = Visibility.Collapsed;
+            CtrlLogin.Visibility = Visibility.Visible;
+        }
+
         private void SignUpViewModel_SignUpResultRecieved(Response<Nothing> signUpArgs)
         {
             if (signUpArgs.Status == (int)HttpStatusCode.Created)
@@ -41,25 +45,14 @@ namespace Solomon_Client
             }
         }
 
-        // 회원가입 뒤로가기
-        private void CtrlSignup_BackWardLoginPage(object sender, RoutedEventArgs e)
-        {
-            CtrlSignup.Visibility = Visibility.Collapsed;
-            CtrlLogin.Visibility = Visibility.Visible;
-        }
-
-        // 로그인
         private void LoginCtrl_OnLoginResultRecieved(object sender, bool success)
         {
             if (success)
             {
                 CtrlLogin.Visibility = Visibility.Collapsed;
-                MessageBox.Show("로그인에 성공하셨습니다!");
-
-                tbTemp.Visibility = Visibility.Visible;
-
-                //ctrlNavi.Visibility = Visibility.Visible;
-                //ctrlNavi.InitView();
+                MessageBox.Show("로그인에 성공하셨습니다.");
+                ctrlNavi.Visibility = Visibility.Visible;
+                ctrlNavi.InitView();
 
                 //await App.memberData.memberViewModel.LoadDataAsync();
                 //await App.mealData.mealViewModel.LoadDataAsync();

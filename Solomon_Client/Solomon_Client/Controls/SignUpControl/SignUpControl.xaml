@@ -141,7 +141,8 @@
                             Height="50" MaxWidth="500"
                             Background="White"
                             BorderBrush="#C2C2C2"
-                            Click="btnBackWard_Click"/>
+                            Click="btnBackWard_Click"
+                            />
                 </StackPanel>
             </Grid> 
 

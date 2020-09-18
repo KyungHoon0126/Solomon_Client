@@ -46,19 +46,6 @@ namespace Solomon.Core.SignUp.ViewModel
             }
         }
 
-        private void PasswordValidation(string value)
-        {
-            if (value.Length >= 8 && value.Length <= 20)
-            {
-                PwDesc = string.Empty;
-                CheckPasswordLength = true;
-            }
-            else
-            {
-                SetDescProperty("Pw", "Please verify password length.", Brushes.Red);
-            }
-        }
-
         private string _inputPwAgain;
         public string InputPwAgain
         {
@@ -79,6 +66,24 @@ namespace Solomon.Core.SignUp.ViewModel
                         SetDescProperty("Pw", "The passowrd does not match.", Brushes.Red);
                     }
                 }
+            }
+        }
+
+        private void PasswordValidation(string value)
+        {
+            if (value.Length >= 8 && value.Length <= 20)
+            {
+                PwDesc = string.Empty;
+                CheckPasswordLength = true;
+
+                if (InputPw != InputPwAgain)
+                {
+                    SetDescProperty("Pw", "The passowrd does not match.", Brushes.Red);
+                }
+            }
+            else
+            {
+                SetDescProperty("Pw", "Please verify password length.", Brushes.Red);
             }
         }
 
@@ -259,7 +264,7 @@ namespace Solomon.Core.SignUp.ViewModel
                     if (resp.Status == (int)HttpStatusCode.Conflict)
                     {
                         CheckEmailOverLap = false;
-                        SetDescProperty("Email", "Invalid Email format.", Brushes.Red);
+                        SetDescProperty("Email", "Duplicate Email.", Brushes.Red);
                     }
                     else
                     {

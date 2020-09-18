@@ -16,11 +16,6 @@
 
         <control_Signup:SignUpControl x:Name="CtrlSignup" Visibility="Collapsed"/>
 
-        <TextBlock x:Name="tbTemp" 
-                   Text="메인 페이지 입니다 ㅎㅎ" 
-                   FontSize="100" FontWeight="ExtraBold"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   Visibility="Collapsed"/>
+        <control:NavigationControl x:Name="ctrlNavi" Visibility="Collapsed"/>
     </Grid>
 </Window>

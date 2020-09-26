@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Solomon.Core.Bulletin.Service.Response
 {
-    public class BulletinResponse : BindableBase
+    public class GetBulletinListResponse : BindableBase
     {
         private List<BulletinModel> _bulletins;
         [JsonProperty("bulletins")]

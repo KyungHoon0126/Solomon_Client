@@ -33,6 +33,7 @@ namespace Solomon.Core.Login.Service
                 Options.tokenInfo.Token = resp.Data.Token;
                 Options.tokenInfo.RefreshToken = resp.Data.RefreshToken;
             }
+
             return resp;
         }
 

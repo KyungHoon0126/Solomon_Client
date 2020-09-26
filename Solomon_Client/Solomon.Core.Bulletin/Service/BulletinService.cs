@@ -14,9 +14,9 @@ namespace Solomon.Core.Bulletin.Service
 
         private const string BULLETIN_URL = "/bulletin/post";
 
-        public async Task<Response<BulletinResponse>> GetBulletinList()
+        public async Task<Response<GetBulletinListResponse>> GetBulletinList()
         {
-            var resp = await networkManager.GetResponse<BulletinResponse>(BULLETIN_URL, Method.GET);
+            var resp = await networkManager.GetResponse<GetBulletinListResponse>(BULLETIN_URL, Method.GET);
             return resp;
         }
 

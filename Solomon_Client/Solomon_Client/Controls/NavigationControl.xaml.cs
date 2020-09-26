@@ -1,4 +1,5 @@
 ﻿using Solomon_Client.Common;
+using Solomon_Client.Views;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,11 +17,25 @@ namespace Solomon_Client.Controls
         {
             InitializeComponent();
             Loaded += NavigationControl_Loaded;
+            ctrlBulletin.OnLoadBulletinPostWindow += CtrlBulletin_OnLoadBulletinPostWindow;
         }
 
         private void NavigationControl_Loaded(object sender, RoutedEventArgs e)
         {
             SetNaviDatas();
+        }
+
+        private void CtrlBulletin_OnLoadBulletinPostWindow(object sender, RoutedEventArgs e)
+        {
+            BulletinPostWindow bambooPostWindow = new BulletinPostWindow();
+            bambooPostWindow.ModalBackGroundVisibility += BambooPostWindow_ModalBackGroundVisibility; 
+            ncModalBackGround.Visibility = Visibility.Visible; 
+            bambooPostWindow.ShowDialog();
+        }
+
+        private void BambooPostWindow_ModalBackGroundVisibility()
+        {
+            ncModalBackGround.Visibility = Visibility.Collapsed;
         }
 
         private void SetNaviDatas()

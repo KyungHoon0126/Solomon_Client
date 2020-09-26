@@ -8,11 +8,127 @@
              d:DesignHeight="850" d:DesignWidth="1280">
     
     <Grid Background="White">
-        <ListView Height="721" Width="900"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Visible"
-                  ScrollViewer.CanContentScroll="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Margin="5">
+            <Image Source="/Assets/Bulletin/BulletinSideBackground2.JPG"
+                   Height="250" Width="250"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Center"
+                   Margin="0,40,0,0"/>
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="5">
+            <ListView Height="850" Width="900" HorizontalAlignment="Center"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      ScrollViewer.CanContentScroll="False"
+                      ItemsSource="{Binding BulletinItems}">
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="Focusable" Value="False"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Border Margin="10" BorderBrush="Transparent" BorderThickness="1" Background="White">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="2" Color="#E2E2E2" BlurRadius="20"/>
+                                </Border.Effect>
+                            </Border>
+
+                            <Border Margin="20" BorderBrush="Transparent" BorderThickness="1">
+                                <Grid Width="835">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Row="0" Margin="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="90"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="0">
+                                            <Image Source="/Assets/Bulletin/ProfileIcon.png"
+                                               Height="50"
+                                               Width="50"/>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding BulletinIdx, StringFormat={}#{0}번째 이야기}" 
+                                                       FontSize="15"
+                                                       Foreground="Black"
+                                                       FontWeight="SemiBold"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Writer, StringFormat={}{0} ▶}"
+                                                           FontSize="15"/>
+                                                    <TextBlock Text="{Binding Title}" 
+                                                           Margin="5,0,0,0"
+                                                           FontSize="15"/>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding WrittenTime, StringFormat=yyyy년 MM월 dd일}"
+                                                       FontSize="15"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid Grid.Row="1" Margin="5">
+                                        <TextBlock Text="{Binding Content}"
+                                               FontSize="20"
+                                               TextWrapping="Wrap"
+                                               Margin="15,0,0,0"/>
+                                    </Grid>
+
+                                    <Grid Grid.Row="2" Margin="5">
+
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Column="2" Margin="5">
+            <Image Source="/Assets/Bulletin/BulletinSideBackGround1.jpg"
+                   Height="250" Width="250"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Margin="0,200,0,0"/>
             
-        </ListView>
+            <Button x:Name="btnWriteBulletin" Margin="0,0,50,30"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Background="#1d65ff" BorderBrush="Transparent"
+                    Height="50" Width="50"
+                    Style="{DynamicResource MaterialDesignFloatingActionButton}"    
+                    FocusVisualStyle="{x:Null}"
+                    Click="btnWriteBulletin_Click">
+
+                <Button.Content>
+                    <Image Source="/Assets/Bulletin/pencilIcon.png" Height="25" Width="25"/>
+                </Button.Content>
+            </Button>
+        </Grid>
     </Grid>
 </UserControl>

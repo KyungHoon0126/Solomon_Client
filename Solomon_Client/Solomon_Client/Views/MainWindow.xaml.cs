@@ -29,9 +29,10 @@ namespace Solomon_Client
         }
 
         private void CtrlSignup_BackWardLoginPage(object sender, RoutedEventArgs e)
-        {
+        {   
             CtrlSignup.Visibility = Visibility.Collapsed;
             CtrlLogin.Visibility = Visibility.Visible;
+            App.signUpData.signUpViewModel.InitVariables();
         }
 
         private void SignUpViewModel_SignUpResultRecieved(Response<Nothing> signUpArgs)

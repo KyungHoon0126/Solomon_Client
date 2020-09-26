@@ -28,20 +28,20 @@ namespace Solomon.Core.Bulletin.Test
             Assert.IsNotNull(await GetBulletinList());
             
             await WriteBulletin("TestTitle", "TestContent", "TestWriter");
-            Assert.IsTrue(WRITE_RESULT);
+            Assert.IsTrue(UnitTest1.WRITE_RESULT);
             
             await PutBulletin(5, "TestTitleUpdate", "TestContentUpdate", "TesterUpdate");
-            Assert.IsTrue(PUT_RESULT);
+            Assert.IsTrue(UnitTest1.PUT_RESULT);
 
             Assert.IsNotNull(await GetSpecificBulletin(5));
             
             await DeleteBulletin(5, "TesterUpdate");
-            Assert.IsTrue(DELETE_RESULT);
+            Assert.IsTrue(UnitTest1.DELETE_RESULT);
         }
 
-        public async Task<Response<BulletinResponse>> GetBulletinList()
+        public async Task<Response<GetBulletinListResponse>> GetBulletinList()
         {
-            var resp = await networkManager.GetResponse<BulletinResponse>(BULLETIN_URL, Method.GET);
+            var resp = await networkManager.GetResponse<GetBulletinListResponse>(UnitTest1.BULLETIN_URL, Method.GET);
             return resp;
         }
 
@@ -51,14 +51,14 @@ namespace Solomon.Core.Bulletin.Test
             jObject["title"] = title;
             jObject["content"] = content;
             jObject["writer"] = writer;
-            var resp = await networkManager.GetResponse<Nothing>(BULLETIN_URL, Method.POST, jObject.ToString());
+            var resp = await networkManager.GetResponse<Nothing>(UnitTest1.BULLETIN_URL, Method.POST, jObject.ToString());
             if (resp.Status == (int)(HttpStatusCode.OK))
             {
-                WRITE_RESULT = true;
+                UnitTest1.WRITE_RESULT = true;
             }
             else
             {
-                WRITE_RESULT = false;
+                UnitTest1.WRITE_RESULT = false;
             }
             return resp;
         }
@@ -70,14 +70,14 @@ namespace Solomon.Core.Bulletin.Test
             jObject["title"] = title;
             jObject["content"] = content;
             jObject["writer"] = writer;
-            var resp = await networkManager.GetResponse<Nothing>(BULLETIN_URL, Method.PUT, jObject.ToString());
+            var resp = await networkManager.GetResponse<Nothing>(UnitTest1.BULLETIN_URL, Method.PUT, jObject.ToString());
             if (resp.Status == (int)(HttpStatusCode.OK))
             {
-                PUT_RESULT = true;
+                UnitTest1.PUT_RESULT = true;
             }
             else
             {
-                PUT_RESULT = false;
+                UnitTest1.PUT_RESULT = false;
             }
             return resp;
 
@@ -90,11 +90,11 @@ namespace Solomon.Core.Bulletin.Test
             var resp = await networkManager.GetResponse<Nothing>(BULLETIN_URL, Method.DELETE, jObject.ToString());
             if (resp.Status == (int)(HttpStatusCode.OK))
             {
-                DELETE_RESULT = true;
+                UnitTest1.DELETE_RESULT = true;
             }
             else
             {
-                DELETE_RESULT = false;
+                UnitTest1.DELETE_RESULT = false;
             }
             return resp;
         }
@@ -103,7 +103,7 @@ namespace Solomon.Core.Bulletin.Test
         {
             JObject jObject = new JObject();
             jObject["bulletin_idx"] = bulletinIdx;
-            var resp = await networkManager.GetResponse<BulletinModel>(BULLETIN_URL, Method.GET, jObject.ToString());
+            var resp = await networkManager.GetResponse<BulletinModel>(UnitTest1.BULLETIN_URL, Method.GET, jObject.ToString());
             return resp;
         }
     }

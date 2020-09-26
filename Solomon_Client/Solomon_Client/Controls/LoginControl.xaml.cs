@@ -1,8 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using Solomon_Client.Common;
 using System;
 using System.Threading.Tasks;
-using Solomon_Client.Common;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Solomon_Client.Controls
@@ -29,9 +29,15 @@ namespace Solomon_Client.Controls
         private void LoginControl_Loaded(object sender, RoutedEventArgs e)
         {
             App.loginData.loginViewModel.ServerAddress = "http://localhost:8080";
-            CheckAutoLoginAsync();
+            //CheckAutoLoginAsync();
             App.loginData.loginViewModel.OnLoginResultRecieved += LoginViewModel_OnLoginResultRecieved;
             this.DataContext = App.loginData.loginViewModel;
+        }
+
+        private void LoginService_Message(string msg)
+        {
+            MessageBox.Show(msg);
+            return;
         }
 
         private void LoginViewModel_OnLoginResultRecieved(object sender, bool success)
@@ -40,6 +46,7 @@ namespace Solomon_Client.Controls
             {
                 Setting.SaveUserdata(App.loginData.loginViewModel.Id, App.loginData.loginViewModel.Password);
                 Setting.Save();
+                App.bulletinData.bulletinViewModel.BulletinPostWriter = App.loginData.loginViewModel.Id;
             }
 
             SetUserData(App.loginData.loginViewModel.Id, App.loginData.loginViewModel.Password);

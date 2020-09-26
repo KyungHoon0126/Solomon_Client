@@ -33,7 +33,8 @@
                 </Grid>
 
                 <Grid Grid.Column="2">
-                    <ListView x:Name="lvNavi" SelectionChanged="lvNavi_SelectionChanged" Height="50">
+                    <ListView x:Name="lvNavi" SelectionChanged="lvNavi_SelectionChanged" Height="50"
+                              FocusVisualStyle="{x:Null}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 

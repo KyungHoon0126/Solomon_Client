@@ -1,8 +1,10 @@
 ﻿using Solomon_Client.Common;
 using Solomon_Client.Views;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Solomon_Client.Controls
 {
@@ -12,6 +14,7 @@ namespace Solomon_Client.Controls
     public partial class NavigationControl : UserControl
     {
         List<NaviData> naviDatas = new List<NaviData>();
+        List<string> naviDataImages = new List<string>();
 
         public NavigationControl()
         {
@@ -40,6 +43,7 @@ namespace Solomon_Client.Controls
 
         private void SetNaviDatas()
         {
+            #region LoadNaviDatas
             naviDatas.Add(new NaviData
             {
                 Title = "Home",
@@ -58,13 +62,50 @@ namespace Solomon_Client.Controls
                 NaviImagePath = ComDef.Path + "OptionIcon.png",
                 NaviMenu = NaviMenu.Option
             });
-
+            
             lvNavi.ItemsSource = naviDatas;
+            #endregion
+
+            // TODO : 나중에 Converter로 바꾸기.
+            // NaviDataImages for Converter
+            for (int i = 0; i < naviDatas.Count; i++)
+            {
+                naviDataImages.Add(naviDatas[i].NaviImagePath);
+            }
+            naviDataImages.Add(ComDef.Path + "ColorHomeIcon.png");
+            naviDataImages.Add(ComDef.Path + "ColorBulletinIcon.png");
+            naviDataImages.Add(ComDef.Path + "ColorOptionIcon.png");
+        }
+
+        private void NaviImageConverter(NaviData naviData)
+        {
+            int idx = 0;
+            for (int i = 0; i < naviDataImages.Count - 3; i++)
+            {
+                naviDatas[idx].NaviImagePath = naviDataImages[i];
+                idx++;
+            }
+            
+            idx = 0;
+
+            switch (naviData.Title)
+            {
+                case "Home":
+                    naviDatas[0].NaviImagePath = naviDataImages[3];
+                    break;
+                case "Bulletin":
+                    naviDatas[1].NaviImagePath = naviDataImages[4];
+                    break;
+                case "Option":
+                    naviDatas[2].NaviImagePath = naviDataImages[5];
+                    break;
+            }
         }
 
         public void InitView()
         {
-            ShowPage(ctrlHome);
+            naviDatas[0].NaviImagePath = naviDataImages[3];
+            ShowPage(ctrlBulletin);
         }   
 
         private void ShowPage(IPage page)
@@ -88,18 +129,25 @@ namespace Solomon_Client.Controls
         {
             IPage page = null;
             NaviData selectData = lvNavi.SelectedItem as NaviData;
+            ICollectionView view = CollectionViewSource.GetDefaultView(naviDatas); 
 
             switch (selectData.NaviMenu)
             {
                 case NaviMenu.Home:
                     page = ctrlHome;
+                    NaviImageConverter(selectData);
+                    view.Refresh();
                     break;
                 case NaviMenu.Bulletin:
                     page = ctrlBulletin;
+                    NaviImageConverter(selectData);
                     ctrlBulletin.LoadDataAsync();
+                    view.Refresh();
                     break;
                 case NaviMenu.Option:
+                    NaviImageConverter(selectData);
                     page = ctrlOption;
+                    view.Refresh();
                     break;
             }
 

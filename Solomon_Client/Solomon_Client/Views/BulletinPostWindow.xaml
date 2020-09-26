@@ -110,6 +110,10 @@
                          Text="{Binding BulletinPostContent, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource tbBulletinPostContentStyle}"
                          TextChanged="TextBox_TextChanged"/>
+
+                <Image x:Name="uploadImg" 
+                       Margin="5"
+                       Source="{Binding BulletinPostImgUrl}"/>
             </Grid>
 
             <Grid Grid.Row="2">
@@ -129,14 +133,16 @@
                         </Grid>
 
                         <Grid Grid.Column="1">
-                            <Button Content="Picture / Video Add"
+                            <Button x:Name="btnAddImage"
+                                    Content="Picture / Video Add"
                                     Width="700" Height="45"
                                     HorizontalContentAlignment="Left"
                                     FontSize="20"
                                     FontWeight="Light"
                                     Foreground="#8F8F8F"
                                     FocusVisualStyle="{x:Null}"
-                                    Background="Transparent"/>
+                                    Background="Transparent"
+                                    Click="btnAddImage_Click"/>
                         </Grid>
                     </Grid>
                 </Border>

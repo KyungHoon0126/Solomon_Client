@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace Solomon_Client.Views
         public delegate void OnModalBackgroundVisibility();
         public event OnModalBackgroundVisibility ModalBackGroundVisibility;
 
+        public string strName, imageName;
+
         public BulletinPostWindow()
         {
             InitializeComponent();
@@ -44,6 +47,7 @@ namespace Solomon_Client.Views
         private void btnClosePostWindow_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+            App.bulletinData.bulletinViewModel.ClearWritePostDatas();
             ModalBackGroundVisibility?.Invoke();
         }
 
@@ -69,6 +73,29 @@ namespace Solomon_Client.Views
                 return true;
             }
             return false;
+        }
+
+        private void btnAddImage_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                FileDialog fldlg = new OpenFileDialog();
+                fldlg.InitialDirectory = Environment.SpecialFolder.MyPictures.ToString();
+                fldlg.Filter = "ImageFile(*.jpg;*.bmp;*.gif)|*.jpg;*.bmp;*gif";
+                fldlg.Filter = "File(*)|*";
+                fldlg.ShowDialog();
+                {
+                    strName = fldlg.SafeFileName;
+                    imageName = fldlg.FileName;
+                    ImageSourceConverter isc = new ImageSourceConverter();
+                    uploadImg.SetValue(Image.SourceProperty, isc.ConvertFromString(imageName));
+                }
+                fldlg = null;
+            }
+            catch (Exception error)
+            {
+                MessageBox.Show(error.Message.ToString());
+            }
         }
     }
 }

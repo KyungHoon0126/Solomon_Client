@@ -127,8 +127,7 @@ namespace Solomon.Core.Bulletin.ViewModel
                 if (resp.Status == (int)HttpStatusCode.Created)
                 {
                     BulletinPostResultReceived?.Invoke(this);
-                    BulletinPostTitle = string.Empty;
-                    BulletinPostContent = string.Empty;
+                    ClearWritePostDatas();
                     await GetBulletinList();
                 }
             }
@@ -167,6 +166,12 @@ namespace Solomon.Core.Bulletin.ViewModel
             }
         }
         #endregion
+
+        public void ClearWritePostDatas()
+        {
+            BulletinPostTitle = string.Empty;
+            BulletinPostContent = string.Empty;
+        }
 
         public async Task LoadDataAsync()
         {

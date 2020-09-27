@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -81,12 +83,15 @@ namespace Solomon_Client.Views
             {
                 FileDialog fldlg = new OpenFileDialog();
                 fldlg.InitialDirectory = Environment.SpecialFolder.MyPictures.ToString();
-                fldlg.Filter = "ImageFile(*.jpg;*.bmp;*.gif)|*.jpg;*.bmp;*gif";
-                fldlg.Filter = "File(*)|*";
+                fldlg.Filter = "ImageFile(*.jpg;*.bmp;*.gif;*png)|*.jpg;*.bmp;*gif*png";
                 fldlg.ShowDialog();
                 {
-                    strName = fldlg.SafeFileName;
+                    //strName = fldlg.SafeFileName;
+                    App.bulletinData.bulletinViewModel.BulletinImgPath = fldlg.SafeFileName;
+                    
                     imageName = fldlg.FileName;
+                    App.bulletinData.bulletinViewModel.BulletinImgName = fldlg.FileName;
+                    
                     ImageSourceConverter isc = new ImageSourceConverter();
                     uploadImg.SetValue(Image.SourceProperty, isc.ConvertFromString(imageName));
                 }
@@ -94,7 +99,7 @@ namespace Solomon_Client.Views
             }
             catch (Exception error)
             {
-                MessageBox.Show(error.Message.ToString());
+                Debug.WriteLine(error.Message.ToString());
             }
         }
     }

@@ -55,9 +55,6 @@ namespace Solomon_Client
                 ctrlNavi.Visibility = Visibility.Visible;
                 ctrlNavi.ctrlBulletin.LoadDataAsync();
                 ctrlNavi.InitView();
-
-                //await App.memberData.memberViewModel.LoadDataAsync();
-                //await App.mealData.mealViewModel.LoadDataAsync();
             }
         }
     }

@@ -1,10 +1,13 @@
 ﻿using Solomon_Client.Common;
 using Solomon_Client.Views;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Threading;
 
 namespace Solomon_Client.Controls
 {
@@ -104,7 +107,7 @@ namespace Solomon_Client.Controls
 
         public void InitView()
         {
-            naviDatas[0].NaviImagePath = naviDataImages[3];
+            naviDatas[1].NaviImagePath = naviDataImages[4];
             ShowPage(ctrlBulletin);
         }   
 
@@ -141,7 +144,17 @@ namespace Solomon_Client.Controls
                 case NaviMenu.Bulletin:
                     page = ctrlBulletin;
                     NaviImageConverter(selectData);
-                    ctrlBulletin.LoadDataAsync();
+                    //Thread thread = new Thread(
+                    //   new ThreadStart(
+                    //     delegate ()
+                    //     {
+                             Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate ()
+                             {
+                                 ctrlBulletin.LoadDataAsync();
+                             }));
+                    //     }
+                    // ));
+                    //thread.Start();
                     view.Refresh();
                     break;
                 case NaviMenu.Option:

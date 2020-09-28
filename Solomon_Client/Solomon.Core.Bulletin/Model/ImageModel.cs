@@ -49,4 +49,12 @@ namespace Solomon.Core.Bulletin.Model
             }
         }
     }
+
+    public class DBImageModel
+    {
+        public int img_idx { get; set; }
+        public int bulletin_idx { get; set; }
+        public string img_name { get; set; }
+        public byte[] img_size { get; set; }
+    }
 }

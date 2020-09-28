@@ -1,10 +1,11 @@
 ﻿using Dapper;
-using MySql.Data.MySqlClient;
 using Prism.Commands;
 using Prism.Mvvm;
 using Solomon.Core.Bulletin.Model;
 using Solomon.Core.Bulletin.Service;
+using Solomon_Client.Database;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
@@ -14,12 +15,14 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Solomon.Core.Bulletin.ViewModel
 {
     public class BulletinViewModel : BindableBase
     {
         BulletinService bulletinService = new BulletinService();
+        MySqlDBConnectionManager mySqlDBConnectionManager = new MySqlDBConnectionManager();
 
         public delegate void OnMessageHandler(string msg);
         public event OnMessageHandler Message;
@@ -27,14 +30,16 @@ namespace Solomon.Core.Bulletin.ViewModel
         public delegate void BulletinPostResultReceivedHandler(object sender);
         public event BulletinPostResultReceivedHandler BulletinPostResultReceived;
 
-        #region Properties
-        private ObservableCollection<BulletinModel> _tempBulletinItems;
-        public ObservableCollection<BulletinModel> TempBulletinItems
-        {
-            get => _tempBulletinItems;
-            set => SetProperty(ref _tempBulletinItems, value);
-        }
+        string sortSql = $@"
+ALTER 
+    TABLE bulletin.image_tb AUTO_INCREMENT = 1;
+SET 
+    @COUNT = 0;
+UPDATE
+    bulletin.image_tb SET img_idx = @COUNT:= @COUNT + 1
+;";
 
+        #region Properties
         private ObservableCollection<BulletinModel> _bulletinItems;
         public ObservableCollection<BulletinModel> BulletinItems
         {
@@ -42,14 +47,14 @@ namespace Solomon.Core.Bulletin.ViewModel
             set => SetProperty(ref _bulletinItems, value);
         }
 
-        #region BulletinPostVariables
-        //private int _bulletinIdx;
-        //public int BulletinIdx
-        //{
-        //    get => _bulletinIdx;
-        //    set => SetProperty(ref _bulletinIdx, value);
-        //}
+        private ObservableCollection<BulletinModel> _tempBulletinItems;
+        public ObservableCollection<BulletinModel> TempBulletinItems
+        {
+            get => _tempBulletinItems;
+            set => SetProperty(ref _tempBulletinItems, value);
+        }
 
+        #region BulletinPostVariables
         private string _bulletinPostTitle;
         public string BulletinPostTitle
         {
@@ -85,13 +90,6 @@ namespace Solomon.Core.Bulletin.ViewModel
             set => SetProperty(ref _bulletinPostWriter, value);
         }
 
-        private byte[] _bulletinPostImage;
-        public byte[] BulletinPostImage
-        {
-            get => _bulletinPostImage;
-            set => SetProperty(ref _bulletinPostImage, value);
-        }
-
         private string _bulletinImgName;
         public string BulletinImgName
         {
@@ -121,11 +119,13 @@ namespace Solomon.Core.Bulletin.ViewModel
         public ICommand BulletinWriteCommand { get; set; }
         #endregion
 
+        #region Constructor
         public BulletinViewModel()
         {
             InitVariables();
             InitCommand();
         }
+        #endregion
 
         #region Initialize
         private void InitVariables()
@@ -150,25 +150,19 @@ namespace Solomon.Core.Bulletin.ViewModel
         {
             IsRequestEnabled = false;
 
-            if (BulletinPostTitle != null && BulletinPostContent != null && BulletinPostWriter != null && BulletinImgName != null)
+            if (BulletinPostTitle != null && BulletinPostContent != null && BulletinPostWriter != null)
             { 
                 var resp = await bulletinService.WriteBulletin(BulletinPostTitle, BulletinPostContent, BulletinPostWriter);
                 if (resp.Status == (int)HttpStatusCode.Created)
                 {
                     BulletinPostResultReceived?.Invoke(this);
-                    await SaveBulletinImage(BulletinPostTitle, BulletinImgName, BulletinImgPath);
-                    ClearWritePostDatas();
-                    await GetBulletinList();
-                }
-            }
-            else if (BulletinPostTitle != null && BulletinPostContent != null && BulletinPostWriter != null)
-            {
-                var resp = await bulletinService.WriteBulletin(BulletinPostTitle, BulletinPostContent, BulletinPostWriter);
-                if (resp.Status == (int)HttpStatusCode.Created)
-                {
-                    BulletinPostResultReceived?.Invoke(this);
-                    ClearWritePostDatas();
-                    await GetBulletinList();
+                    if (BulletinImgName != null)
+                    {
+                        await SaveBulletinImage(BulletinImgPath, BulletinImgName);
+                    }
+                    //ClearWritePostDatas();
+                    //await GetBulletinList();
+                    await LoadDataAsync();
                 }
             }
 
@@ -191,8 +185,7 @@ namespace Solomon.Core.Bulletin.ViewModel
             {
                 try
                 {
-                    var bulletin = resp.Data.Bulletins.OrderByDescending(x => x.BulletinIdx).ToList();
-                    BulletinItems = new ObservableCollection<BulletinModel>(bulletin);
+                    BulletinItems = new ObservableCollection<BulletinModel>(resp.Data.Bulletins.OrderByDescending(x => x.BulletinIdx));
                 }
                 catch (Exception e)
                 {
@@ -207,30 +200,85 @@ namespace Solomon.Core.Bulletin.ViewModel
         }
         #endregion
 
-        private async Task SaveBulletinImage(string bulletinPostTitle, string imgName, string imgPath)
+        #region DataBase
+        private async Task GetBulletinImageList()
+        {
+            try
+            {
+                List<DBImageModel> images = new List<DBImageModel>();
+
+                using (IDbConnection db = mySqlDBConnectionManager.GetConnection())
+                {
+                    string selectSql = @"
+SELECT
+    *
+FROM
+    image_tb
+";
+                    images = (await SqlMapper.QueryAsync<DBImageModel>(db, selectSql, "")).ToList();
+
+                    
+                    for (int i = 0; i < images.Count; i++)
+                    {
+                        for (int j = 0; j < BulletinItems.Count; j++)
+                        {
+                            if (images[i].bulletin_idx == BulletinItems[j].BulletinIdx)
+                            {
+                                TempBulletinItems.Add(BulletinItems[j]);
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < images.Count; i++)
+                    {
+                        for (int j = 0; j < TempBulletinItems.Count; j++)
+                        {
+                            if (BulletinItems[j].BulletinIdx == images[i].bulletin_idx)
+                            {
+                                byte[] blob = images[i].img_size;
+                                MemoryStream stream = new MemoryStream();
+                                stream.Write(blob, 0, blob.Length);
+                                stream.Position = 0;
+                                System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                                BitmapImage bi = new BitmapImage();
+                                bi.BeginInit();
+
+                                MemoryStream ms = new MemoryStream();
+                                img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                                ms.Seek(0, SeekOrigin.Begin);
+                                bi.StreamSource = ms;
+                                bi.EndInit();
+                                BulletinItems[j].BulletinImage = bi;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        private async Task SaveBulletinImage(string imgPath, string imgName)
         {
             try
             {
                 BulletinModel bulletinModel = new BulletinModel();
 
-                using (IDbConnection db = new MySqlConnection($"SERVER = localhost; DATABASE = Bulletin; UID = root; PASSWORD =#kkh03kkh#;allow user variables=true"))
+                using (IDbConnection db = mySqlDBConnectionManager.GetConnection())
                 {
-                    db.Open();
+                    // 1. 전체 게시글 조회.
+                    var resp = await bulletinService.GetBulletinList();
 
-                    string selectBulletinSql = $@"
-SELECT
-    bulletin_idx
-FROM
-    bulletin_tb
-WHERE
-    title = '{bulletinPostTitle}'
-";
-                    bulletinModel = await SqlMapper.QueryFirstOrDefaultAsync<BulletinModel>(db, selectBulletinSql, "");
+                    // 2. 작성한 게시물의 Idx 조회.
+                    var item = resp.Data.Bulletins.Where(x => x.Title == BulletinPostTitle).FirstOrDefault();
 
+                    // 3. 이미지를 저장하고자 하는 게시글의 Idx 값에 이미지 저장.
                     ImageModel imageModel = new ImageModel();
                     imageModel.ImageName = imgName;
                     imageModel.ImgSize = ConvertImgSourceValue(imgPath);
-                    imageModel.BulletinIdx = bulletinModel.BulletinIdx;
+                    imageModel.BulletinIdx = item.BulletinIdx;
 
                     string insertImageSql = @"
 INSERT INTO image_tb(
@@ -239,12 +287,13 @@ INSERT INTO image_tb(
     bulletin_idx
 )
 VALUES(
-    @img_name,
-    @img_size,
-    @bulletin_idx
+    @ImageName,
+    @ImgSize,
+    @BulletinIdx
 );";
-
                     await SqlMapper.QueryAsync<ImageModel>(db, insertImageSql, imageModel);
+
+                    await SqlMapper.QueryAsync(db, sortSql);
                 }
             }
             catch (Exception e)
@@ -260,6 +309,7 @@ VALUES(
             fileStream.Read(imgByteArr, 0, Convert.ToInt32(fileStream.Length));
             return imgByteArr;
         }
+        #endregion
 
         public void ClearWritePostDatas()
         {
@@ -271,6 +321,7 @@ VALUES(
         {
             ClearDatas();
             await GetBulletinList();
+            await GetBulletinImageList();
         }
     }
 }

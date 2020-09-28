@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Prism.Mvvm;
 using System;
+using System.Windows.Media.Imaging;
 
 namespace Solomon.Core.Bulletin.Model
 {
@@ -61,6 +62,17 @@ namespace Solomon.Core.Bulletin.Model
             }
         }
 
+        [JsonIgnore]
+        private BitmapImage _bulletinImage;
+        public BitmapImage BulletinImage
+        {
+            get => _bulletinImage;
+            set
+            {
+                SetProperty(ref _bulletinImage, value);
+            }
+        }
+
         public object Clone()
         {
             return new BulletinModel
@@ -69,7 +81,8 @@ namespace Solomon.Core.Bulletin.Model
                 Title = this.Title,
                 Content = this.Content,
                 Writer = this.Writer,
-                WrittenTime = this.WrittenTime
+                WrittenTime = this.WrittenTime,
+                BulletinImage = this.BulletinImage
             };
         }
     }

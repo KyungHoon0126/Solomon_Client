@@ -10,6 +10,10 @@
         WindowStartupLocation="CenterScreen"    
         Title="Solomon" Height="1000" Width="1600">
     
+    <!--<WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>-->
+    
     <Grid>
         <control:LoginControl x:Name="CtrlLogin" Visibility="Visible"
                               LoginResultRecieved="LoginCtrl_OnLoginResultRecieved"/>

@@ -142,6 +142,7 @@ UPDATE
         public void ClearDatas()
         {
             BulletinItems.Clear();
+            TempBulletinItems.Clear();
         }
         #endregion
 

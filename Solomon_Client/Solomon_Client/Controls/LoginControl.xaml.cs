@@ -29,7 +29,7 @@ namespace Solomon_Client.Controls
         private void LoginControl_Loaded(object sender, RoutedEventArgs e)
         {
             App.loginData.loginViewModel.ServerAddress = "http://localhost:8080";
-            //CheckAutoLoginAsync();
+            CheckAutoLoginAsync();
             App.loginData.loginViewModel.OnLoginResultRecieved += LoginViewModel_OnLoginResultRecieved;
             this.DataContext = App.loginData.loginViewModel;
         }

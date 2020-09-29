@@ -9,33 +9,41 @@
              xmlns:Option="clr-namespace:Solomon_Client.Controls.OptionControl"
              mc:Ignorable="d" 
              d:DesignHeight="850" d:DesignWidth="1280">
-    
+
     <Grid Background="White">
         <Grid>
-            <Grid.RowDefinitions>
+            <!--<Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="9*"/>
-            </Grid.RowDefinitions>
+            </Grid.RowDefinitions>-->
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2.5*"/>
+                <ColumnDefinition Width="7.5*"/>
+            </Grid.ColumnDefinitions>
 
             <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="6*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid Grid.Column="0">
-
-                </Grid>
-
-                <Grid Grid.Column="1">
-
-                </Grid>
-
-                <Grid Grid.Column="2">
-                    <ListView x:Name="lvNavi" SelectionChanged="lvNavi_SelectionChanged" Height="50"
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="9*"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Row="1">
+                    <TextBox Margin="5"
+                             Style="{StaticResource tbWatermarkStyle}"
+                             Foreground="#C2C2C2"
+                             FontSize="15"
+                             TextAlignment="Center"
+                             TextWrapping="Wrap"
+                             Tag="게시글을 검색해보세요!"
+                             Visibility="Collapsed"/>
+                    
+                    <ListView x:Name="lvNavi" Margin="5"
+                              SelectionChanged="lvNavi_SelectionChanged" 
+                              VerticalAlignment="Top"
                               FocusVisualStyle="{x:Null}">
-                        <ListView.ItemsPanel>
+
+                        <!--<ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
                                                        RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
@@ -46,21 +54,24 @@
                                                ItemHeight="{Binding (ListView.View).ItemHeight, 
                                                             RelativeSource={RelativeSource AncestorType=ListView}}"/>
                             </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
+                        </ListView.ItemsPanel>-->
 
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding NaviImagePath}" Width="35" Height="30"/>
-                                    <TextBlock Text="{Binding Title}" FontSize="15" Visibility="Collapsed"/>
+                                    <Image Source="{Binding NaviImagePath}" 
+                                           Width="50" Height="40" Margin="20"/>
+                                    <TextBlock Text="{Binding Title}" Margin="20" 
+                                               FontSize="20" FontWeight="ExtraLight" 
+                                               VerticalAlignment="Center"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </Grid>
+                </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="1" x:Name="gdPage">
+            <Grid Grid.Column="1" x:Name="gdPage">
                 <Home:HomeControl x:Name="ctrlHome"/>
                 <Bulletin:BulletinControl x:Name="ctrlBulletin"/>
                 <Option:OptionControl x:Name="ctrlOption"/>
@@ -68,7 +79,7 @@
         </Grid>
 
         <Grid x:Name="ncModalBackGround" Background="Gray" Opacity="0.4" Visibility="Collapsed">
-            
+
         </Grid>
     </Grid>
 </UserControl>

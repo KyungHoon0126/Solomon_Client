@@ -30,16 +30,8 @@ namespace Solomon.Core.Bulletin.ViewModel
         public delegate void BulletinPostResultReceivedHandler(object sender);
         public event BulletinPostResultReceivedHandler BulletinPostResultReceived;
 
-        string sortSql = $@"
-ALTER 
-    TABLE bulletin.image_tb AUTO_INCREMENT = 1;
-SET 
-    @COUNT = 0;
-UPDATE
-    bulletin.image_tb SET img_idx = @COUNT:= @COUNT + 1
-;";
-
         #region Properties
+        #region BulletinPostVariables
         private ObservableCollection<BulletinModel> _bulletinItems;
         public ObservableCollection<BulletinModel> BulletinItems
         {
@@ -54,7 +46,6 @@ UPDATE
             set => SetProperty(ref _tempBulletinItems, value);
         }
 
-        #region BulletinPostVariables
         private string _bulletinPostTitle;
         public string BulletinPostTitle
         {
@@ -105,6 +96,22 @@ UPDATE
         }
         #endregion
 
+        #region BulletinCommentVariables
+        private ObservableCollection<CommentModel> _bulletinCommentItems;
+        public ObservableCollection<CommentModel> BulletinCommentItems
+        {
+            get => _bulletinCommentItems;
+            set => SetProperty(ref _bulletinCommentItems, value);
+        }
+
+        private string _bulletinCommentContent;
+        public string BulletinCommentContent
+        {
+            get => _bulletinCommentContent;
+            set => SetProperty(ref _bulletinCommentContent, value);
+        }
+        #endregion
+
         private bool _isRequestEnabled = true;
         public bool IsRequestEnabled
         {
@@ -117,6 +124,7 @@ UPDATE
 
         #region Commands
         public ICommand BulletinWriteCommand { get; set; }
+        public ICommand BulletinReplyCommand { get; set; }
         #endregion
 
         #region Constructor
@@ -132,17 +140,20 @@ UPDATE
         {
             BulletinItems = new ObservableCollection<BulletinModel>();
             TempBulletinItems = new ObservableCollection<BulletinModel>();
+            BulletinCommentItems = new ObservableCollection<CommentModel>();
         }
 
         private void InitCommand()
         {
             BulletinWriteCommand = new DelegateCommand(OnWrite, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
+            BulletinReplyCommand = new DelegateCommand(OnComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
         }
 
         public void ClearDatas()
         {
             BulletinItems.Clear();
             TempBulletinItems.Clear();
+            BulletinCommentItems.Clear();
         }
         #endregion
 
@@ -161,14 +172,17 @@ UPDATE
                     {
                         await SaveBulletinImage(BulletinImgPath, BulletinImgName);
                     }
-                    //ClearWritePostDatas();
-                    //await GetBulletinList();
                     await LoadDataAsync();
                 }
             }
 
             ModalBackGround = Visibility.Collapsed;
             IsRequestEnabled = true;
+        }
+
+        private async void OnComment()
+        {
+
         }
 
         private bool CanRequest()
@@ -186,12 +200,56 @@ UPDATE
             {
                 try
                 {
-                    BulletinItems = new ObservableCollection<BulletinModel>(resp.Data.Bulletins.OrderByDescending(x => x.BulletinIdx));
+                    BulletinModel bulletinItems = new BulletinModel();
+                    var tempBulletinItems = new ObservableCollection<BulletinModel>();
+
+                    foreach (var item in resp.Data.Bulletins)
+                    {
+                        bulletinItems.BulletinIdx = item.BulletinIdx;
+                        bulletinItems.Title = item.Title;
+                        bulletinItems.Content = item.Content;
+                        bulletinItems.Writer = item.Writer;
+                        bulletinItems.WrittenTime = item.WrittenTime;
+
+                        var response = await bulletinService.GetCommentList(bulletinItems.BulletinIdx);
+                        bulletinItems.CommentCount = response.Data.Comments.Count;
+
+                        tempBulletinItems.Add((BulletinModel)bulletinItems.Clone());
+                    }
+
+                    BulletinItems = new ObservableCollection<BulletinModel>(tempBulletinItems.OrderByDescending(x => x.BulletinIdx));
                 }
                 catch (Exception e)
                 {
                     Message?.Invoke(e.Message);
                     Debug.WriteLine("GET BULLETINS LIST ERROR : " + e.Message);
+                }
+            }
+            else
+            {
+                Message?.Invoke(resp.Message);
+            }
+        }
+
+        private async Task GetCommentList(int bulletin_idx)
+        {
+            if (BulletinCommentItems.Count > 0)
+            {
+                BulletinCommentItems.Clear();
+            }
+
+            var resp = await bulletinService.GetCommentList(bulletin_idx);
+
+            if (resp != null && resp.Status == 200 && resp.Data != null)
+            {
+                try
+                {
+
+                }
+                catch (Exception e)
+                {
+                    Message?.Invoke(e.Message);
+                    Debug.WriteLine("GET COMMENTS LIST ERROR : " + e.Message);
                 }
             }
             else
@@ -293,8 +351,6 @@ VALUES(
     @BulletinIdx
 );";
                     await SqlMapper.QueryAsync<ImageModel>(db, insertImageSql, imageModel);
-
-                    await SqlMapper.QueryAsync(db, sortSql);
                 }
             }
             catch (Exception e)

@@ -63,6 +63,14 @@ namespace Solomon.Core.Bulletin.Model
         }
 
         [JsonIgnore]
+        private int _commentCount;
+        public int CommentCount
+        {
+            get => _commentCount;
+            set => SetProperty(ref _commentCount, value);
+        }
+
+        [JsonIgnore]
         private BitmapImage _bulletinImage;
         public BitmapImage BulletinImage
         {
@@ -82,6 +90,7 @@ namespace Solomon.Core.Bulletin.Model
                 Content = this.Content,
                 Writer = this.Writer,
                 WrittenTime = this.WrittenTime,
+                CommentCount = this.CommentCount,
                 BulletinImage = this.BulletinImage
             };
         }

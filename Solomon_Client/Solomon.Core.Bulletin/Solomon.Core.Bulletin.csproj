@@ -114,9 +114,11 @@
     <Compile Include="Database\MySqlDBConnectionManager.cs" />
     <Compile Include="Model\BulletinModel.cs" />
     <Compile Include="Model\ImageModel.cs" />
+    <Compile Include="Model\CommentModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BulletinService.cs" />
     <Compile Include="Service\Response\GetBulletinListResponse.cs" />
+    <Compile Include="Service\Response\GetCommentListResponse.cs" />
     <Compile Include="ViewModel\BulletinViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

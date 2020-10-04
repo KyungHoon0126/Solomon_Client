@@ -13,6 +13,7 @@ namespace Solomon.Core.Bulletin.Service
         NetworkManager networkManager = new NetworkManager();
 
         private const string BULLETIN_URL = "/bulletin/post";
+        private const string COMMENT_URL = "/bulletin/comment";
 
         public async Task<Response<GetBulletinListResponse>> GetBulletinList()
         {
@@ -52,9 +53,17 @@ namespace Solomon.Core.Bulletin.Service
 
         public async Task<Response<BulletinModel>> GetSpecificBulletin(int bulletinIdx)
         {
+            // TODO : Body가 아니라 RequestHeader형식으로 바꾸기. => GetCommentList 처럼.
             JObject jObject = new JObject();
             jObject["bulletin_idx"] = bulletinIdx;
             var resp = await networkManager.GetResponse<BulletinModel>(BULLETIN_URL, Method.GET, jObject.ToString());
+            return resp;
+        }
+
+        public async Task<Response<GetCommentListResponse>> GetCommentList(int bulletin_idx)
+        {
+            string requestUrl = COMMENT_URL + "/" + bulletin_idx;
+            var resp = await networkManager.GetResponse<GetCommentListResponse>(requestUrl, Method.GET);
             return resp;
         }
     }

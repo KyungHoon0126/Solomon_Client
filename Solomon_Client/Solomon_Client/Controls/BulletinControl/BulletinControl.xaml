@@ -1,9 +1,8 @@
 ﻿<UserControl x:Class="Solomon_Client.Controls.BulletinControl.BulletinControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Solomon_Client.Controls.BulletinControl"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" 
              d:DesignHeight="850" d:DesignWidth="1280">
 
@@ -14,16 +13,11 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Border Margin="35,10,0,0" 
-                    Width="860"
-                    BorderBrush="Black" 
-                    BorderThickness="0,0,0,1"
-                    HorizontalAlignment="Left">
-                <TextBlock Text="Solution Board"
-                           VerticalAlignment="Center"
-                           FontSize="50"
-                           FontWeight="ExtraLight"/>
-            </Border>
+            <TextBlock Margin="35,0,0,0"
+                       Text="Solution Board"
+                       VerticalAlignment="Center"
+                       FontSize="50"
+                       FontWeight="ExtraLight"/>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -33,7 +27,8 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Margin="5">
-                <ListView Height="850" Width="900" HorizontalAlignment="Center"
+                <ListView Height="850" Width="900" 
+                          HorizontalAlignment="Center"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Visible"
                           ScrollViewer.CanContentScroll="False"
@@ -79,25 +74,26 @@
 
                                             <Grid Grid.Column="0">
                                                 <Image Source="/Assets/Bulletin/ProfileIcon.png"
-                                               Height="50"
-                                               Width="50"/>
+                                                       Height="50" Width="50"/>
                                             </Grid>
 
                                             <Grid Grid.Column="1">
                                                 <StackPanel>
-                                                    <TextBlock Text="{Binding BulletinIdx, StringFormat={}#{0}번째 이야기}" 
+                                                    <!--<TextBlock Text="{Binding BulletinIdx, StringFormat={}#{0}번째 이야기}" 
                                                            FontSize="15"
                                                            Foreground="Black"
-                                                           FontWeight="SemiBold"/>
+                                                           FontWeight="SemiBold"/>-->
                                                     <StackPanel Orientation="Horizontal">
                                                         <TextBlock Text="{Binding Writer, StringFormat={}{0} ▶}"
-                                                           FontSize="15"/>
+                                                                   FontSize="15"/>
                                                         <TextBlock Text="{Binding Title}" 
-                                                               Margin="5,0,0,0"
-                                                               FontSize="15"/>
+                                                                   Margin="5,0,0,0"
+                                                                   Foreground="Black"
+                                                                   FontWeight="SemiBold"
+                                                                   FontSize="15"/>
                                                     </StackPanel>
                                                     <TextBlock Text="{Binding WrittenTime, StringFormat=yyyy년 MM월 dd일}"
-                                                           FontSize="15"/>
+                                                               FontSize="15"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>
@@ -118,7 +114,64 @@
                                         </Grid>
 
                                         <Grid Grid.Row="2" Margin="5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
 
+                                            <Grid Grid.Row="0" Margin="10,0,0,0">
+                                                <Border BorderBrush="#E2E2E2" BorderThickness="0,0,0,1">
+                                                    <Button Margin="0,0,0,5"
+                                                            Tag="{Binding Idx}"
+                                                            HorizontalAlignment="Left">
+                                                        <Button.Content>
+                                                            <TextBlock Text="{Binding CommentCount, StringFormat={}댓글 {0}개}"
+                                                                       TextWrapping="Wrap"
+                                                                       FontSize="18"
+                                                                       Focusable="False"
+                                                                       FocusVisualStyle="{x:Null}"
+                                                                       Background="Transparent"/>
+                                                        </Button.Content>
+                                                    </Button>
+                                                </Border>
+                                            </Grid>
+
+                                            <Grid Grid.Row="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="9*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Border Grid.Column="0" 
+                                                        Margin="0,10,0,0"
+                                                        CornerRadius="20"
+                                                        Background="#F1F1F1"
+                                                        Width="730" Height="55">
+                                                    <TextBox Margin="10,0,0,0"
+                                                             Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, 
+                                                                            Path=DataContext.BambooReplyContent,
+                                                                            UpdateSourceTrigger=PropertyChanged}"
+                                                             Tag="댓글 달기..."
+                                                             HorizontalAlignment="Left" 
+                                                             VerticalAlignment="Center"
+                                                             AcceptsReturn="True"
+                                                             FontSize="18"
+                                                             TextWrapping="Wrap"
+                                                             Style="{StaticResource tbWatermarkStyle}">
+                                                    </TextBox>
+                                                </Border>
+
+                                                <Button Grid.Column="1" 
+                                                        Margin="0,10,0,0" 
+                                                        Height="55" 
+                                                        Tag="{Binding Idx}"
+                                                        FocusVisualStyle="{x:Null}">
+                                                    <ContentControl>
+                                                        <Image Source="/Assets/Bulletin/papsr-plane.png"
+                                                               Height="32" Width="32"/>
+                                                    </ContentControl>
+                                                </Button>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
                                 </Border>
@@ -129,22 +182,19 @@
             </Grid>
 
             <Grid Grid.Column="1" Margin="5">
-                <Image Source="/Assets/Bulletin/BulletinSideBackGround1.jpg"
-                   Height="250" Width="250"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Margin="0,200,0,0"/>
-
-                <Button x:Name="btnWriteBulletin" Margin="0,0,50,30"
-                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                    Background="#1d65ff" BorderBrush="Transparent"
-                    Height="50" Width="50"
-                    Style="{DynamicResource MaterialDesignFloatingActionButton}"    
-                    FocusVisualStyle="{x:Null}"
-                    Click="btnWriteBulletin_Click">
-
+                <Button x:Name="btnWriteBulletin" 
+                        Margin="0,0,50,30"
+                        Height="50" Width="50"
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Bottom"
+                        Background="#1d65ff" 
+                        BorderBrush="Transparent"
+                        Style="{DynamicResource MaterialDesignFloatingActionButton}"    
+                        FocusVisualStyle="{x:Null}"
+                        Click="btnWriteBulletin_Click">
                     <Button.Content>
-                        <Image Source="/Assets/Bulletin/pencilIcon.png" Height="25" Width="25"/>
+                        <Image Height="25" Width="25"
+                               Source="/Assets/Bulletin/pencilIcon.png" />
                     </Button.Content>
                 </Button>
             </Grid>

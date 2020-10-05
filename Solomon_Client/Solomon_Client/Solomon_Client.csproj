@@ -137,6 +137,9 @@
     <Compile Include="Views\BulletinPostWindow.xaml.cs">
       <DependentUpon>BulletinPostWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BulletinWithCommentWindow.xaml.cs">
+      <DependentUpon>BulletinWithCommentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BulletinPostWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BulletinWithCommentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

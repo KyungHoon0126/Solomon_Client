@@ -53,17 +53,25 @@ namespace Solomon.Core.Bulletin.Service
 
         public async Task<Response<BulletinModel>> GetSpecificBulletin(int bulletinIdx)
         {
-            // TODO : Body가 아니라 RequestHeader형식으로 바꾸기. => GetCommentList 처럼.
-            JObject jObject = new JObject();
-            jObject["bulletin_idx"] = bulletinIdx;
-            var resp = await networkManager.GetResponse<BulletinModel>(BULLETIN_URL, Method.GET, jObject.ToString());
+            string requestUrl = BULLETIN_URL + "/" + bulletinIdx;
+            var resp = await networkManager.GetResponse<BulletinModel>(requestUrl, Method.GET);
             return resp;
         }
 
-        public async Task<Response<GetCommentListResponse>> GetCommentList(int bulletin_idx)
+        public async Task<Response<GetCommentListResponse>> GetCommentList(int bulletinIdx)
         {
-            string requestUrl = COMMENT_URL + "/" + bulletin_idx;
+            string requestUrl = COMMENT_URL + "/" + bulletinIdx;
             var resp = await networkManager.GetResponse<GetCommentListResponse>(requestUrl, Method.GET);
+            return resp;
+        }
+
+        public async Task<Response<Nothing>> WriteComment(int bulletinIdx, string writer, string content)
+        {
+            JObject jObject = new JObject();
+            jObject["bulletin_idx"] = bulletinIdx;
+            jObject["writer"] = writer;
+            jObject["content"] = content;
+            var resp = await networkManager.GetResponse<Nothing>(COMMENT_URL, Method.POST, jObject.ToString());
             return resp;
         }
     }

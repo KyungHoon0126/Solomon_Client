@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <TextBlock Margin="35,0,0,0"
+            <TextBlock Margin="35,50,0,0"
                        Text="Solution Board"
                        VerticalAlignment="Center"
                        FontSize="50"
@@ -27,7 +27,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Margin="5">
-                <ListView Height="850" Width="900" 
+                <ListView Height="750" Width="900" 
                           HorizontalAlignment="Center"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -121,15 +121,17 @@
 
                                             <Grid Grid.Row="0" Margin="10,0,0,0">
                                                 <Border BorderBrush="#E2E2E2" BorderThickness="0,0,0,1">
-                                                    <Button Margin="0,0,0,5"
-                                                            Tag="{Binding Idx}"
-                                                            HorizontalAlignment="Left">
+                                                    <Button x:Name="btnCommentCount"
+                                                            Margin="0,0,0,5"
+                                                            Tag="{Binding BulletinIdx}"
+                                                            HorizontalAlignment="Left"
+                                                            FocusVisualStyle="{x:Null}"
+                                                            Click="btnCommentCount_Click">
                                                         <Button.Content>
                                                             <TextBlock Text="{Binding CommentCount, StringFormat={}댓글 {0}개}"
                                                                        TextWrapping="Wrap"
                                                                        FontSize="18"
                                                                        Focusable="False"
-                                                                       FocusVisualStyle="{x:Null}"
                                                                        Background="Transparent"/>
                                                         </Button.Content>
                                                     </Button>
@@ -149,7 +151,7 @@
                                                         Width="730" Height="55">
                                                     <TextBox Margin="10,0,0,0"
                                                              Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, 
-                                                                            Path=DataContext.BambooReplyContent,
+                                                                            Path=DataContext.BulletinCommentContent,
                                                                             UpdateSourceTrigger=PropertyChanged}"
                                                              Tag="댓글 달기..."
                                                              HorizontalAlignment="Left" 
@@ -161,11 +163,15 @@
                                                     </TextBox>
                                                 </Border>
 
-                                                <Button Grid.Column="1" 
+                                                <Button x:Name="btnWriteComment"
+                                                        Grid.Column="1" 
                                                         Margin="0,10,0,0" 
                                                         Height="55" 
-                                                        Tag="{Binding Idx}"
-                                                        FocusVisualStyle="{x:Null}">
+                                                        Tag="{Binding BulletinIdx}"
+                                                        FocusVisualStyle="{x:Null}"
+                                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}},
+                                                                          Path=DataContext.BulletinCommentCommand}"
+                                                        Click="btnWriteComment_Click">
                                                     <ContentControl>
                                                         <Image Source="/Assets/Bulletin/papsr-plane.png"
                                                                Height="32" Width="32"/>

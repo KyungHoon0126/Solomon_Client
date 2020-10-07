@@ -22,7 +22,9 @@ namespace Solomon_Client.Controls
         {
             InitializeComponent();
             Loaded += NavigationControl_Loaded;
+
             ctrlBulletin.OnLoadBulletinPostWindow += CtrlBulletin_OnLoadBulletinPostWindow;
+            ctrlBulletin.OnLoadBulletinWithComment += CtrlBulletin_OnLoadBulletinWithComment;
         }
 
         private void NavigationControl_Loaded(object sender, RoutedEventArgs e)
@@ -39,6 +41,24 @@ namespace Solomon_Client.Controls
         }
 
         private void BambooPostWindow_ModalBackGroundVisibility()
+        {
+            ncModalBackGround.Visibility = Visibility.Collapsed;
+        }
+
+        private async void CtrlBulletin_OnLoadBulletinWithComment(object sender, RoutedEventArgs e)
+        {
+            int bulletinIdx = Convert.ToInt32(sender);
+
+            App.bulletinData.bulletinViewModel.GetSpecificBulletin(bulletinIdx);
+            await App.bulletinData.bulletinViewModel.GetCommentList(bulletinIdx);
+
+            BulletinWithCommentWindow bulletinWithComment = new BulletinWithCommentWindow();
+            bulletinWithComment.ModalBackGroundVisibility += BulletinWithComment_ModalBackGroundVisibility;
+            ncModalBackGround.Visibility = Visibility.Visible;
+            bulletinWithComment.ShowDialog();
+        }
+
+        private void BulletinWithComment_ModalBackGroundVisibility()
         {
             ncModalBackGround.Visibility = Visibility.Collapsed;
         }
@@ -79,7 +99,7 @@ namespace Solomon_Client.Controls
             naviDataImages.Add(ComDef.Path + "ColorOptionIcon.png");
         }
 
-        private void NaviImageConverter(NaviData naviData)
+        private void ConvertNaviImage(NaviData naviData)
         {
             int idx = 0;
             for (int i = 0; i < naviDataImages.Count - 3; i++)
@@ -137,27 +157,20 @@ namespace Solomon_Client.Controls
             {
                 case NaviMenu.Home:
                     page = ctrlHome;
-                    NaviImageConverter(selectData);
+                    ConvertNaviImage(selectData);
                     view.Refresh();
                     break;
                 case NaviMenu.Bulletin:
                     page = ctrlBulletin;
-                    NaviImageConverter(selectData);
-                    //Thread thread = new Thread(
-                    //   new ThreadStart(
-                    //     delegate ()
-                    //     {
-                             Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate ()
-                             {
-                                 ctrlBulletin.LoadDataAsync();
-                             }));
-                    //     }
-                    // ));
-                    //thread.Start();
+                    ConvertNaviImage(selectData);
+                    Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate ()
+                    {
+                        ctrlBulletin.LoadDataAsync();
+                    }));
                     view.Refresh();
                     break;
                 case NaviMenu.Option:
-                    NaviImageConverter(selectData);
+                    ConvertNaviImage(selectData);
                     page = ctrlOption;
                     view.Refresh();
                     break;

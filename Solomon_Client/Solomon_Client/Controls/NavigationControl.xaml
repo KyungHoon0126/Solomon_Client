@@ -1,11 +1,10 @@
 ﻿<UserControl x:Class="Solomon_Client.Controls.NavigationControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Solomon_Client.Controls"
-             xmlns:Home="clr-namespace:Solomon_Client.Controls.HomeControl"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Bulletin="clr-namespace:Solomon_Client.Controls.BulletinControl"
+             xmlns:Home="clr-namespace:Solomon_Client.Controls.HomeControl"
              xmlns:Option="clr-namespace:Solomon_Client.Controls.OptionControl"
              mc:Ignorable="d" 
              d:DesignHeight="850" d:DesignWidth="1280">
@@ -71,7 +70,7 @@
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Column="1" x:Name="gdPage">
+            <Grid Grid.Column="1" x:Name="gdPage" Margin="5">
                 <Home:HomeControl x:Name="ctrlHome"/>
                 <Bulletin:BulletinControl x:Name="ctrlBulletin"/>
                 <Option:OptionControl x:Name="ctrlOption"/>

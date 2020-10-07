@@ -101,7 +101,7 @@
             </Grid>
 
             <Grid Grid.Column="1" Margin="5">
-                <TextBlock Text="{Binding BulletinPostWriter}"  
+                <TextBlock Text="{Binding Writer}"  
                            VerticalAlignment="Center"
                            FontSize="20"/>
             </Grid>

@@ -15,8 +15,6 @@ namespace Solomon_Client.Views
         public delegate void OnModalBackgroundVisibility();
         public event OnModalBackgroundVisibility ModalBackGroundVisibility;
 
-        public string strName, imageName;
-
         public BulletinPostWindow()
         {
             InitializeComponent();
@@ -76,14 +74,11 @@ namespace Solomon_Client.Views
                 fldlg.Filter = "ImageFile(*.jpg;*.bmp;*.gif;*png)|*.jpg;*.bmp;*gif*png";
                 fldlg.ShowDialog();
                 {
-                    //strName = fldlg.SafeFileName;
                     App.bulletinData.bulletinViewModel.BulletinImgPath = fldlg.FileName;
-                    
-                    imageName = fldlg.FileName;
                     App.bulletinData.bulletinViewModel.BulletinImgName = fldlg.SafeFileName;
                     
                     ImageSourceConverter isc = new ImageSourceConverter();
-                    uploadImg.SetValue(Image.SourceProperty, isc.ConvertFromString(imageName));
+                    uploadImg.SetValue(Image.SourceProperty, isc.ConvertFromString(fldlg.FileName));
                 }
                 fldlg = null;
             }

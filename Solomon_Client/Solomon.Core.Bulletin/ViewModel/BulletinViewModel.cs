@@ -13,7 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -31,7 +30,7 @@ namespace Solomon.Core.Bulletin.ViewModel
         public event BulletinPostResultReceivedHandler BulletinPostResultReceived;
 
         #region Properties
-        #region BulletinPostVariables
+        #region BulletinVariables
         private ObservableCollection<BulletinModel> _bulletinItems;
         public ObservableCollection<BulletinModel> BulletinItems
         {
@@ -44,6 +43,13 @@ namespace Solomon.Core.Bulletin.ViewModel
         {
             get => _tempBulletinItems;
             set => SetProperty(ref _tempBulletinItems, value);
+        }
+
+        private ObservableCollection<BulletinModel> _specificBulletinItems;
+        public ObservableCollection<BulletinModel> SpecificBulletinItems
+        {
+            get => _specificBulletinItems;
+            set => SetProperty(ref _specificBulletinItems, value);
         }
 
         private string _bulletinPostTitle;
@@ -74,13 +80,6 @@ namespace Solomon.Core.Bulletin.ViewModel
             }
         }
 
-        private string _bulletinPostWriter;
-        public string BulletinPostWriter
-        {
-            get => _bulletinPostWriter;
-            set => SetProperty(ref _bulletinPostWriter, value);
-        }
-
         private string _bulletinImgName;
         public string BulletinImgName
         {
@@ -94,9 +93,16 @@ namespace Solomon.Core.Bulletin.ViewModel
             get => _bulletinImgPath;
             set => SetProperty(ref _bulletinImgPath, value);
         }
+
+        private int _bulletinIdx;
+        public int BulletinIdx
+        {
+            get => _bulletinIdx;
+            set => SetProperty(ref _bulletinIdx, value);
+        }
         #endregion
 
-        #region BulletinCommentVariables
+        #region CommentVariables
         private ObservableCollection<CommentModel> _bulletinCommentItems;
         public ObservableCollection<CommentModel> BulletinCommentItems
         {
@@ -110,7 +116,22 @@ namespace Solomon.Core.Bulletin.ViewModel
             get => _bulletinCommentContent;
             set => SetProperty(ref _bulletinCommentContent, value);
         }
+
+        private int _specificBulletinIdx;
+        public int SpecificBulletinIdx
+        {
+            get => _specificBulletinIdx;
+            set => SetProperty(ref _specificBulletinIdx, value);
+        }
         #endregion
+
+        #region Common
+        private string _writer;
+        public string Writer
+        {
+            get => _writer;
+            set => SetProperty(ref _writer, value);
+        }
 
         private bool _isRequestEnabled = true;
         public bool IsRequestEnabled
@@ -118,13 +139,14 @@ namespace Solomon.Core.Bulletin.ViewModel
             get => _isRequestEnabled;
             set => SetProperty(ref _isRequestEnabled, value);
         }
-
-        public Visibility ModalBackGround { get; set; } = Visibility.Collapsed;
+        #endregion
         #endregion
 
         #region Commands
         public ICommand BulletinWriteCommand { get; set; }
-        public ICommand BulletinReplyCommand { get; set; }
+        public ICommand BulletinCommentCommand { get; set; }
+        public ICommand SpecificBulletinCommentCommand { get; set; }
+        
         #endregion
 
         #region Constructor
@@ -140,19 +162,22 @@ namespace Solomon.Core.Bulletin.ViewModel
         {
             BulletinItems = new ObservableCollection<BulletinModel>();
             TempBulletinItems = new ObservableCollection<BulletinModel>();
+            SpecificBulletinItems = new ObservableCollection<BulletinModel>();
             BulletinCommentItems = new ObservableCollection<CommentModel>();
         }
 
         private void InitCommand()
         {
             BulletinWriteCommand = new DelegateCommand(OnWrite, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
-            BulletinReplyCommand = new DelegateCommand(OnComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
+            BulletinCommentCommand = new DelegateCommand(OnBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
+            SpecificBulletinCommentCommand = new DelegateCommand(OnSpecificBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
         }
 
         public void ClearDatas()
         {
             BulletinItems.Clear();
             TempBulletinItems.Clear();
+            // SpecificBulletinItems.Clear();
             BulletinCommentItems.Clear();
         }
         #endregion
@@ -161,10 +186,9 @@ namespace Solomon.Core.Bulletin.ViewModel
         private async void OnWrite()
         {
             IsRequestEnabled = false;
-
-            if (BulletinPostTitle != null && BulletinPostContent != null && BulletinPostWriter != null)
+            if (BulletinPostTitle != null && BulletinPostContent != null && Writer != null)
             { 
-                var resp = await bulletinService.WriteBulletin(BulletinPostTitle, BulletinPostContent, BulletinPostWriter);
+                var resp = await bulletinService.WriteBulletin(BulletinPostTitle, BulletinPostContent, Writer);
                 if (resp.Status == (int)HttpStatusCode.Created)
                 {
                     BulletinPostResultReceived?.Invoke(this);
@@ -175,14 +199,30 @@ namespace Solomon.Core.Bulletin.ViewModel
                     await LoadDataAsync();
                 }
             }
-
-            ModalBackGround = Visibility.Collapsed;
             IsRequestEnabled = true;
         }
 
-        private async void OnComment()
+        private async void OnBulletinComment()
         {
+            IsRequestEnabled = false;
+            if (BulletinCommentContent != null && Writer != null && BulletinIdx.ToString().Length > 0)
+            {
+                var resp = await bulletinService.WriteComment(BulletinIdx, Writer, BulletinCommentContent);
+                if (resp.Status == (int)HttpStatusCode.Created)
+                {
+                    BulletinCommentContent = string.Empty;
+                    await LoadDataAsync();
+                }
+            }
+            IsRequestEnabled = true;
+        }
 
+        private async void OnSpecificBulletinComment()
+        {
+            IsRequestEnabled = false;
+            OnBulletinComment();
+            await GetCommentList(BulletinIdx);
+            IsRequestEnabled = true;
         }
 
         private bool CanRequest()
@@ -231,7 +271,12 @@ namespace Solomon.Core.Bulletin.ViewModel
             }
         }
 
-        private async Task GetCommentList(int bulletin_idx)
+        public void GetSpecificBulletin(int bulletinIdx)
+        {
+            SpecificBulletinItems.Add(BulletinItems.Where(x => x.BulletinIdx == bulletinIdx).FirstOrDefault());
+        }
+
+        public async Task GetCommentList(int bulletin_idx)
         {
             if (BulletinCommentItems.Count > 0)
             {
@@ -244,7 +289,18 @@ namespace Solomon.Core.Bulletin.ViewModel
             {
                 try
                 {
+                    CommentModel commentItems = new CommentModel();
 
+                    foreach (var item in resp.Data.Comments)
+                    {
+                        commentItems.CommentIdx = item.CommentIdx;
+                        commentItems.BulletinIdx = item.BulletinIdx;
+                        SpecificBulletinIdx = item.BulletinIdx;
+                        commentItems.Content = item.Content;
+                        commentItems.Writer = item.Writer;
+                        
+                        BulletinCommentItems.Add((CommentModel)commentItems.Clone());
+                    }
                 }
                 catch (Exception e)
                 {

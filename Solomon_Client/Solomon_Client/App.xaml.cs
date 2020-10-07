@@ -3,6 +3,7 @@ using Solomon.Core.Login;
 using Solomon.Core.SignUp;
 using Solomon_Client.Common;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Solomon_Client
 {
@@ -18,6 +19,11 @@ namespace Solomon_Client
         public App()
         {
             Setting.Load();
+        }
+
+        private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }

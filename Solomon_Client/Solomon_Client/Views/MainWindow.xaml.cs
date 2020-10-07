@@ -1,9 +1,6 @@
 ﻿using Solomon.Network.Data;
-using System;
 using System.Net;
-using System.Threading;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace Solomon_Client
 {

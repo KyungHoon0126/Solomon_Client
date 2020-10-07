@@ -46,7 +46,7 @@ namespace Solomon_Client.Controls
             {
                 Setting.SaveUserdata(App.loginData.loginViewModel.Id, App.loginData.loginViewModel.Password);
                 Setting.Save();
-                App.bulletinData.bulletinViewModel.BulletinPostWriter = App.loginData.loginViewModel.Id;
+                App.bulletinData.bulletinViewModel.Writer = App.loginData.loginViewModel.Id;
             }
 
             SetUserData(App.loginData.loginViewModel.Id, App.loginData.loginViewModel.Password);

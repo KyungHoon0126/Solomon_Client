@@ -258,7 +258,7 @@
                                         Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}},
                                                       Path=DataContext.SpecificBulletinIdx}"
                                         Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}},
-                                                          Path=DataContext.SpecificBulletinCommentCommand}"
+                                                          Path=DataContext.SpecificBulletinCommentWriteCommand}"
                                         Click="btn_WriteComment_Click">
                                     <ContentControl>
                                         <Image Source="/Assets/Bulletin/papsr-plane.png"

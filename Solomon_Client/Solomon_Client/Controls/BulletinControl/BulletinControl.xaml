@@ -169,7 +169,7 @@
                                                         Tag="{Binding BulletinIdx}"
                                                         FocusVisualStyle="{x:Null}"
                                                         Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}},
-                                                                          Path=DataContext.BulletinCommentCommand}"
+                                                                          Path=DataContext.BulletinCommentWriteCommand}"
                                                         Click="btnWriteComment_Click">
                                                     <ContentControl>
                                                         <Image Source="/Assets/Bulletin/papsr-plane.png"

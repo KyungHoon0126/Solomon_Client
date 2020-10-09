@@ -40,11 +40,31 @@ namespace Solomon_Client.Views
         private void btn_BulletinContextMenu_Click(object sender, RoutedEventArgs e)
         {
             (sender as Button).ContextMenu.IsOpen = true;
+            // TODO : 전체 BulletinData를 Clear하고 Load하는게 아니라 게시글의 Count만 동기화 하도록 변경.
+            App.bulletinData.bulletinViewModel.CommentIdx = Convert.ToInt32((sender as Button).Tag);
+        }
+    }
+
+    public class BindingProxy : Freezable
+    {
+        protected override Freezable CreateInstanceCore()
+        {
+            return new BindingProxy();
         }
 
-        private void mi_DeleteComment_Click(object sender, RoutedEventArgs e)
+        public object Data
         {
-            
+            get 
+            {
+                return (object)GetValue(DataProperty); 
+            }
+            set 
+            {
+                SetValue(DataProperty, value); 
+            }
         }
+
+        public static readonly DependencyProperty DataProperty =
+            DependencyProperty.Register("Data", typeof(object), typeof(BindingProxy));
     }
 }

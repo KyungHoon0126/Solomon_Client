@@ -16,8 +16,7 @@
             <TextBlock Margin="35,50,0,0"
                        Text="Solution Board"
                        VerticalAlignment="Center"
-                       FontSize="50"
-                       FontWeight="ExtraLight"/>
+                       FontSize="50" FontWeight="ExtraLight"/>
         </Grid>
 
         <Grid Grid.Row="1">

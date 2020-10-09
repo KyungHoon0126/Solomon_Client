@@ -65,13 +65,22 @@ namespace Solomon.Core.Bulletin.Service
             return resp;
         }
 
-        public async Task<Response<Nothing>> WriteComment(int bulletinIdx, string writer, string content)
+        public async Task<Response<Nothing>> WriteComment(int bulletinIdx, string content, string writer)
         {
             JObject jObject = new JObject();
             jObject["bulletin_idx"] = bulletinIdx;
-            jObject["writer"] = writer;
             jObject["content"] = content;
+            jObject["writer"] = writer;
             var resp = await networkManager.GetResponse<Nothing>(COMMENT_URL, Method.POST, jObject.ToString());
+            return resp;
+        }
+
+        public async Task<Response<Nothing>> DeleteComment(int commentIdx, string writer)
+        {
+            JObject jObject = new JObject();
+            jObject["comment_idx"] = commentIdx;
+            jObject["writer"] = writer;
+            var resp = await networkManager.GetResponse<Nothing>(COMMENT_URL, Method.DELETE, jObject.ToString());
             return resp;
         }
     }

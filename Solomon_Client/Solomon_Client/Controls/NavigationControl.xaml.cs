@@ -61,6 +61,7 @@ namespace Solomon_Client.Controls
         private void BulletinWithComment_ModalBackGroundVisibility()
         {
             ncModalBackGround.Visibility = Visibility.Collapsed;
+            ctrlBulletin.LoadDataAsync();
         }
 
         private void SetNaviDatas()

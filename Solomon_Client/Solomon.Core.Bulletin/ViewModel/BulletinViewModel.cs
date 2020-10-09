@@ -123,6 +123,13 @@ namespace Solomon.Core.Bulletin.ViewModel
             get => _specificBulletinIdx;
             set => SetProperty(ref _specificBulletinIdx, value);
         }
+
+        private int _commentIdx;
+        public int CommentIdx
+        {
+            get => _commentIdx;
+            set => SetProperty(ref _commentIdx, value);
+        }
         #endregion
 
         #region Common
@@ -146,6 +153,7 @@ namespace Solomon.Core.Bulletin.ViewModel
         public ICommand BulletinWriteCommand { get; set; }
         public ICommand BulletinCommentCommand { get; set; }
         public ICommand SpecificBulletinCommentCommand { get; set; }
+        public ICommand CommentDeleteCommand { get; set; }
         
         #endregion
 
@@ -171,6 +179,7 @@ namespace Solomon.Core.Bulletin.ViewModel
             BulletinWriteCommand = new DelegateCommand(OnWrite, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
             BulletinCommentCommand = new DelegateCommand(OnBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
             SpecificBulletinCommentCommand = new DelegateCommand(OnSpecificBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
+            CommentDeleteCommand = new DelegateCommand(OnCommentDelete, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
         }
 
         public void ClearDatas()
@@ -207,7 +216,7 @@ namespace Solomon.Core.Bulletin.ViewModel
             IsRequestEnabled = false;
             if (BulletinCommentContent != null && Writer != null && BulletinIdx.ToString().Length > 0)
             {
-                var resp = await bulletinService.WriteComment(BulletinIdx, Writer, BulletinCommentContent);
+                var resp = await bulletinService.WriteComment(BulletinIdx, BulletinCommentContent, Writer);
                 if (resp.Status == (int)HttpStatusCode.Created)
                 {
                     BulletinCommentContent = string.Empty;
@@ -222,6 +231,20 @@ namespace Solomon.Core.Bulletin.ViewModel
             IsRequestEnabled = false;
             OnBulletinComment();
             await GetCommentList(BulletinIdx);
+            IsRequestEnabled = true;
+        }
+
+        private async void OnCommentDelete()
+        {
+            IsRequestEnabled = false;
+            if (Writer != null && CommentIdx.ToString().Length > 0)
+            {
+                var resp = await bulletinService.DeleteComment(CommentIdx, Writer);
+                if (resp.Status == (int)HttpStatusCode.OK)
+                {
+                    await GetCommentList(SpecificBulletinIdx);
+                }
+            }
             IsRequestEnabled = true;
         }
 
@@ -406,6 +429,7 @@ VALUES(
     @ImgSize,
     @BulletinIdx
 );";
+                    // TODO : 이미지의 크기가 너무 크면 오류가 나는거 같음. 확인해봐야 할듯.
                     await SqlMapper.QueryAsync<ImageModel>(db, insertImageSql, imageModel);
                 }
             }

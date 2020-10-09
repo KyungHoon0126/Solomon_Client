@@ -63,7 +63,7 @@ namespace Solomon.Core.Bulletin.ViewModel
                     SetProperty(ref _bulletinPostTitle, value);
                 }
                 return;
-            } 
+            }
         }
 
         private string _bulletinPostContent;
@@ -151,10 +151,10 @@ namespace Solomon.Core.Bulletin.ViewModel
 
         #region Commands
         public ICommand BulletinWriteCommand { get; set; }
-        public ICommand BulletinCommentCommand { get; set; }
-        public ICommand SpecificBulletinCommentCommand { get; set; }
+        public ICommand BulletinCommentWriteCommand { get; set; }
+        public ICommand SpecificBulletinCommentWriteCommand { get; set; }
         public ICommand CommentDeleteCommand { get; set; }
-        
+
         #endregion
 
         #region Constructor
@@ -176,10 +176,10 @@ namespace Solomon.Core.Bulletin.ViewModel
 
         private void InitCommand()
         {
-            BulletinWriteCommand = new DelegateCommand(OnWrite, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
-            BulletinCommentCommand = new DelegateCommand(OnBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
-            SpecificBulletinCommentCommand = new DelegateCommand(OnSpecificBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
-            CommentDeleteCommand = new DelegateCommand(OnCommentDelete, CanRequest).ObservesCanExecute(() => IsRequestEnabled);
+            BulletinWriteCommand = new DelegateCommand(OnWrite, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 게시물 작성
+            BulletinCommentWriteCommand = new DelegateCommand(OnBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 전체 게시물에서 댓글 작성
+            SpecificBulletinCommentWriteCommand = new DelegateCommand(OnSpecificBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 특정 게시물 댓글 작성
+            CommentDeleteCommand = new DelegateCommand(OnCommentDelete, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 댓글 삭제
         }
 
         public void ClearDatas()
@@ -196,9 +196,9 @@ namespace Solomon.Core.Bulletin.ViewModel
         {
             IsRequestEnabled = false;
             if (BulletinPostTitle != null && BulletinPostContent != null && Writer != null)
-            { 
+            {
                 var resp = await bulletinService.WriteBulletin(BulletinPostTitle, BulletinPostContent, Writer);
-                if (resp.Status == (int)HttpStatusCode.Created)
+                if (resp.Status == 201)
                 {
                     BulletinPostResultReceived?.Invoke(this);
                     if (BulletinImgName != null)
@@ -217,10 +217,10 @@ namespace Solomon.Core.Bulletin.ViewModel
             if (BulletinCommentContent != null && Writer != null && BulletinIdx.ToString().Length > 0)
             {
                 var resp = await bulletinService.WriteComment(BulletinIdx, BulletinCommentContent, Writer);
-                if (resp.Status == (int)HttpStatusCode.Created)
+                if (resp.Status == 201)
                 {
                     BulletinCommentContent = string.Empty;
-                    await LoadDataAsync();
+                    await GetBulletinList();
                 }
             }
             IsRequestEnabled = true;
@@ -240,9 +240,10 @@ namespace Solomon.Core.Bulletin.ViewModel
             if (Writer != null && CommentIdx.ToString().Length > 0)
             {
                 var resp = await bulletinService.DeleteComment(CommentIdx, Writer);
-                if (resp.Status == (int)HttpStatusCode.OK)
+                if (resp.Status == 200)
                 {
                     await GetCommentList(SpecificBulletinIdx);
+                    await GetBulletinList();
                 }
             }
             IsRequestEnabled = true;
@@ -263,21 +264,21 @@ namespace Solomon.Core.Bulletin.ViewModel
             {
                 try
                 {
-                    BulletinModel bulletinItems = new BulletinModel();
+                    BulletinModel bulletinItem = new BulletinModel();
                     var tempBulletinItems = new ObservableCollection<BulletinModel>();
 
                     foreach (var item in resp.Data.Bulletins)
                     {
-                        bulletinItems.BulletinIdx = item.BulletinIdx;
-                        bulletinItems.Title = item.Title;
-                        bulletinItems.Content = item.Content;
-                        bulletinItems.Writer = item.Writer;
-                        bulletinItems.WrittenTime = item.WrittenTime;
+                        bulletinItem.BulletinIdx = item.BulletinIdx;
+                        bulletinItem.Title = item.Title;
+                        bulletinItem.Content = item.Content;
+                        bulletinItem.Writer = item.Writer;
+                        bulletinItem.WrittenTime = item.WrittenTime;
 
-                        var response = await bulletinService.GetCommentList(bulletinItems.BulletinIdx);
-                        bulletinItems.CommentCount = response.Data.Comments.Count;
+                        var response = await bulletinService.GetCommentList(bulletinItem.BulletinIdx);
+                        bulletinItem.CommentCount = response.Data.Comments.Count;
 
-                        tempBulletinItems.Add((BulletinModel)bulletinItems.Clone());
+                        tempBulletinItems.Add((BulletinModel)bulletinItem.Clone());
                     }
 
                     BulletinItems = new ObservableCollection<BulletinModel>(tempBulletinItems.OrderByDescending(x => x.BulletinIdx));
@@ -321,7 +322,7 @@ namespace Solomon.Core.Bulletin.ViewModel
                         SpecificBulletinIdx = item.BulletinIdx;
                         commentItems.Content = item.Content;
                         commentItems.Writer = item.Writer;
-                        
+
                         BulletinCommentItems.Add((CommentModel)commentItems.Clone());
                     }
                 }
@@ -355,7 +356,7 @@ FROM
 ";
                     images = (await SqlMapper.QueryAsync<DBImageModel>(db, selectSql, "")).ToList();
 
-                    
+
                     for (int i = 0; i < images.Count; i++)
                     {
                         for (int j = 0; j < BulletinItems.Count; j++)

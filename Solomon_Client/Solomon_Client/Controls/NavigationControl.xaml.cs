@@ -35,8 +35,8 @@ namespace Solomon_Client.Controls
         private void CtrlBulletin_OnLoadBulletinPostWindow(object sender, RoutedEventArgs e)
         {
             BulletinPostWindow bambooPostWindow = new BulletinPostWindow();
-            bambooPostWindow.ModalBackGroundVisibility += BambooPostWindow_ModalBackGroundVisibility; 
-            ncModalBackGround.Visibility = Visibility.Visible; 
+            bambooPostWindow.ModalBackGroundVisibility += BambooPostWindow_ModalBackGroundVisibility;
+            ncModalBackGround.Visibility = Visibility.Visible;
             bambooPostWindow.ShowDialog();
         }
 
@@ -61,7 +61,7 @@ namespace Solomon_Client.Controls
         private void BulletinWithComment_ModalBackGroundVisibility()
         {
             ncModalBackGround.Visibility = Visibility.Collapsed;
-            ctrlBulletin.LoadDataAsync();
+            App.bulletinData.bulletinViewModel.BulletinCommentContent = string.Empty;
         }
 
         private void SetNaviDatas()
@@ -85,7 +85,7 @@ namespace Solomon_Client.Controls
                 NaviImagePath = ComDef.Path + "OptionIcon.png",
                 NaviMenu = NaviMenu.Option
             });
-            
+
             lvNavi.ItemsSource = naviDatas;
             #endregion
 
@@ -108,7 +108,7 @@ namespace Solomon_Client.Controls
                 naviDatas[idx].NaviImagePath = naviDataImages[i];
                 idx++;
             }
-            
+
             idx = 0;
 
             switch (naviData.Title)
@@ -129,7 +129,7 @@ namespace Solomon_Client.Controls
         {
             naviDatas[1].NaviImagePath = naviDataImages[4];
             ShowPage(ctrlBulletin);
-        }   
+        }
 
         private void ShowPage(IPage page)
         {
@@ -152,7 +152,7 @@ namespace Solomon_Client.Controls
         {
             IPage page = null;
             NaviData selectData = lvNavi.SelectedItem as NaviData;
-            ICollectionView view = CollectionViewSource.GetDefaultView(naviDatas); 
+            ICollectionView view = CollectionViewSource.GetDefaultView(naviDatas);
 
             switch (selectData.NaviMenu)
             {

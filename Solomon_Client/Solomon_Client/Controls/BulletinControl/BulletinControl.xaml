@@ -118,12 +118,11 @@
                                                             <Button x:Name="btnContextMenu"
                                                                     Tag="{Binding BulletinIdx}"
                                                                     FocusVisualStyle="{x:Null}"
-                                                                    Visibility="{Binding Data.IsVisible, 
+                                                                    Click="btnBulltinContextMenu_Click">
+                                                                <!--Visibility="{Binding Data.IsVisible, 
                                                                                          Source={StaticResource proxy}, 
                                                                                          Converter={StaticResource BoolToVisibilityConverter},
-                                                                                         ConverterParameter=Writer}"
-                                                                    Click="btnBulltinContextMenu_Click">
-
+                                                                                         ConverterParameter=Writer}"-->
                                                                 <Button.ContextMenu>
                                                                     <ContextMenu>
                                                                         <MenuItem Header="게시글 삭제"

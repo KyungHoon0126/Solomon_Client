@@ -173,6 +173,7 @@ namespace Solomon_Client.Controls
                 case NaviMenu.Option:
                     ConvertNaviImage(selectData);
                     page = ctrlOption;
+                    ctrlOption.OptionSynchronization();
                     view.Refresh();
                     break;
             }

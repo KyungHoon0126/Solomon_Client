@@ -6,8 +6,32 @@
              xmlns:local="clr-namespace:Solomon_Client.Controls.OptionControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
-    <Grid Background="White">
-            
+
+    <UserControl.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="0,12,0,0"/>
+        </Style>
+        <Style x:Key="ToggleSwitchDisplayStyle" TargetType="local:ToggleSwitchControl">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0,3,0,0"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="White" Margin="12,0,0,0">
+        <StackPanel Margin="0" HorizontalAlignment="Left">
+            <StackPanel>
+                <TextBlock Text="자동 로그인"/>
+                <local:ToggleSwitchControl x:Name="tscSetAutoLogin"
+                                           Style="{StaticResource ToggleSwitchDisplayStyle}"
+                                           MouseDown="tscSetAutoLogin_MouseDown"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="다크 모드"/>
+                <local:ToggleSwitchControl x:Name="tscSetDarkMode"
+                                           Style="{StaticResource ToggleSwitchDisplayStyle}"
+                                           MouseDown="tscSetDarkMode_MouseDown"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

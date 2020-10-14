@@ -8,6 +8,241 @@
              d:DesignHeight="450" d:DesignWidth="800">
     
     <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.8*"/>
+            <ColumnDefinition Width="6.4*"/>
+            <ColumnDefinition Width="1.8*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
             
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="7*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <StackPanel Margin="5" Orientation="Horizontal" 
+                            VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="White"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <!--1-->
+                    <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="#4a64f6" CornerRadius="20" 
+                            Height="200" Width="230">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
+                        </Border.Effect>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="6*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <TextBlock Margin="15,0,0,15"
+                                           Text="Today's Solution" 
+                                           FontSize="25" 
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Bottom"/>
+                            </Grid>
+                        </Grid>
+                    </Border> 
+                    
+                    <!--2-->
+                    <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="#8369e3" CornerRadius="20" 
+                            Height="200" Width="230">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
+                        </Border.Effect>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="6*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <TextBlock Margin="15,0,0,15"
+                                           Text="Expert"
+                                           FontSize="25"
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Bottom"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <!--3-->
+                    <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="#50c6e1" CornerRadius="20" 
+                            Height="200" Width="230">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
+                        </Border.Effect>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="6*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <TextBlock Margin="15,0,0,15"
+                                           Text="Expert"
+                                           FontSize="25"
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Bottom"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <!--4-->
+                    <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="#44cf85" CornerRadius="20" 
+                            Height="200" Width="230">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
+                        </Border.Effect>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="6*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <TextBlock Margin="15,0,0,15"
+                                           Text="Expert"
+                                           FontSize="25"
+                                           HorizontalAlignment="Left" 
+                                           VerticalAlignment="Bottom"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="White" 
+                        Height="550" Width="950" VerticalAlignment="Top">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
+                    </Border.Effect>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="8*"/>
+                            <RowDefinition Height="2*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Border BorderBrush="AliceBlue" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="0">
+                                        <Border BorderBrush="#E2E2E2" BorderThickness="0,0,1,0">
+                                            
+                                        </Border>
+                                    </Grid>
+
+                                    <Grid Grid.Column="1">
+
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid Background="#f9fdff">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="8*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0">
+                                    <Border BorderBrush="#E2E2E2" BorderThickness="0,0,1,0" Height="70">
+                                        
+                                    </Border>
+                                </Grid>
+
+                                <Grid Grid.Column="1">
+
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="#40466f"
+                        Height="200" Width="250">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
+                    </Border.Effect>
+                </Border>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.RowSpan="2">
+                <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="White"
+                        Height="550" Width="250" VerticalAlignment="Top">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
+                    </Border.Effect>
+                </Border>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

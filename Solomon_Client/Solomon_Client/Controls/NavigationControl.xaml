@@ -23,14 +23,22 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
+                <Grid Grid.Column="1">
+                    
+                </Grid>
+                
                 <Grid Grid.Column="2">
+                    <!--Home Title-->
+                    
+                    
+                    <!--Bulletin Title-->
                     <StackPanel VerticalAlignment="Bottom">
                         <TextBox Margin="5"
-                             Style="{StaticResource tbWatermarkStyle}"
-                             Foreground="#C2C2C2" FontSize="15"
-                             TextAlignment="Center" TextWrapping="Wrap"
-                             Tag="게시글을 검색해보세요!"
-                             Visibility="Collapsed"/>
+                                 Style="{StaticResource tbWatermarkStyle}"
+                                 Foreground="#C2C2C2" FontSize="15"
+                                 TextAlignment="Center" TextWrapping="Wrap"
+                                 Tag="게시글을 검색해보세요!"
+                                 Visibility="Collapsed"/>
 
                         <ListView x:Name="lvNavi" Margin="5" Height="50"
                               SelectionChanged="lvNavi_SelectionChanged" 

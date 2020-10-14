@@ -8,9 +8,12 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
+        <DropShadowBitmapEffect x:Key="NormalShadow" ShadowDepth="2" Softness="0.2" Opacity="0.64"/>
+        
         <Style TargetType="StackPanel">
             <Setter Property="Margin" Value="0,12,0,0"/>
         </Style>
+        
         <Style x:Key="ToggleSwitchDisplayStyle" TargetType="local:ToggleSwitchControl">
             <Setter Property="Height" Value="30"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -31,6 +34,32 @@
                 <local:ToggleSwitchControl x:Name="tscSetDarkMode"
                                            Style="{StaticResource ToggleSwitchDisplayStyle}"
                                            MouseDown="tscSetDarkMode_MouseDown"/>
+
+                <!--<Menu>
+                    <MenuItem Header="Themes">
+                        <MenuItem Header="Avaliable Themes Below" Template="{DynamicResource SingleDropDownMenuItem}"/>
+                        <MenuItem Header="Light" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="0">
+                            <MenuItem.Icon>
+                                <Rectangle Stroke="#FF848484" Fill="#FFE8E8E8" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Colourful Light" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="1">
+                            <MenuItem.Icon>
+                                <Rectangle Stroke="#FF2C7FF5" Fill="#FFE8E8E8" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Dark" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="2">
+                            <MenuItem.Icon>
+                                <Rectangle Stroke="#FF404040" Fill="#FF1B1B1B" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Colourful Dark" Template="{DynamicResource SingleDropDownMenuItem}" Click="ChangeTheme" Uid="3">
+                            <MenuItem.Icon>
+                                <Rectangle Stroke="#FF2C7FF5" Fill="#FF1B1B1B" StrokeThickness="2" StrokeLineJoin="Round" BitmapEffect="{StaticResource NormalShadow}"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>-->
             </StackPanel>
         </StackPanel>
     </Grid>

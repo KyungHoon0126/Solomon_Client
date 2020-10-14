@@ -8,14 +8,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!--<ResourceDictionary Source="Themes/LightTheme.xaml"/>-->
+
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml"/>-->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Blue.xaml" />
-                
+
                 <!--TextBox Watermark Style-->
                 <ResourceDictionary Source="ResourceDictionaries/TextBoxWatermarkStyle.xaml"/>
-                
                 <!--RemoveBtn Highlight Style-->
                 <ResourceDictionary Source="ResourceDictionaries/RemoveBtnHighlightStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>

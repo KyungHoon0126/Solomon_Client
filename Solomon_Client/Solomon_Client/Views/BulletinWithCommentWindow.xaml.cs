@@ -24,20 +24,15 @@ namespace Solomon_Client.Views
             btnWriteComment.DataContext = App.bulletinData.bulletinViewModel.SpecificBulletinIdx;
         }
 
-        private void btnCloseBulletinWithComment_Click(object sender, RoutedEventArgs e)
+        private async void btnCloseBulletinWithComment_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
             App.bulletinData.bulletinViewModel.SpecificBulletinItems.Clear();
+            await App.bulletinData.bulletinViewModel.GetBulletinImageList();
             ModalBackGroundVisibility?.Invoke();
         }
 
-        private void btn_WriteComment_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO : 댓글입력시에만 작동하도록 => UpdateSourceTrigger 오류 해결 하기.
-            App.bulletinData.bulletinViewModel.BulletinIdx = Convert.ToInt32((sender as Button).Tag);
-        }
-
-        private void btn_BulletinContextMenu_Click(object sender, RoutedEventArgs e)
+        private void btnBulletinWithCommentContextMenu_Click(object sender, RoutedEventArgs e)
         {
             (sender as Button).ContextMenu.IsOpen = true;
             // TODO : 전체 BulletinData를 Clear하고 Load하는게 아니라 게시글의 Count만 동기화 하도록 변경.

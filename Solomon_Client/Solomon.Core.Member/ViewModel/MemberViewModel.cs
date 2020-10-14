@@ -21,7 +21,7 @@ namespace Solomon.Core.Member.ViewModel
             set;
         }
         #endregion
-
+        
         public async Task GetMemberInformation(int member_idx)
         {
             var resp = await memberService.GetMemberInformation(member_idx);

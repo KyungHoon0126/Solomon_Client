@@ -8,5 +8,6 @@ namespace Solomon.Core.Member
 {
     public class MemberData
     {
+        
     }
 }

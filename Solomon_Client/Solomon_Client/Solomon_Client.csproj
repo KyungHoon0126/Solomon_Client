@@ -134,6 +134,7 @@
     <Compile Include="Controls\SignUpControl\SignUpControl.xaml.cs">
       <DependentUpon>SignUpControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Views\BulletinPostWindow.xaml.cs">
       <DependentUpon>BulletinPostWindow.xaml</DependentUpon>
     </Compile>

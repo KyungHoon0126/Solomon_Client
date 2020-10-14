@@ -1,5 +1,4 @@
 ﻿using Solomon.Network.Data;
-using System.Net;
 using System.Windows;
 
 namespace Solomon_Client
@@ -37,7 +36,7 @@ namespace Solomon_Client
 
         private void SignUpViewModel_SignUpResultRecieved(Response<Nothing> signUpArgs)
         {
-            if (signUpArgs.Status == (int)HttpStatusCode.Created)
+            if (signUpArgs.Status == 201)
             {
                 CtrlSignup.Visibility = Visibility.Collapsed;
                 MessageBox.Show("회원가입을 성공하였습니다.");

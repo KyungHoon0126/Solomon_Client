@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Prism.Mvvm;
 using System;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace Solomon.Core.Bulletin.Model
@@ -80,6 +81,9 @@ namespace Solomon.Core.Bulletin.Model
                 SetProperty(ref _bulletinImage, value);
             }
         }
+
+        //[JsonIgnore]
+        //public Visibility IsVisible { get; set; }
 
         public object Clone()
         {

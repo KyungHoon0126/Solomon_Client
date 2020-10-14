@@ -3,6 +3,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Solomon.Core.Bulletin.Model;
 using Solomon.Core.Bulletin.Service;
+using Solomon.Core.Util;
 using Solomon_Client.Database;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,8 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -100,6 +101,8 @@ namespace Solomon.Core.Bulletin.ViewModel
             get => _bulletinIdx;
             set => SetProperty(ref _bulletinIdx, value);
         }
+
+        public Visibility IsVisible { get; set; } = Visibility.Collapsed;
         #endregion
 
         #region CommentVariables
@@ -151,12 +154,13 @@ namespace Solomon.Core.Bulletin.ViewModel
 
         #region Commands
         public ICommand BulletinWriteCommand { get; set; }
+        public ICommand BulletinDeleteCommand { get; set; }
         public ICommand BulletinCommentWriteCommand { get; set; }
         public ICommand SpecificBulletinCommentWriteCommand { get; set; }
         public ICommand CommentDeleteCommand { get; set; }
 
         #endregion
-
+        
         #region Constructor
         public BulletinViewModel()
         {
@@ -176,7 +180,8 @@ namespace Solomon.Core.Bulletin.ViewModel
 
         private void InitCommand()
         {
-            BulletinWriteCommand = new DelegateCommand(OnWrite, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 게시물 작성
+            BulletinWriteCommand = new DelegateCommand(OnBulletinWrite, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 게시물 작성
+            BulletinDeleteCommand = new DelegateCommand(OnBulletinDelete, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 게시물 삭제
             BulletinCommentWriteCommand = new DelegateCommand(OnBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 전체 게시물에서 댓글 작성
             SpecificBulletinCommentWriteCommand = new DelegateCommand(OnSpecificBulletinComment, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 특정 게시물 댓글 작성
             CommentDeleteCommand = new DelegateCommand(OnCommentDelete, CanRequest).ObservesCanExecute(() => IsRequestEnabled); // 댓글 삭제
@@ -186,25 +191,39 @@ namespace Solomon.Core.Bulletin.ViewModel
         {
             BulletinItems.Clear();
             TempBulletinItems.Clear();
-            // SpecificBulletinItems.Clear();
             BulletinCommentItems.Clear();
         }
         #endregion
 
         #region CommandMethod
-        private async void OnWrite()
+        private async void OnBulletinWrite()
         {
             IsRequestEnabled = false;
             if (BulletinPostTitle != null && BulletinPostContent != null && Writer != null)
             {
                 var resp = await bulletinService.WriteBulletin(BulletinPostTitle, BulletinPostContent, Writer);
-                if (resp.Status == 201)
+                if (resp.Status == ResponseStatus.CREATED)
                 {
                     BulletinPostResultReceived?.Invoke(this);
                     if (BulletinImgName != null)
                     {
                         await SaveBulletinImage(BulletinImgPath, BulletinImgName);
                     }
+                    ClearWritePostDatas();
+                    await LoadDataAsync();
+                }
+            }
+            IsRequestEnabled = true;
+        }
+
+        private async void OnBulletinDelete()
+        {
+            IsRequestEnabled = false;
+            if (Writer != null && BulletinIdx.ToString().Length > 0)
+            {
+                var resp = await bulletinService.DeleteBulletin(BulletinIdx, Writer);
+                if (resp.Status == ResponseStatus.OK)
+                {
                     await LoadDataAsync();
                 }
             }
@@ -217,10 +236,11 @@ namespace Solomon.Core.Bulletin.ViewModel
             if (BulletinCommentContent != null && Writer != null && BulletinIdx.ToString().Length > 0)
             {
                 var resp = await bulletinService.WriteComment(BulletinIdx, BulletinCommentContent, Writer);
-                if (resp.Status == 201)
+                if (resp.Status == ResponseStatus.CREATED)
                 {
                     BulletinCommentContent = string.Empty;
                     await GetBulletinList();
+                    await GetBulletinImageList();
                 }
             }
             IsRequestEnabled = true;
@@ -229,8 +249,16 @@ namespace Solomon.Core.Bulletin.ViewModel
         private async void OnSpecificBulletinComment()
         {
             IsRequestEnabled = false;
-            OnBulletinComment();
-            await GetCommentList(BulletinIdx);
+            if (BulletinCommentContent != null && Writer != null && SpecificBulletinIdx.ToString().Length > 0)
+            {
+                var resp = await bulletinService.WriteComment(SpecificBulletinIdx, BulletinCommentContent, Writer);
+                if (resp.Status == ResponseStatus.CREATED)
+                {
+                    BulletinCommentContent = string.Empty;
+                    await GetCommentList(SpecificBulletinIdx);
+                    await GetBulletinList();
+                }
+            }
             IsRequestEnabled = true;
         }
 
@@ -240,7 +268,7 @@ namespace Solomon.Core.Bulletin.ViewModel
             if (Writer != null && CommentIdx.ToString().Length > 0)
             {
                 var resp = await bulletinService.DeleteComment(CommentIdx, Writer);
-                if (resp.Status == 200)
+                if (resp.Status == ResponseStatus.OK)
                 {
                     await GetCommentList(SpecificBulletinIdx);
                     await GetBulletinList();
@@ -260,7 +288,7 @@ namespace Solomon.Core.Bulletin.ViewModel
         {
             var resp = await bulletinService.GetBulletinList();
 
-            if (resp != null && resp.Status == 200 && resp.Data != null)
+            if (resp != null && resp.Status == ResponseStatus.OK && resp.Data != null)
             {
                 try
                 {
@@ -274,6 +302,15 @@ namespace Solomon.Core.Bulletin.ViewModel
                         bulletinItem.Content = item.Content;
                         bulletinItem.Writer = item.Writer;
                         bulletinItem.WrittenTime = item.WrittenTime;
+
+                        //if (Writer == item.Writer)
+                        //{
+                        //    bulletinItem.IsVisible = Visibility.Visible;
+                        //}
+                        //else
+                        //{
+                        //    bulletinItem.IsVisible = Visibility.Collapsed;
+                        //}
 
                         var response = await bulletinService.GetCommentList(bulletinItem.BulletinIdx);
                         bulletinItem.CommentCount = response.Data.Comments.Count;
@@ -302,6 +339,8 @@ namespace Solomon.Core.Bulletin.ViewModel
 
         public async Task GetCommentList(int bulletin_idx)
         {
+            SpecificBulletinIdx = bulletin_idx;
+
             if (BulletinCommentItems.Count > 0)
             {
                 BulletinCommentItems.Clear();
@@ -309,7 +348,7 @@ namespace Solomon.Core.Bulletin.ViewModel
 
             var resp = await bulletinService.GetCommentList(bulletin_idx);
 
-            if (resp != null && resp.Status == 200 && resp.Data != null)
+            if (resp != null && resp.Status == ResponseStatus.OK && resp.Data != null)
             {
                 try
                 {
@@ -319,7 +358,6 @@ namespace Solomon.Core.Bulletin.ViewModel
                     {
                         commentItems.CommentIdx = item.CommentIdx;
                         commentItems.BulletinIdx = item.BulletinIdx;
-                        SpecificBulletinIdx = item.BulletinIdx;
                         commentItems.Content = item.Content;
                         commentItems.Writer = item.Writer;
 
@@ -340,7 +378,7 @@ namespace Solomon.Core.Bulletin.ViewModel
         #endregion
 
         #region DataBase
-        private async Task GetBulletinImageList()
+        public async Task GetBulletinImageList()
         {
             try
             {
@@ -355,7 +393,6 @@ FROM
     image_tb
 ";
                     images = (await SqlMapper.QueryAsync<DBImageModel>(db, selectSql, "")).ToList();
-
 
                     for (int i = 0; i < images.Count; i++)
                     {

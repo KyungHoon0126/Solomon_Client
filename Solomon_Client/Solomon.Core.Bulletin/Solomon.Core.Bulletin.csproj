@@ -122,6 +122,10 @@
     <Compile Include="ViewModel\BulletinViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Solomon.Core.Util\Solomon.Core.Util.csproj">
+      <Project>{5E814A6D-F40F-4BD2-9C53-F8A5936EA640}</Project>
+      <Name>Solomon.Core.Util</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Solomon.Network\Solomon.Network.csproj">
       <Project>{A5270080-2E2E-4111-BDCF-8096EE0A266F}</Project>
       <Name>Solomon.Network</Name>

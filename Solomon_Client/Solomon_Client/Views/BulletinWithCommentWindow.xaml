@@ -195,18 +195,18 @@
                                                     </StackPanel>
                                                 </Border>
 
-                                                <Button Click="btn_BulletinContextMenu_Click"
-                                                        x:Name="btnContextMenu"
+                                                <Button x:Name="btnContextMenu"
                                                         FocusVisualStyle="{x:Null}"
-                                                        Tag="{Binding CommentIdx}">
+                                                        Tag="{Binding CommentIdx}"
+                                                        Click="btnBulletinWithCommentContextMenu_Click">
                                                     <Button.ContextMenu>
                                                         <ContextMenu>
-                                                            <MenuItem Header="댓글 삭제하기" 
-                                                                      Margin="0,10,0,0"
+                                                            <MenuItem Header="댓글 삭제하기"  
                                                                       Command="{Binding Path=Data.CommentDeleteCommand,
                                                                                         Source={StaticResource proxy}}">
                                                                 <MenuItem.Icon>
-                                                                    <Image Source="/Assets/Bulletin/CommentDeleteIcon.png" Height="15" Width="15"/>
+                                                                    <Image Source="/Assets/Bulletin/CommentDeleteIcon.png"
+                                                                           Height="15" Width="15"/>
                                                                 </MenuItem.Icon>
                                                             </MenuItem>
                                                         </ContextMenu>
@@ -258,8 +258,7 @@
                                         Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}},
                                                       Path=DataContext.SpecificBulletinIdx}"
                                         Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}},
-                                                          Path=DataContext.SpecificBulletinCommentWriteCommand}"
-                                        Click="btn_WriteComment_Click">
+                                                          Path=DataContext.SpecificBulletinCommentWriteCommand}">
                                     <ContentControl>
                                         <Image Source="/Assets/Bulletin/papsr-plane.png"
                                                    Height="32" Width="32"/>

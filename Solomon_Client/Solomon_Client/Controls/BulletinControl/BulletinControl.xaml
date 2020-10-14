@@ -3,9 +3,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Solomon_Client.Views"
+             xmlns:converter="clr-namespace:Solomon_Client.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="850" d:DesignWidth="1280">
 
+    <UserControl.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -26,18 +32,23 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Margin="5">
-                <ListView Height="750" Width="900" 
+                <ListView x:Name="lvBulletins"
+                          ItemsSource="{Binding BulletinItems}"
+                          Height="750" Width="900" 
                           HorizontalAlignment="Center"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          ScrollViewer.VerticalScrollBarVisibility="Visible"
                           ScrollViewer.CanContentScroll="False"
-                          ItemsSource="{Binding BulletinItems}">
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ScrollViewer.VerticalScrollBarVisibility="Visible">
 
+                    <ListView.Resources>
+                        <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                    </ListView.Resources>
+                    
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                             <Setter Property="Focusable" Value="False"/>
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -78,31 +89,73 @@
 
                                             <Grid Grid.Column="1">
                                                 <StackPanel>
+                                                    <StackPanel.Resources>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="FontSize" Value="15"/>
+                                                        </Style>
+                                                    </StackPanel.Resources>
                                                     <!--<TextBlock Text="{Binding BulletinIdx, StringFormat={}#{0}번째 이야기}" 
-                                                           FontSize="15"
-                                                           Foreground="Black"
-                                                           FontWeight="SemiBold"/>-->
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="{Binding Writer, StringFormat={}{0} ▶}"
-                                                                   FontSize="15"/>
-                                                        <TextBlock Text="{Binding Title}" 
-                                                                   Margin="5,0,0,0"
-                                                                   Foreground="Black"
-                                                                   FontWeight="SemiBold"
-                                                                   FontSize="15"/>
-                                                    </StackPanel>
-                                                    <TextBlock Text="{Binding WrittenTime, StringFormat=yyyy년 MM월 dd일}"
-                                                               FontSize="15"/>
+                                                                               Foreground="Black"
+                                                                               FontWeight="SemiBold"/>-->
+
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="9*"/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Grid Grid.Column="0">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Writer, StringFormat={}{0} ▶}"/>
+                                                                <TextBlock Text="{Binding Title}" 
+                                                                           Margin="5,0,0,0"
+                                                                           Foreground="Black"
+                                                                           FontWeight="SemiBold"/>
+                                                            </StackPanel>
+                                                        </Grid>
+
+                                                        <Grid Grid.Column="1">
+                                                            <Button x:Name="btnContextMenu"
+                                                                    Tag="{Binding BulletinIdx}"
+                                                                    FocusVisualStyle="{x:Null}"
+                                                                    Visibility="{Binding Data.IsVisible, 
+                                                                                         Source={StaticResource proxy}, 
+                                                                                         Converter={StaticResource BoolToVisibilityConverter},
+                                                                                         ConverterParameter=Writer}"
+                                                                    Click="btnBulltinContextMenu_Click">
+
+                                                                <Button.ContextMenu>
+                                                                    <ContextMenu>
+                                                                        <MenuItem Header="게시글 삭제"
+                                                                                  Command="{Binding Path=Data.BulletinDeleteCommand,
+                                                                                                    Source={StaticResource proxy}}">
+                                                                            <MenuItem.Icon>
+                                                                                <Image Source="/Assets/Bulletin/CommentDeleteIcon.png"
+                                                                                       Height="15" Width="15"/>
+                                                                            </MenuItem.Icon>
+                                                                        </MenuItem>
+                                                                    </ContextMenu>
+                                                                </Button.ContextMenu>
+
+                                                                <ContentControl>
+                                                                    <Image Source="/Assets/Bulletin/CommentOptionIcon.png"
+                                                                           Height="18" Width="18"/>
+                                                                </ContentControl>
+                                                            </Button>
+                                                        </Grid>
+                                                    </Grid>
+                                                    
+                                                    <TextBlock Text="{Binding WrittenTime, StringFormat=yyyy년 MM월 dd일}"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>
 
                                         <Grid Grid.Row="1" Margin="5">
                                             <StackPanel>
-                                                <TextBlock Text="{Binding Content}"
-                                                           FontSize="20"
+                                                <TextBlock Margin="15,0,0,0"
+                                                           Text="{Binding Content}"
                                                            TextWrapping="Wrap"
-                                                           Margin="15,0,0,0"/>
+                                                           FontSize="20"/>
 
                                                 <Image Source="{Binding BulletinImage}" Width="400">
                                                     <!--<Image.Effect>
@@ -153,8 +206,7 @@
                                                                             Path=DataContext.BulletinCommentContent,
                                                                             UpdateSourceTrigger=PropertyChanged}"
                                                              Tag="댓글 달기..."
-                                                             HorizontalAlignment="Left" 
-                                                             VerticalAlignment="Center"
+                                                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                                              AcceptsReturn="True"
                                                              FontSize="18"
                                                              TextWrapping="Wrap"
@@ -166,8 +218,8 @@
                                                         Grid.Column="1" 
                                                         Margin="0,10,0,0" 
                                                         Height="55" 
+                                                        FontSize="20"
                                                         Tag="{Binding BulletinIdx}"
-                                                        FocusVisualStyle="{x:Null}"
                                                         Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}},
                                                                           Path=DataContext.BulletinCommentWriteCommand}"
                                                         Click="btnWriteComment_Click">

@@ -2,7 +2,7 @@
 
 namespace Solomon_Client.Themes
 {
-    public partial class ColourfulDarkTheme
+    public partial class ColourfulLightTheme
     {
         private void CloseWindow_Event(object sender, RoutedEventArgs e)
         {

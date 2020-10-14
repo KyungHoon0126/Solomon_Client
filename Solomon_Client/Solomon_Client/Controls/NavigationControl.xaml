@@ -54,7 +54,7 @@
                                                             RelativeSource={RelativeSource AncestorType=ListView}}"/>
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>-->
-
+                        
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

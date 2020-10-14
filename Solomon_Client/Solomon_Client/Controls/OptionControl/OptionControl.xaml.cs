@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Solomon_Client.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,11 +26,41 @@ namespace Solomon_Client.Controls.OptionControl
         public OptionControl()
         {
             InitializeComponent();
+            OnOptionControlLoad();
         }
 
         public string GetTitle()
         {
             return Title;
+        }
+
+        private void OnOptionControlLoad()
+        {
+            tscSetAutoLogin.Toggled = Setting.IsAutoLogin;
+        }
+
+        public void OptionSynchronization()
+        {
+            OnOptionControlLoad();
+        }
+
+        private void tscSetAutoLogin_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Setting.IsAutoLogin = tscSetAutoLogin.Toggled;
+            if (Setting.IsAutoLogin == true)
+            {
+                Setting.SaveUserdata(App.loginData.loginViewModel.Id, App.loginData.loginViewModel.Password);
+            }
+            else
+            {
+                Setting.SaveUserData(App.loginData.loginViewModel.Id);
+            }
+            Setting.Save();
+        }
+
+        private void tscSetDarkMode_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

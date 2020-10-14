@@ -131,6 +131,9 @@
     <Compile Include="Controls\OptionControl\OptionControl.xaml.cs">
       <DependentUpon>OptionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OptionControl\ToggleSwitchControl.xaml.cs">
+      <DependentUpon>ToggleSwitchControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SignUpControl\SignUpControl.xaml.cs">
       <DependentUpon>SignUpControl.xaml</DependentUpon>
     </Compile>
@@ -161,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\OptionControl\OptionControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OptionControl\ToggleSwitchControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

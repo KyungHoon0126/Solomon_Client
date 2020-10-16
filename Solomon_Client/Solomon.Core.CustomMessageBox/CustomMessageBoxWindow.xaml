@@ -1,0 +1,90 @@
+﻿<Window x:Class="Solomon.Core.CustomMessageBox.CustomMessageBoxWindow"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        Icon="blankicon.ico"
+        ShowInTaskbar="False" Topmost="True"
+        ResizeMode="NoResize" SizeToContent="WidthAndHeight"
+        TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType" UseLayoutRounding="True"
+        Title="" MinHeight="155" MaxWidth="470" MinWidth="154">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0"  
+              Background="LightPink"
+              MinHeight="69">
+            <DockPanel>
+                <Image DockPanel.Dock="Left"
+                       Margin="30,0,0,0"
+                       Name="Image_MessageBox" 
+                       Width="32" Height="32" 
+                       HorizontalAlignment="Left" 
+                       Visibility="Collapsed"/>
+                <TextBlock Margin="12,20,41,15"
+                           Name="TextBlock_Message"
+                           TextWrapping="Wrap" 
+                           MaxWidth="500" Width="Auto"
+                           VerticalAlignment="Center"/>
+            </DockPanel>
+        </Grid>
+        
+        <Grid Grid.Row="1" 
+              Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+              MinHeight="49">
+            <DockPanel Margin="5,0">
+                <!-- Cancel Button -->
+                <Button DockPanel.Dock="Right"
+                        Margin="5,0"
+                        Name="btnCancel" 
+                        MinWidth="88" MaxWidth="160" Height="26" 
+                        HorizontalAlignment="Right" 
+                        Visibility="Collapsed" 
+                        IsCancel="True"
+                        Click="ButtonCancelClick">
+                    <Label Name="lbCancel" Padding="0" Margin="10,0">_Cancel</Label>
+                </Button>
+                <!-- End Cancel Button -->
+
+                <!-- No Button -->
+                <Button DockPanel.Dock="Right"
+                        Name="btnNo" 
+                        Margin="5,0"
+                        MinWidth="88" MaxWidth="160" Height="26" 
+                        HorizontalAlignment="Right" 
+                        Visibility="Collapsed"
+                        Click="ButtonNoClick">
+                    <Label Name="lbNo" Padding="0" Margin="10,0">_No</Label>
+                </Button>
+                <!-- End No Button -->
+
+                <!-- Yes Button -->
+                <Button DockPanel.Dock="Right"
+                        Name="btnYes" 
+                        Margin="35,0,5,0"
+                        MinWidth="88" MaxWidth="160" Height="26" 
+                        HorizontalAlignment="Right" 
+                        Visibility="Collapsed"
+                        Click="ButtonYesClick">
+                    <Label Name="lbYes" Padding="0" Margin="10,0">_Yes</Label>
+                </Button>
+                <!-- End Yes Button -->
+
+                <!-- OK Button -->
+                <Button Name="btnOK" 
+                        Margin="35,0,5,0"
+                        MinWidth="88" MaxWidth="160" Height="26" 
+                        HorizontalAlignment="Right" 
+                        Click="ButtonOKClick">
+                    <Label Name="lbOk" Padding="0" Margin="10,0">_OK</Label>
+                </Button>
+                <!-- End OK Button -->
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

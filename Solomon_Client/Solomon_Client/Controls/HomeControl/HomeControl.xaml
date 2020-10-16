@@ -9,16 +9,15 @@
     
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.8*"/>
-            <ColumnDefinition Width="6.4*"/>
-            <ColumnDefinition Width="1.8*"/>
+            <ColumnDefinition Width="7.5*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
             
         </Grid>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="7*"/>
@@ -26,7 +25,7 @@
 
             <Grid Grid.Row="0">
                 <StackPanel Margin="5" Orientation="Horizontal" 
-                            VerticalAlignment="Center" HorizontalAlignment="Center">
+                            VerticalAlignment="Center" HorizontalAlignment="Right">
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="Foreground" Value="White"/>
@@ -55,8 +54,8 @@
                             </Grid>
 
                             <Grid Grid.Row="2">
-                                <TextBlock Margin="15,0,0,15"
-                                           Text="Today's Solution" 
+                                <TextBlock Margin="15,0,0,10"
+                                           Text="오늘의 솔루션" 
                                            FontSize="25" 
                                            HorizontalAlignment="Left" 
                                            VerticalAlignment="Bottom"/>
@@ -164,7 +163,7 @@
 
             <Grid Grid.Row="1">
                 <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="White" 
-                        Height="550" Width="950" VerticalAlignment="Top">
+                        Height="550" Width="950" VerticalAlignment="Top" HorizontalAlignment="Right">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
                     </Border.Effect>
@@ -219,7 +218,7 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Column="2">
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="5*"/>
@@ -228,16 +227,54 @@
 
             <Grid Grid.Row="0">
                 <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="#40466f"
-                        Height="200" Width="250">
+                        Height="200" Width="250" HorizontalAlignment="Left">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
                     </Border.Effect>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="7*"/>
+                            <RowDefinition Height="3*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+
+                        </Grid>
+
+                        <Grid Grid.Row="2">
+                            <StackPanel Orientation="Horizontal" Margin="25,0,0,20">
+                                <StackPanel.Resources>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="#C2C2C2"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                        <Setter Property="Width" Value="25"/>
+                                        <Setter Property="Height" Value="25"/>
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                        <Setter Property="FontSize" Value="15"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Button Content="1"/>
+                                <Button Content="2"/>
+                                <Button Content="3"/>
+                                <Button Content="4"/>
+                                <Button Content="5"/>
+                                <Button Content="6"/>
+                                <Button Content="7"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
                 </Border>
             </Grid>
 
             <Grid Grid.Row="1" Grid.RowSpan="2">
                 <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="White"
-                        Height="550" Width="250" VerticalAlignment="Top">
+                        Height="550" Width="250" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
                     </Border.Effect>

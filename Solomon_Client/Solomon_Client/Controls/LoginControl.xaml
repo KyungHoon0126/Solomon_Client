@@ -97,7 +97,7 @@
                           Content="Remember me" 
                           Foreground="#C2C2C2" 
                           Checked="CbAutologin_Checked"/>
-
+                
                 <Button x:Name="btnLogin" 
                         Margin="10"
                         Content="Sign in" 

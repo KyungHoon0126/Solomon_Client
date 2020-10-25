@@ -13,10 +13,7 @@ namespace Solomon.Core.Bulletin.Model
         public int BulletinIdx
         {
             get => _bulletinIdx;
-            set
-            {
-                SetProperty(ref _bulletinIdx, value);
-            }
+            set => SetProperty(ref _bulletinIdx, value);
         }
 
         private string _title;
@@ -24,10 +21,7 @@ namespace Solomon.Core.Bulletin.Model
         public string Title
         {
             get => _title;
-            set
-            {
-                SetProperty(ref _title, value);
-            }
+            set => SetProperty(ref _title, value);
         }
 
         private string _content;
@@ -35,10 +29,7 @@ namespace Solomon.Core.Bulletin.Model
         public string Content
         {
             get => _content;
-            set
-            {
-                SetProperty(ref _content, value);
-            }
+            set => SetProperty(ref _content, value);
         }
 
         private string _writer;
@@ -46,10 +37,7 @@ namespace Solomon.Core.Bulletin.Model
         public string Writer
         {
             get => _writer;
-            set
-            {
-                SetProperty(ref _writer, value);
-            }
+            set => SetProperty(ref _writer, value);
         }
 
         private DateTime _writtenTime;
@@ -57,10 +45,15 @@ namespace Solomon.Core.Bulletin.Model
         public DateTime WrittenTime
         {
             get => _writtenTime;
-            set
-            {
-                SetProperty(ref _writtenTime, value);
-            }
+            set => SetProperty(ref _writtenTime, value);
+        }
+
+        private string _cateogory;
+        [JsonProperty("category")]
+        public string Category
+        {
+            get => _cateogory;
+            set => SetProperty(ref _cateogory, value);
         }
 
         [JsonIgnore]
@@ -95,7 +88,8 @@ namespace Solomon.Core.Bulletin.Model
                 Writer = this.Writer,
                 WrittenTime = this.WrittenTime,
                 CommentCount = this.CommentCount,
-                BulletinImage = this.BulletinImage
+                BulletinImage = this.BulletinImage,
+                Category = this.Category
             };
         }
     }

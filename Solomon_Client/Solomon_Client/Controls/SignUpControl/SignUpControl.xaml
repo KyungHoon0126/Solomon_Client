@@ -109,10 +109,10 @@
 
                     <StackPanel>
                         <TextBox x:Name="tbEmail" Margin="10"
-                             Tag="Email"
-                             Text="{Binding InputEmail, Mode=TwoWay,
-                                            UpdateSourceTrigger=PropertyChanged}"
-                             Style="{DynamicResource tbWatermarkStyle}"/>
+                                 Tag="Email"
+                                 Text="{Binding InputEmail, Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{DynamicResource tbWatermarkStyle}"/>
                         
                         <TextBlock x:Name="tbEmailDesc"
                                    Text="{Binding EmailDesc}"
@@ -120,6 +120,46 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <TextBox x:Name="tbBirthYear" Margin="10"
+                                     Tag="Birth Year ex) 2003"
+                                     Text="{Binding BirthYear}"
+                                     Style="{StaticResource tbWatermarkStyle}"
+                                     PreviewTextInput="tbBirthYear_PreviewTextInput"/>
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <StackPanel Orientation="Horizontal" Margin="10"
+                                        HorizontalAlignment="Right">
+                                <RadioButton x:Name="cbMale" Margin="5"
+                                          Tag="Male" FocusVisualStyle="{x:Null}"
+                                          Style="{StaticResource MaterialDesignAccentRadioButton}"
+                                          Click="cbGender_Click">
+                                    <RadioButton.Content>
+                                        <Image Source="/Assets/SignUp/male_16.png"
+                                               Height="16" Width="16"/>
+                                    </RadioButton.Content>
+                                </RadioButton>
+
+                                <RadioButton x:Name="cbFeMale" Margin="5"
+                                          Tag="FeMale" FocusVisualStyle="{x:Null}"
+                                          Style="{StaticResource MaterialDesignAccentRadioButton}"
+                                          Click="cbGender_Click">
+                                    <RadioButton.Content>
+                                        <Image Source="/Assets/SignUp/female_16.png"
+                                       Height="16" Width="16"/>
+                                    </RadioButton.Content>
+                                </RadioButton>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
 
                     <Button x:Name="btnSignUp" 
                             Margin="10"
@@ -141,8 +181,7 @@
                             Height="50" MaxWidth="500"
                             Background="White"
                             BorderBrush="#C2C2C2"
-                            Click="btnBackWard_Click"
-                            />
+                            Click="btnBackWard_Click"/>
                 </StackPanel>
             </Grid> 
 

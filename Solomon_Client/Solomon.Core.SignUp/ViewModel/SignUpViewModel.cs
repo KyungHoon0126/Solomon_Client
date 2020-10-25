@@ -139,8 +139,8 @@ namespace Solomon.Core.SignUp.ViewModel
             }
         }
 
-        private System.Windows.Media.Brush _pwDescForeground;
-        public System.Windows.Media.Brush PwDescForeground
+        private Brush _pwDescForeground;
+        public Brush PwDescForeground
         {
             get => _pwDescForeground;
             set
@@ -160,14 +160,28 @@ namespace Solomon.Core.SignUp.ViewModel
             }
         }
 
-        private System.Windows.Media.Brush _emailDescForeground;
-        public System.Windows.Media.Brush EmailDescForeground
+        private Brush _emailDescForeground;
+        public Brush EmailDescForeground
         {
             get => _emailDescForeground;
             set
             {
                 SetProperty(ref _emailDescForeground, value);
             }
+        }
+
+        private string _birthYear;
+        public string BirthYear
+        {
+            get => _birthYear;
+            set => SetProperty(ref _birthYear, value);
+        }
+
+        private string _gender;
+        public string Gender
+        {
+            get => _gender;
+            set => SetProperty(ref _gender, value);
         }
         #endregion
 
@@ -187,7 +201,7 @@ namespace Solomon.Core.SignUp.ViewModel
 
         private bool CanSignUp()
         {
-            return (InputEmail != null) && (InputEmail != null) && (InputEmail != null) && (InputEmail != null);
+            return (InputEmail != null) && (InputEmail != null) && (InputEmail != null) && (InputEmail != null) && (Gender != null);
         }
 
         private void OnSignUp()
@@ -199,7 +213,7 @@ namespace Solomon.Core.SignUp.ViewModel
 
         private bool IsValidSignUpInformation()
         {
-            return (InputId != null && InputPw != null && InputPwAgain != null && InputName != null && InputEmail != null);
+            return (InputId != null && InputPw != null && InputPwAgain != null && InputName != null && InputEmail != null && BirthYear.ToString().Length > 0 && Gender != null);
         }
 
         private async void SignUp()
@@ -211,7 +225,7 @@ namespace Solomon.Core.SignUp.ViewModel
                 try
                 {
                     signUpService.SettingHttpRequest(ComDef.SERVER_ADDRESS);
-                    signUpArgs = await signUpService.SignUp(InputId, InputPw, InputName, InputEmail);
+                    signUpArgs = await signUpService.SignUp(InputId, InputPw, InputName, InputEmail, int.Parse(BirthYear), Gender);
                 }
                 catch (Exception e)
                 {
@@ -288,6 +302,8 @@ namespace Solomon.Core.SignUp.ViewModel
             InputEmail = string.Empty;
             PwDesc = string.Empty;
             EmailDesc = string.Empty;
+            BirthYear = "";
+            Gender = string.Empty;
         }
     }
 }

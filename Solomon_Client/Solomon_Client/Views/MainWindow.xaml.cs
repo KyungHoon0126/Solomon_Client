@@ -42,6 +42,7 @@ namespace Solomon_Client
                 MessageBox.Show("회원가입을 성공하였습니다.");
                 CtrlLogin.Visibility = Visibility.Visible;
                 App.signUpData.signUpViewModel.InitVariables();
+                CtrlSignup.DeselectGender();
             }
         }
 
@@ -50,7 +51,7 @@ namespace Solomon_Client
             if (success)
             {
                 CtrlLogin.Visibility = Visibility.Collapsed;
-                // MessageBox.Show("로그인에 성공하셨습니다.");
+                MessageBox.Show("로그인에 성공하셨습니다.");
                 ctrlNavi.Visibility = Visibility.Visible;
                 ctrlNavi.ctrlBulletin.LoadDataAsync();
                 ctrlNavi.InitView();

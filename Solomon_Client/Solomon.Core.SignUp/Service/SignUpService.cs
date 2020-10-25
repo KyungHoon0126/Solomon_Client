@@ -22,13 +22,15 @@ namespace Solomon.Core.SignUp.Service
 
         public NetworkManager networkManager = new NetworkManager();
 
-        public async Task<Response<Nothing>> SignUp(string id, string pw, string name, string email)
+        public async Task<Response<Nothing>> SignUp(string id, string pw, string name, string email, int birth_year, string gender)
         {
             JObject jObject = new JObject();
             jObject["id"] = id;
             jObject["pw"] = Sha512Hash(pw);
             jObject["name"] = name;
             jObject["email"] = email;
+            jObject["birth_year"] = birth_year;
+            jObject["gender"] = gender;
             return await networkManager.GetResponse<Nothing>(SIGNUP_URL, Method.POST, jObject.ToString());
         }
 

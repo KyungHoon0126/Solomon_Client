@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:Solomon_Client.Views"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -46,7 +47,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="tbBulletinPostContentStyle" TargetType="{x:Type TextBox}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -127,15 +128,41 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <TextBox x:Name="tbTitle"
-                         Margin="5" Tag="Title"
-                         FontSize="17"
-                         Height="45"
-                         TextWrapping="Wrap"
-                         BorderBrush="Transparent"
-                         Text="{Binding BulletinPostTitle}"
-                         Style="{StaticResource tbBulletinPostTitleStyle}"
-                         TextChanged="TextBox_TextChanged"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="7.5*"/>
+                    <ColumnDefinition Width="2.5*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <TextBox x:Name="tbTitle"
+                             Margin="5" Tag="Title"
+                             FontSize="17"
+                             Height="45"
+                             TextWrapping="Wrap"
+                             BorderBrush="Transparent"
+                             Text="{Binding BulletinPostTitle}"
+                             Style="{StaticResource tbBulletinPostTitleStyle}"
+                             TextChanged="TextBox_TextChanged"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <ComboBox x:Name="cbBulletinCategories"
+                              Margin="5" FontSize="15" 
+                              VerticalContentAlignment="Center"
+                              HorizontalContentAlignment="Center"
+                              ItemsSource="{Binding BulletinCategories}"
+                              SelectedItem="{Binding SelectedCategory}"
+                              Style="{StaticResource MaterialDesignDataGridComboBox}">
+                        <i:Interaction.Behaviors>
+                            <local:WatermarkBehavior Text="주제를 선택해주세요."/>
+                        </i:Interaction.Behaviors>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding CategoryName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
             </Grid>
 
             <Grid Grid.Row="1">

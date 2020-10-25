@@ -21,12 +21,13 @@ namespace Solomon.Core.Bulletin.Service
             return resp;
         }
 
-        public async Task<Response<Nothing>> WriteBulletin(string title, string content, string writer)
+        public async Task<Response<Nothing>> WriteBulletin(string title, string content, string writer, string category)
         {
             JObject jObject = new JObject();
             jObject["title"] = title;
             jObject["content"] = content;
             jObject["writer"] = writer;
+            jObject["category"] = category;
             var resp = await networkManager.GetResponse<Nothing>(BULLETIN_URL, Method.POST, jObject.ToString());
             return resp;
         }
@@ -40,7 +41,7 @@ namespace Solomon.Core.Bulletin.Service
             return resp;
         }
 
-        public async Task<Response<Nothing>> PutBulletin(int bulletinIdx, string title, string content, string writer)
+        public async Task<Response<Nothing>> PutBulletin(int bulletinIdx, string title, string content, string writer, string category)
         {
             JObject jObject = new JObject();
             jObject["bulletin_idx"] = bulletinIdx;

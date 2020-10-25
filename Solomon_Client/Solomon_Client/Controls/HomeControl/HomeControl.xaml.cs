@@ -25,11 +25,18 @@ namespace Solomon_Client.Controls.HomeControl
         public HomeControl()
         {
             InitializeComponent();
+            Loaded += HomeControl_Loaded;
         }
 
         public string GetTitle()
         {
             return Title;
+        }
+
+        private void HomeControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            App.homeData.LoadData();
+            this.DataContext = App.homeData.homeViewModel;
         }
     }
 }

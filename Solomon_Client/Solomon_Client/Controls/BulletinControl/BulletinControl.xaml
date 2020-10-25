@@ -94,12 +94,15 @@
                                                         </Grid.ColumnDefinitions>
 
                                                         <Grid Grid.Column="0">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <TextBlock Text="{Binding Writer, StringFormat={}{0} ▶}"/>
-                                                                <TextBlock Text="{Binding Title}" 
-                                                                           Margin="5,0,0,0"
-                                                                           Foreground="Black"
-                                                                           FontWeight="SemiBold"/>
+                                                            <StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock Text="{Binding Writer, StringFormat={}{0} ▶}"/>
+                                                                    <TextBlock Text="{Binding Title}" 
+                                                                               Margin="5,0,0,0"
+                                                                               Foreground="Black"
+                                                                               FontWeight="SemiBold"/>
+                                                                </StackPanel>
+                                                                <TextBlock Text="{Binding Category}"/>
                                                             </StackPanel>
                                                         </Grid>
 

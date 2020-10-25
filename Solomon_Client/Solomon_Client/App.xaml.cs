@@ -1,4 +1,5 @@
 ﻿using Solomon.Core.Bulletin;
+using Solomon.Core.Home;
 using Solomon.Core.Login;
 using Solomon.Core.SignUp;
 using Solomon_Client.Common;
@@ -15,6 +16,7 @@ namespace Solomon_Client
         public static LoginData loginData = new LoginData();
         public static SignUpData signUpData = new SignUpData();
         public static BulletinData bulletinData = new BulletinData();
+        public static HomeData homeData = new HomeData();
 
         public App()
         {

@@ -38,6 +38,22 @@ namespace Solomon.Core.Member.Model
             set => SetProperty(ref _email, value);
         }
 
+        private int _birthYear;
+        [JsonProperty("birth_year")]
+        public int BirthYear
+        {
+            get => _birthYear;
+            set => SetProperty(ref _birthYear, value);
+        }
+
+        private string _gender;
+        [JsonProperty("gender")]
+        public string Gender
+        {
+            get => _gender;
+            set => SetProperty(ref _gender, value);
+        }
+
         public object Clone()
         {
             return new MemberModel
@@ -45,7 +61,9 @@ namespace Solomon.Core.Member.Model
                 MemberIdx = this.MemberIdx,
                 Id = this.Id,
                 Name = this.Name,
-                Email = this.Email
+                Email = this.Email,
+                BirthYear = this.BirthYear,
+                Gender = this.Gender
             };
         }
     }

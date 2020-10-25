@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,6 +39,26 @@ namespace Solomon_Client.Controls.SignUp
         private void btnBackWard_Click(object sender, RoutedEventArgs e)
         {
             BackWardLoginPage?.Invoke(sender, e);
+        }
+
+        private void tbBirthYear_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void cbGender_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as RadioButton).IsChecked == true)
+            {
+                App.signUpData.signUpViewModel.Gender = (sender as RadioButton).Tag as string;
+            }
+        }
+
+        public void DeselectGender()
+        {
+            cbMale.IsChecked = false;
+            cbFeMale.IsChecked = false;
         }
     }
 

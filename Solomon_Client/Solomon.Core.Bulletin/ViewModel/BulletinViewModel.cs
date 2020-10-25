@@ -53,13 +53,22 @@ namespace Solomon.Core.Bulletin.ViewModel
             set => SetProperty(ref _specificBulletinItems, value);
         }
 
+        public List<CategoryModel> BulletinCategories { get; set; }
+
+        private CategoryModel _selectedCategory;
+        public CategoryModel SelectedCategory
+        {
+            get => _selectedCategory;
+            set => SetProperty(ref _selectedCategory, value);
+        }
+
         private string _bulletinPostTitle;
         public string BulletinPostTitle
         {
             get => _bulletinPostTitle;
             set
             {
-                if (value.Length <= 20)
+                if (value.Length <= 60)
                 {
                     SetProperty(ref _bulletinPostTitle, value);
                 }
@@ -166,6 +175,7 @@ namespace Solomon.Core.Bulletin.ViewModel
         {
             InitVariables();
             InitCommand();
+            LoadCategories();
         }
         #endregion
 
@@ -175,6 +185,7 @@ namespace Solomon.Core.Bulletin.ViewModel
             BulletinItems = new ObservableCollection<BulletinModel>();
             TempBulletinItems = new ObservableCollection<BulletinModel>();
             SpecificBulletinItems = new ObservableCollection<BulletinModel>();
+            BulletinCategories = new List<CategoryModel>();
             BulletinCommentItems = new ObservableCollection<CommentModel>();
         }
 
@@ -193,15 +204,73 @@ namespace Solomon.Core.Bulletin.ViewModel
             TempBulletinItems.Clear();
             BulletinCommentItems.Clear();
         }
+
+        private void LoadCategories()
+        {
+            #region Add BulletinCategories
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "교육&학문"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "컴퓨터통신"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "게임"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "엔터테인먼트&예술"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "생활"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "건강"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "사회,정치"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "경제"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "여행"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "스포츠&레저"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "쇼핑"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "지역&플레이스"
+            });
+            BulletinCategories.Add(new CategoryModel()
+            {
+                CategoryName = "자유"
+            });
+            #endregion
+        }
         #endregion
 
         #region CommandMethod
         private async void OnBulletinWrite()
         {
             IsRequestEnabled = false;
-            if (BulletinPostTitle != null && BulletinPostContent != null && Writer != null)
+            if (BulletinPostTitle != null && BulletinPostContent != null && Writer != null && SelectedCategory.CategoryName != null)
             {
-                var resp = await bulletinService.WriteBulletin(BulletinPostTitle, BulletinPostContent, Writer);
+                var resp = await bulletinService.WriteBulletin(BulletinPostTitle, BulletinPostContent, Writer, SelectedCategory.CategoryName);
                 if (resp.Status == ResponseStatus.CREATED)
                 {
                     BulletinPostResultReceived?.Invoke(this);
@@ -302,6 +371,7 @@ namespace Solomon.Core.Bulletin.ViewModel
                         bulletinItem.Content = item.Content;
                         bulletinItem.Writer = item.Writer;
                         bulletinItem.WrittenTime = item.WrittenTime;
+                        bulletinItem.Category = item.Category;
 
                         //if (Writer == item.Writer)
                         //{
@@ -490,6 +560,7 @@ VALUES(
         {
             BulletinPostTitle = string.Empty;
             BulletinPostContent = string.Empty;
+            SelectedCategory.CategoryName = string.Empty;
         }
 
         public async Task LoadDataAsync()

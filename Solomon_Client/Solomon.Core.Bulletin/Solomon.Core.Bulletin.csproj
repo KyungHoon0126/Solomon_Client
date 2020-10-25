@@ -113,6 +113,7 @@
     <Compile Include="Database\DBConnectionManager.cs" />
     <Compile Include="Database\MySqlDBConnectionManager.cs" />
     <Compile Include="Model\BulletinModel.cs" />
+    <Compile Include="Model\CategoryModel.cs" />
     <Compile Include="Model\ImageModel.cs" />
     <Compile Include="Model\CommentModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

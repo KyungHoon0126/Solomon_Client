@@ -159,6 +159,7 @@ namespace Solomon_Client.Controls
                 case NaviMenu.Home:
                     page = ctrlHome;
                     ConvertNaviImage(selectData);
+                    App.bulletinData.LoadData();
                     view.Refresh();
                     break;
                 case NaviMenu.Bulletin:

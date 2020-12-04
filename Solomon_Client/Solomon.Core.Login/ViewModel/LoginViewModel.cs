@@ -99,7 +99,9 @@ namespace Solomon.Core.Login.ViewModel
                 Debug.WriteLine(e.StackTrace);
                 loginArgs = null;
             }
+            
             Debug.WriteLine(loginArgs.Status);
+
             if (loginArgs == null || loginArgs.Status != (int)HttpStatusCode.OK)  
             {
                 SendOnLoginResultRecievedEvent(false);

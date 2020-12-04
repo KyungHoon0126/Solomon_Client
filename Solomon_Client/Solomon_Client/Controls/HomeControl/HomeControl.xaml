@@ -8,6 +8,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TextBlock}" x:Key="tbSubTitleStyle">
+            <Setter Property="Margin" Value="20,15,0,0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="UltraBold"/>
+            <Setter Property="FontFamily" Value="Arial Rounded MT"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        
+        <Style TargetType="{x:Type TextBlock}" x:Key="tbContentStyle">
+            <Setter Property="Margin" Value="20,8,20,0"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="7.5*"/>
@@ -15,7 +33,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
-            
+
         </Grid>
 
         <Grid Grid.Column="0">
@@ -43,27 +61,43 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
                                 <RowDefinition Height="6*"/>
-                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
-                                
+                                <Rectangle Margin="20,10,0,0"
+                                           Height="20" Width="44"
+                                           RadiusX="8" RadiusY="43" 
+                                           Stroke="White" StrokeThickness="2"
+                                           HorizontalAlignment="Left">
+                                </Rectangle>
+
+                                <TextBlock Text="NEW" FontWeight="Bold" Margin="28,14,0,0"/>
                             </Grid>
 
                             <Grid Grid.Row="1">
-
+                                <TextBlock Margin="20,10,0,0"
+                                           FontSize="18" FontFamily="Segoe UI" 
+                                           VerticalAlignment="Top" HorizontalAlignment="Left">
+                                    전문가 상담이
+                                    <LineBreak/>
+                                    필요할 땐,
+                                    <LineBreak/>
+                                    솔로몬 엑스퍼트
+                                </TextBlock>
                             </Grid>
 
                             <Grid Grid.Row="2">
-                                <TextBlock Margin="15,0,0,10"
-                                           Text="오늘의 솔루션" 
-                                           FontSize="25" 
+                                <TextBlock Margin="25,0,0,15"
+                                           Text="expert" 
+                                           FontSize="35"
+                                           FontWeight="Light"
                                            HorizontalAlignment="Left" 
                                            VerticalAlignment="Bottom"/>
                             </Grid>
                         </Grid>
-                    </Border> 
-                    
+                    </Border>
+
                     <!--2-->
                     <Border Margin="5" BorderBrush="Transparent" BorderThickness="1" Background="#8369e3" CornerRadius="20" 
                             Height="200" Width="230">
@@ -75,23 +109,23 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
                                 <RowDefinition Height="6*"/>
-                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
-
+                                <TextBlock Text="솔로몬 성지" 
+                                           Style="{StaticResource tbSubTitleStyle}"/>
                             </Grid>
 
                             <Grid Grid.Row="1">
-
+                                <TextBlock Text="마우스가 충전되고 있는건가요?"
+                                           Style="{StaticResource tbContentStyle}"/>
                             </Grid>
 
                             <Grid Grid.Row="2">
-                                <TextBlock Margin="15,0,0,15"
-                                           Text="Expert"
-                                           FontSize="25"
-                                           HorizontalAlignment="Left" 
-                                           VerticalAlignment="Bottom"/>
+                                <Image Source="/Assets/Home/school.png"
+                                       Height="50" Margin="10,0,0,10"
+                                       HorizontalAlignment="Left"/>
                             </Grid>
                         </Grid>
                     </Border>
@@ -107,23 +141,23 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
                                 <RowDefinition Height="6*"/>
-                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
-
+                                <TextBlock Text="오늘의 질문" 
+                                           Style="{StaticResource tbSubTitleStyle}"/>
                             </Grid>
 
                             <Grid Grid.Row="1">
-
+                                <TextBlock Text="오늘 꼭 듣고 싶은 말이 있으신가요?"
+                                           Style="{StaticResource tbContentStyle}"/>
                             </Grid>
 
                             <Grid Grid.Row="2">
-                                <TextBlock Margin="15,0,0,15"
-                                           Text="Expert"
-                                           FontSize="25"
-                                           HorizontalAlignment="Left" 
-                                           VerticalAlignment="Bottom"/>
+                                <Image Source="/Assets/Home/sun.png"
+                                       Height="50" Margin="10,0,0,10"
+                                       HorizontalAlignment="Left"/>
                             </Grid>
                         </Grid>
                     </Border>
@@ -139,23 +173,23 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
                                 <RowDefinition Height="6*"/>
-                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
                             <Grid Grid.Row="0">
-
+                                <TextBlock Text="아하!그렇구나" 
+                                           Style="{StaticResource tbSubTitleStyle}"/>
                             </Grid>
 
                             <Grid Grid.Row="1">
-
+                                <TextBlock Text="갈비뼈가 아치형을 이루는 이유?"
+                                           Style="{StaticResource tbContentStyle}"/>
                             </Grid>
 
                             <Grid Grid.Row="2">
-                                <TextBlock Margin="15,0,0,15"
-                                           Text="Expert"
-                                           FontSize="25"
-                                           HorizontalAlignment="Left" 
-                                           VerticalAlignment="Bottom"/>
+                                <Image Source="/Assets/Home/idea.png"
+                                       Height="50" Margin="10,0,0,10"
+                                       HorizontalAlignment="Left"/>
                             </Grid>
                         </Grid>
                     </Border>
@@ -184,21 +218,80 @@
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0">
-                                        <Border BorderBrush="#E2E2E2" BorderThickness="0,0,1,0">
-                                            <lvc:PieChart x:Name="pcGenderRatio" Series="{Binding SeriesCollection}"
-                                                          LegendLocation="Right" InnerRadius="100" Margin="10" StartingRotationAngle="180">
-                                                <lvc:PieChart.ChartLegend>
-                                                    <lvc:DefaultLegend BulletSize="20"/>
-                                                </lvc:PieChart.ChartLegend>
-                                                <lvc:PieChart.DataTooltip>
-                                                    <lvc:DefaultTooltip BulletSize="20"/>
-                                                </lvc:PieChart.DataTooltip>
-                                            </lvc:PieChart>
-                                        </Border>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="0">
+                                            <Separator Background="#F4F4F4" VerticalAlignment="Top" Margin="0,35,0,0"/>
+
+                                            <!--연령 막대 그래프-->
+                                            <lvc:CartesianChart Series="{Binding AgeRatioColumnCollection}" LegendLocation="Bottom"
+                                                                Height="370" Margin="0,50,0,0">
+                                                <lvc:CartesianChart.AxisX>
+                                                    <lvc:Axis Title="Salesman" Labels="{Binding Labels}"></lvc:Axis>
+                                                </lvc:CartesianChart.AxisX>
+                                                <lvc:CartesianChart.AxisY>
+                                                    <lvc:Axis Title="Sold Apps" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                                                </lvc:CartesianChart.AxisY>
+                                            </lvc:CartesianChart>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1">
+                                            <Separator Background="#F4F4F4" VerticalAlignment="Top" Margin="0,35,0,0"/>
+                                            
+                                            <!--성비 파이 차트-->
+                                            <Border BorderBrush="#E2E2E2" BorderThickness="0,0,1,0" Margin="0,35,0,0">
+                                                <lvc:PieChart x:Name="pcGenderRatio" Series="{Binding GenderRatioPieCollection}"
+                                                              LegendLocation="Bottom" InnerRadius="80" StartingRotationAngle="180"
+                                                              Width="100" Height="300" Margin="0,50,0,0">
+                                                    <lvc:PieChart.ChartLegend>
+                                                        <lvc:DefaultLegend BulletSize="20"/>
+                                                    </lvc:PieChart.ChartLegend>
+                                                    <lvc:PieChart.DataTooltip>
+                                                        <lvc:DefaultTooltip BulletSize="20" SelectionMode="OnlySender"/>
+                                                    </lvc:PieChart.DataTooltip>
+                                                </lvc:PieChart>
+                                            </Border>
+                                        </Grid>
                                     </Grid>
 
                                     <Grid Grid.Column="1">
-                                        
+                                        <TextBlock Text="솔로몬 인기 게시글"
+                                                   Margin="40,10,0,0"
+                                                   FontSize="15"
+                                                   FontWeight="SemiBold"/>
+
+                                        <Separator Background="#F4F4F4" VerticalAlignment="Top" Margin="0,35,0,0"/>
+
+                                        <ListView x:Name="lvPopularBulletins" 
+                                                  Margin="0,30,0,0"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  ItemsSource="{Binding PopularBulletinItems}">
+
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Margin="5">
+                                                            <TextBlock Text="{Binding BulletinIdx, StringFormat={}{0}&#160;}"
+                                                                       FontSize="15"
+                                                                       Foreground="#25B06F"
+                                                                       FontWeight="SemiBold"/>
+                                                            <TextBlock Text="{Binding Title}"
+                                                                       FontSize="15"
+                                                                       FontWeight="SemiBold"
+                                                                       TextWrapping="Wrap"
+                                                                       TextTrimming="CharacterEllipsis"/>
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding Content}" Margin="5"
+                                                                   TextTrimming="CharacterEllipsis"
+                                                                   MaxWidth="400"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
                                     </Grid>
                                 </Grid>
                             </Border>
@@ -213,12 +306,29 @@
 
                                 <Grid Grid.Column="0">
                                     <Border BorderBrush="#E2E2E2" BorderThickness="0,0,1,0" Height="70">
-                                        
+                                        <TextBlock Text="지금 알아보세요!"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   FontSize="16"
+                                                   FontWeight="SemiBold"/>
                                     </Border>
                                 </Grid>
 
                                 <Grid Grid.Column="1">
-
+                                    <StackPanel Orientation="Horizontal" 
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center">
+                                        <StackPanel.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Margin" Value="20"/>
+                                                <Setter Property="FontSize" Value="15"/>
+                                            </Style>
+                                        </StackPanel.Resources>
+                                        <TextBlock Text="변호사 법률상담"/>
+                                        <TextBlock Text="부동산 세금상담"/>
+                                        <TextBlock Text="필요한 노무상담"/>
+                                        <TextBlock Text="사회초년생 고민상담"/>
+                                    </StackPanel>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -247,8 +357,13 @@
                             <RowDefinition Height="3*"/>
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0">
-                            
+                        <Grid Grid.Row="0" Grid.RowSpan="2">
+                            <TextBlock Text="Solomon"
+                                       Foreground="White"
+                                       FontSize="50"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
                         </Grid>
 
                         <Grid Grid.Row="1">
@@ -268,13 +383,11 @@
                                         <Setter Property="FontSize" Value="15"/>
                                     </Style>
                                 </StackPanel.Resources>
+                                
                                 <Button Content="1"/>
                                 <Button Content="2"/>
                                 <Button Content="3"/>
                                 <Button Content="4"/>
-                                <Button Content="5"/>
-                                <Button Content="6"/>
-                                <Button Content="7"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
@@ -287,6 +400,67 @@
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="2" BlurRadius="20" Color="#E2E2E2"/>
                     </Border.Effect>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="4*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Background="#F8F8F8">
+                            <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                                <Image Source="/Assets/Home/profile.png" 
+                                       Height="45" Width="45"/>
+
+                                <TextBlock Text="김경훈님"
+                                           Margin="5,0,0,5"
+                                           VerticalAlignment="Center"
+                                           FontSize="15"
+                                           FontWeight="Bold"/>
+
+                                <Button x:Name="btnLogOut"
+                                        Content="로그아웃"
+                                        Margin="10,0,0,75"
+                                        FontSize="12"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        Foreground="#8C8C8C"
+                                        FocusVisualStyle="{x:Null}"
+                                        Height="25" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Separator Background="#F4F4F4" VerticalAlignment="Bottom"/>
+                        </Grid>
+
+                        <Grid Grid.Row="2">
+                            <TextBlock Text="솔로몬 인기 주제" 
+                                       Margin="20,20,0,0"
+                                       FontWeight="SemiBold"
+                                       FontSize="15"/>
+
+                            <ListView x:Name="lvPopularTopicItems"
+                                      ItemsSource="{Binding PopularTopicItems}"
+                                      VerticalAlignment="Center" Width="200"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" Padding="5"
+                                                   Foreground="#788D9F"
+                                                   Background="#E2EBF4"/>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </Grid>
                 </Border>
             </Grid>
         </Grid>

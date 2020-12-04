@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Solomon.Core.Member.ViewModel;
 
 namespace Solomon.Core.Member
 {
     public class MemberData
     {
-        
+        public MemberViewModel memberViewModel = new MemberViewModel();
     }
 }

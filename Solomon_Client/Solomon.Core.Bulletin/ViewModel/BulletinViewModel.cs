@@ -1,4 +1,7 @@
 ﻿using Dapper;
+using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using Prism.Commands;
 using Prism.Mvvm;
 using Solomon.Core.Bulletin.Model;
@@ -112,6 +115,20 @@ namespace Solomon.Core.Bulletin.ViewModel
         }
 
         public Visibility IsVisible { get; set; } = Visibility.Collapsed;
+
+        private ObservableCollection<BulletinModel> _popularBulletinItems;
+        public ObservableCollection<BulletinModel> PopularBulletinItems
+        {
+            get => _popularBulletinItems;
+            set => SetProperty(ref _popularBulletinItems, value);
+        }
+
+        private List<string> _popularTopicItems;
+        public List<string> PopularTopicItems
+        {
+            get => _popularTopicItems;
+            set => SetProperty(ref _popularTopicItems, value);
+        }
         #endregion
 
         #region CommentVariables
@@ -159,6 +176,11 @@ namespace Solomon.Core.Bulletin.ViewModel
             set => SetProperty(ref _isRequestEnabled, value);
         }
         #endregion
+
+        #region Chart
+        public SeriesCollection GenderRatioPieCollection { get; set; }
+        public SeriesCollection AgeRatioColumnCollection { get; set; }
+        #endregion
         #endregion
 
         #region Commands
@@ -187,6 +209,10 @@ namespace Solomon.Core.Bulletin.ViewModel
             SpecificBulletinItems = new ObservableCollection<BulletinModel>();
             BulletinCategories = new List<CategoryModel>();
             BulletinCommentItems = new ObservableCollection<CommentModel>();
+            PopularBulletinItems = new ObservableCollection<BulletinModel>();
+            PopularTopicItems = new List<string>();
+            GenderRatioPieCollection = new SeriesCollection();
+            AgeRatioColumnCollection = new SeriesCollection();
         }
 
         private void InitCommand()
@@ -556,11 +582,85 @@ VALUES(
         }
         #endregion
 
+        #region Chart
+        public void LoadGenderRatioDatas()
+        {
+            GenderRatioPieCollection.Clear();
+
+            GenderRatioPieCollection.Add(new PieSeries()
+            {
+                Title = "Male",
+                Values = new ChartValues<ObservableValue> { new ObservableValue(52) },
+                DataLabels = true
+            });
+            GenderRatioPieCollection.Add(new PieSeries()
+            {
+                Title = "FeMale",
+                Values = new ChartValues<ObservableValue> { new ObservableValue(48) },
+                DataLabels = true
+            });
+        }
+
+        public void LoadAgeRatioDatas()
+        {
+            AgeRatioColumnCollection.Clear();
+
+            AgeRatioColumnCollection.Add(new ColumnSeries()
+            {
+                Title = "2015",
+                Values = new ChartValues<double> { 10, 50, 39, 50 }
+            });
+        }
+        #endregion
+
+        internal void SetPopularBulletins()
+        {
+            if (PopularBulletinItems.Count > 0)
+            {
+                PopularBulletinItems.Clear();
+            }
+
+            var tempBulletins = BulletinItems.OrderByDescending(x => x.CommentCount).ToList();
+            
+            if (tempBulletins.Count > 0)
+            {
+                var popularBulletins = tempBulletins.GetRange(0, 5);
+                for (int i = 0; i < popularBulletins.Count; i++)
+                {
+                    PopularBulletinItems.Add(popularBulletins[i]);
+                }
+            }
+        }
+
+        internal void SetPopularTopicItems()
+        {
+            if (PopularTopicItems.Count > 0)
+            {
+                PopularTopicItems.Clear();
+            }
+
+            var tempTopicItems = new Dictionary<string, int>();
+            for (int i = 0; i < BulletinCategories.Count; i++)
+            {
+                var specificTopicItems = BulletinItems.Where(x => x.Category == BulletinCategories[i].CategoryName).ToList();
+                tempTopicItems.Add(BulletinCategories[i].CategoryName, specificTopicItems.Count);   
+            }
+
+            var popularTopicItems = tempTopicItems.OrderByDescending(x => x.Value).ToList().GetRange(0, 5);
+            foreach (var topic in popularTopicItems)
+            {
+                PopularTopicItems.Add($"#{topic.Key}");
+            }
+        }
+
         public void ClearWritePostDatas()
         {
             BulletinPostTitle = string.Empty;
             BulletinPostContent = string.Empty;
-            SelectedCategory.CategoryName = string.Empty;
+            if (SelectedCategory != null)
+            {
+                SelectedCategory.CategoryName = string.Empty;
+            }
         }
 
         public async Task LoadDataAsync()

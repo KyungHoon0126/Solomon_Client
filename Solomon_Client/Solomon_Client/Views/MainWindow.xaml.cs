@@ -52,6 +52,7 @@ namespace Solomon_Client
             {
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 MessageBox.Show("로그인에 성공하셨습니다.");
+                
                 ctrlNavi.Visibility = Visibility.Visible;
                 ctrlNavi.ctrlBulletin.LoadDataAsync();
                 ctrlNavi.InitView();

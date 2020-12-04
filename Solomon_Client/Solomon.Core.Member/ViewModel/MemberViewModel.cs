@@ -13,27 +13,21 @@ namespace Solomon.Core.Member.ViewModel
 
         public delegate void OnMessageHandler(string msg);
         public event OnMessageHandler Message;
-
-        #region Properties
-        public MemberModel MemberModel 
-        {
-            get; 
-            set;
-        }
-        #endregion
         
-        public async Task GetMemberInformation(int member_idx)
+        public async Task<MemberModel> GetMemberInformation(string id)
         {
-            var resp = await memberService.GetMemberInformation(member_idx);
+            var resp = await memberService.GetMemberInformation(id);
 
             if (resp != null && resp.Data != null && resp.Status == 200)
             {
                 try
                 {
-                    MemberModel.MemberIdx = resp.Data.MemberIdx;
-                    MemberModel.Id = resp.Data.Id;
-                    MemberModel.Name = resp.Data.Name;
-                    MemberModel.Email = resp.Data.Email;
+                    var member = new MemberModel();
+                    member.MemberIdx = resp.Data.MemberIdx;
+                    member.Id = resp.Data.Id;
+                    member.Name = resp.Data.Name;
+                    member.Email = resp.Data.Email;
+                    return member;
                 }
                 catch (Exception e)
                 {
@@ -45,6 +39,8 @@ namespace Solomon.Core.Member.ViewModel
             {
                 Message?.Invoke(resp.Message);
             }
+
+            return new MemberModel();
         }
     }
 }

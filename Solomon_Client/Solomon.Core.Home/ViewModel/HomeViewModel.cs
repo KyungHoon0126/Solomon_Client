@@ -2,47 +2,56 @@
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 
 namespace Solomon.Core.Home.ViewModel
 {
     public class HomeViewModel
     {
         #region Properties
-        public SeriesCollection SeriesCollection { get; set; }
+        public SeriesCollection GenderRatioPieCollection { get; set; }
+
+        public string[] Labels { get; set; }
+        public Func<double, string> Formatter { get; set; }
+        public SeriesCollection AgeRatioColumnCollection { get; set; }
         #endregion
 
+        #region Constructor
         public HomeViewModel()
         {
-            SeriesCollection = new SeriesCollection();
+            InitVariables();
+        }
+        #endregion
 
+        private void InitVariables()
+        {
+            GenderRatioPieCollection = new SeriesCollection();
+            AgeRatioColumnCollection = new SeriesCollection();
         }
 
-        public void LoadChartDatas()
+        public void LoadGenderRatioDatas()
         {
-            SeriesCollection = new SeriesCollection
+            GenderRatioPieCollection.Add(new PieSeries()
             {
-                new PieSeries
-                {
-                    Title = "Male",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(52) },
-                    DataLabels = true
-                },
-                new PieSeries
-                {
-                    Title = "FeMale",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(48) },
-                    DataLabels = true
-                }
-            };
+                Title = "Male",
+                Values = new ChartValues<ObservableValue> { new ObservableValue(52) },
+                DataLabels = true
+            });
+            GenderRatioPieCollection.Add(new PieSeries()
+            {
+                Title = "FeMale",
+                Values = new ChartValues<ObservableValue> { new ObservableValue(48) },
+                DataLabels = true
+            });
+        }
 
-            //adding values or series will update and animate the chart automatically
-            //SeriesCollection.Add(new PieSeries());
-            //SeriesCollection[0].Values.Add(5);
+        public void LoadAgeRatioDatas()
+        {
+            AgeRatioColumnCollection.Add(new ColumnSeries()
+            {
+                Title = "2015",
+                Values = new ChartValues<double> { 10, 50, 39, 50 }
+            });
+            Formatter = value => value.ToString("N");
         }
     }
 }

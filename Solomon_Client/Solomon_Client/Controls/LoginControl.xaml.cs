@@ -99,7 +99,7 @@ namespace Solomon_Client.Controls
             }
         }
 
-        private void UserControl_KeyDown(object sender,KeyEventArgs e)
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return && btnLogin.IsEnabled)
             {

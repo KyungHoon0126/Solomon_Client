@@ -1,9 +1,4 @@
 ﻿using Solomon.Core.Home.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Solomon.Core.Home
 {
@@ -13,7 +8,8 @@ namespace Solomon.Core.Home
 
         public void LoadData()
         {
-            homeViewModel.LoadChartDatas();
+            homeViewModel.LoadGenderRatioDatas();
+            homeViewModel.LoadAgeRatioDatas();
         }
     }
 }

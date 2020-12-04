@@ -11,5 +11,14 @@ namespace Solomon.Core.Bulletin
         {
             await bulletinViewModel.LoadDataAsync();
         }
+
+        public void LoadData()
+        {
+            bulletinViewModel.LoadAgeRatioDatas();
+            bulletinViewModel.LoadGenderRatioDatas();
+            bulletinViewModel.SetPopularBulletins();
+            bulletinViewModel.SetPopularTopicItems();
+        }
     }
 }
+ 

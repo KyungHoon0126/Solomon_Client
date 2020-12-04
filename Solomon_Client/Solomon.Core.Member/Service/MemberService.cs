@@ -12,9 +12,9 @@ namespace Solomon.Core.Member.Service
 
         private const string MEMBER_INFORMATION_URL = "/member";
 
-        public async Task<Response<MemberModel>> GetMemberInformation(int member_idx)
+        public async Task<Response<MemberModel>> GetMemberInformation(string id)
         {
-            string requestUrl = MEMBER_INFORMATION_URL + "/" + member_idx;
+            string requestUrl = MEMBER_INFORMATION_URL + "/" + id;
             var resp = await networkManager.GetResponse<MemberModel>(requestUrl, Method.GET);
             return resp;
         }

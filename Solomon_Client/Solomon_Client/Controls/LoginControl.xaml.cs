@@ -1,4 +1,5 @@
-﻿using Solomon_Client.Common;
+﻿using Solomon.Core.Login.ViewModel;
+using Solomon_Client.Common;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,9 +14,10 @@ namespace Solomon_Client.Controls
     public partial class LoginControl : UserControl
     {
         private bool isAutoLogin = false;
+        private LoginViewModel loginViewModel;
 
         public delegate void OnSignUpRecievedHandler(object sender, RoutedEventArgs e);
-        public event OnSignUpRecievedHandler SignUpReceived;
+        public event OnSignUpRecievedHandler SignUpResultReceived;
 
         public delegate void OnLoginResultRecievedHandler(object sender, bool success);
         public event OnLoginResultRecievedHandler LoginResultRecieved;
@@ -28,34 +30,24 @@ namespace Solomon_Client.Controls
 
         private void LoginControl_Loaded(object sender, RoutedEventArgs e)
         {
-            App.loginData.loginViewModel.ServerAddress = "http://localhost:8080";
+            loginViewModel = App.loginData.loginViewModel;
+            loginViewModel.ServerAddress = ComDef.SERVER_ADDRESS;
             CheckAutoLoginAsync();
-            App.loginData.loginViewModel.OnLoginResultRecieved += LoginViewModel_OnLoginResultRecieved;
-            this.DataContext = App.loginData.loginViewModel;
-        }
-
-        private void LoginService_Message(string msg)
-        {
-            MessageBox.Show(msg);
-            return;
+            loginViewModel.OnLoginResultRecieved += LoginViewModel_OnLoginResultRecieved;
+            this.DataContext = loginViewModel;
         }
 
         private void LoginViewModel_OnLoginResultRecieved(object sender, bool success)
         {
             if (success)
             {
-                Setting.SaveUserdata(App.loginData.loginViewModel.Id, App.loginData.loginViewModel.Password);
+                Setting.SaveUserdata(loginViewModel.Id, loginViewModel.Password);
                 Setting.Save();
-                App.bulletinData.bulletinViewModel.Writer = App.loginData.loginViewModel.Id;
+                App.bulletinData.bulletinViewModel.Writer = loginViewModel.Id;
             }
 
-            SetUserData(App.loginData.loginViewModel.Id, App.loginData.loginViewModel.Password);
-
-            if (isAutoLogin == true)
-            {
-                Setting.IsAutoLogin = true;
-            }
-
+            SetUserData(loginViewModel.Id, loginViewModel.Password);
+            isAutoLogin = Setting.IsAutoLogin ? true : false;
             LoginResultRecieved?.Invoke(this, success);
         }
 
@@ -79,14 +71,14 @@ namespace Solomon_Client.Controls
             string id = Setting.GetUserId();
             isAutoLogin = Setting.IsAutoLogin;
             cbAutoLogin.IsChecked = isAutoLogin;
-            App.loginData.loginViewModel.Id = id;
+            loginViewModel.Id = id;
             
             string pw = Setting.GetUserPw();
             pbPw.Password = pw;
 
             if (isAutoLogin)
             {
-                App.loginData.loginViewModel.Password = pw;
+                loginViewModel.Password = pw;
                 App.loginData.Login();
             }
             else if (!string.IsNullOrEmpty(id))
@@ -109,45 +101,22 @@ namespace Solomon_Client.Controls
 
         private void tb_TextChanged(object sender, RoutedEventArgs e)
         {
-            if (!CheckEmpty())
-            {
-                btnLogin.IsEnabled = true;
-            }
-            else
-            {
-                btnLogin.IsEnabled = false;
-            }
+            btnLogin.IsEnabled = !CheckEmpty() ? true : false;
         }
 
         private bool CheckEmpty()
         {
-            string id = tbId.Text.Trim();
-            string pw = pbPw.Password.Trim();
-
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(pw))
-            {
-                return true;
-            }
-            return false;
+            return (string.IsNullOrEmpty(tbId.Text.Trim()) || string.IsNullOrEmpty(pbPw.Password.Trim())) ? true : false;
         }
 
         private void CbAutologin_Checked(object sender, EventArgs e)
         {
-            CheckBox cb = sender as CheckBox;
-
-            if (cb.IsChecked ?? false)
-            {
-                isAutoLogin = true;
-            }
-            else
-            {
-                isAutoLogin = false;
-            }
+            isAutoLogin = ((sender as CheckBox).IsChecked ?? false) ? true : false;
         }
 
         private void tbSignUp_Click(object sender, RoutedEventArgs e)
         {
-            SignUpReceived?.Invoke(this, e);
+            SignUpResultReceived?.Invoke(this, e);
         }
     }
 

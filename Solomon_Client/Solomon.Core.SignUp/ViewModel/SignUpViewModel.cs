@@ -1,14 +1,14 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using Solomon.Core.SignUp.Common;
-using Solomon.Core.SignUp.Service;
-using Solomon.Network.Data;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.Net;
-using System.Text.RegularExpressions;
+using System.Diagnostics;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Text.RegularExpressions;
+using Prism.Commands;
+using Prism.Mvvm;
+using Solomon.Network.Data;
+using Solomon.Core.SignUp.Common;
+using Solomon.Core.SignUp.Service;
 
 namespace Solomon.Core.SignUp.ViewModel
 {
@@ -16,23 +16,18 @@ namespace Solomon.Core.SignUp.ViewModel
     {
         SignUpService signUpService = new SignUpService();
 
-        private bool CheckPasswordLength = false;
-        private bool CheckEmailOverLap = false;
+        private bool IsValidPasswordLength = false;
+        private bool IsValidEmail = false;
 
-        #region Delegate & Event
         public delegate void OnSignUpResultReceivedHandler(Response<Nothing> signUpArgs);
         public event OnSignUpResultReceivedHandler SignUpResultRecieved;
-        #endregion
 
         #region Properties
         private string _inputId;
         public string InputId
         {
             get => _inputId;
-            set
-            {
-                SetProperty(ref _inputId, value);
-            }
+            set => SetProperty(ref _inputId, value);
         }
 
         private string _inputPw;
@@ -55,7 +50,7 @@ namespace Solomon.Core.SignUp.ViewModel
                 SetProperty(ref _inputPwAgain, value);
                 PasswordValidation(value);
 
-                if (CheckPasswordLength)
+                if (IsValidPasswordLength)
                 {
                     if (InputPwAgain == InputPw)
                     {
@@ -74,7 +69,7 @@ namespace Solomon.Core.SignUp.ViewModel
             if (value.Length >= 8 && value.Length <= 20)
             {
                 PwDesc = string.Empty;
-                CheckPasswordLength = true;
+                IsValidPasswordLength = true;
 
                 if (InputPw != InputPwAgain)
                 {
@@ -91,10 +86,7 @@ namespace Solomon.Core.SignUp.ViewModel
         public string InputName
         {
             get => _inputName;
-            set
-            {
-                SetProperty(ref _inputName, value);
-            }
+            set => SetProperty(ref _inputName, value);
         }
 
         private string _inputEmail;
@@ -108,66 +100,39 @@ namespace Solomon.Core.SignUp.ViewModel
             }
         }
 
-        //private string _serverAddress;
-        //public string ServerAddress
-        //{
-        //    get => _serverAddress;
-        //    set
-        //    {
-        //        SetProperty(ref _serverAddress, value);
-        //    }
-        //}
-
         private bool _isEnable = true;
         public bool IsEnable
         {
             get => _isEnable;
-            set
-            {
-                SetProperty(ref _isEnable, value);
-            }
+            set => SetProperty(ref _isEnable, value);
         }
 
-        // 패스워드 Description
         private string _pwDesc;
         public string PwDesc
         {
             get => _pwDesc;
-            set
-            {
-                SetProperty(ref _pwDesc, value);
-            }
+            set => SetProperty(ref _pwDesc, value);
         }
 
         private Brush _pwDescForeground;
         public Brush PwDescForeground
         {
             get => _pwDescForeground;
-            set
-            {
-                SetProperty(ref _pwDescForeground, value);
-            }
+            set => SetProperty(ref _pwDescForeground, value);
         }
 
-        // 이메일 Description
         private string _eamilDesc;
         public string EmailDesc
         {
             get => _eamilDesc;
-            set
-            {
-                SetProperty(ref _eamilDesc, value);
-            }
+            set => SetProperty(ref _eamilDesc, value);
         }
 
         private Brush _emailDescForeground;
         public Brush EmailDescForeground
         {
             get => _emailDescForeground;
-            set
-            {
-                SetProperty(ref _emailDescForeground, value);
-            }
+            set => SetProperty(ref _emailDescForeground, value);
         }
 
         private string _birthYear;
@@ -189,52 +154,12 @@ namespace Solomon.Core.SignUp.ViewModel
         public ICommand SignUpCommand { get; set; }
         #endregion
 
+        #region Constructor
         public SignUpViewModel()
         {
             SignUpCommand = new DelegateCommand(OnSignUp, CanSignUp).ObservesProperty(() => InputEmail);
         }
-
-        private Brush ConvertHexToRgb(string hex)
-        {
-            return new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
-        }
-
-        private bool CanSignUp()
-        {
-            return (InputEmail != null) && (InputEmail != null) && (InputEmail != null) && (InputEmail != null) && (Gender != null);
-        }
-
-        private void OnSignUp()
-        {
-            IsEnable = false;
-            SignUp();
-            IsEnable = true;
-        }
-
-        private bool IsValidSignUpInformation()
-        {
-            return (InputId != null && InputPw != null && InputPwAgain != null && InputName != null && InputEmail != null && BirthYear.ToString().Length > 0 && Gender != null);
-        }
-
-        private async void SignUp()
-        {
-            Response<Nothing> signUpArgs = null;
-
-            if (CheckEmailOverLap && IsValidSignUpInformation())
-            {
-                try
-                {
-                    signUpService.SettingHttpRequest(ComDef.SERVER_ADDRESS);
-                    signUpArgs = await signUpService.SignUp(InputId, InputPw, InputName, InputEmail, int.Parse(BirthYear), Gender);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("SIGN UP ERROR : " + e.Message);
-                }
-            
-                SignUpResultRecieved?.Invoke(signUpArgs);
-            }
-        }
+        #endregion
 
         private void SetDescProperty(string property, string desc, Brush color)
         {
@@ -247,6 +172,49 @@ namespace Solomon.Core.SignUp.ViewModel
             {
                 EmailDesc = desc;
                 EmailDescForeground = color;
+            }
+        }
+
+        private Brush ConvertHexToRgb(string hex)
+        {
+            return new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
+        }
+
+        #region Command Method
+        private bool CanSignUp()
+        {
+            return (InputEmail != null) && (InputEmail != null) && (InputEmail != null) && (InputEmail != null) && (Gender != null);
+        }
+
+        private void OnSignUp()
+        {
+            IsEnable = false;
+            SignUp();
+            IsEnable = true;
+        }
+        #endregion
+
+        private bool IsValidSignUpInformation()
+        {
+            return (InputId != null && InputPw != null && InputPwAgain != null && InputName != null && InputEmail != null && BirthYear.ToString().Length > 0 && Gender != null);
+        }
+
+        private async void SignUp()
+        {
+            Response<Nothing> signUpArgs = null;
+
+            if (IsValidEmail && IsValidSignUpInformation())
+            {
+                try
+                {
+                    signUpService.SettingHttpRequest(ComDef.SERVER_ADDRESS);
+                    signUpArgs = await signUpService.SignUp(InputId, InputPw, InputName, InputEmail, int.Parse(BirthYear), Gender);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("SIGN UP ERROR : " + e.Message);
+                }
+                SignUpResultRecieved?.Invoke(signUpArgs);
             }
         }
 
@@ -274,15 +242,16 @@ namespace Solomon.Core.SignUp.ViewModel
                 try
                 {
                     signUpService.SettingHttpRequest(ComDef.SERVER_ADDRESS);
+
                     var resp = await signUpService.CheckEmailOverlap(InputEmail);
                     if (resp.Status == (int)HttpStatusCode.Conflict)
                     {
-                        CheckEmailOverLap = false;
+                        IsValidEmail = false;
                         SetDescProperty("Email", "Duplicate Email.", Brushes.Red);
                     }
                     else
                     {
-                        CheckEmailOverLap = true;
+                        IsValidEmail = true;
                         SetDescProperty("Email", "This email address is available.", ConvertHexToRgb("#1d65ff"));
                     }
                 }
@@ -293,7 +262,7 @@ namespace Solomon.Core.SignUp.ViewModel
             }
         }
 
-        public void InitVariables()
+        internal void InitVariables()
         {
             InputId = string.Empty;
             InputPw = string.Empty;

@@ -1,3 +1,5 @@
+솔로몬 서버 깃허브 : [Solomon_Server](https://github.com/KyungHoon0126/Solomon_Server)
+
 # Solomon_Client
 
 ## 소개

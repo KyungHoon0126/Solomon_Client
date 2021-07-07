@@ -109,6 +109,11 @@
                         FocusVisualStyle="{x:Null}"
                         Command="{Binding LoginCommand, Mode=TwoWay}"
                         IsEnabled="{Binding BtnLoginEnabled, Mode=TwoWay}"/>
+
+                <TextBlock Text="{Binding Desc}"
+                           FontSize="15"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>
 

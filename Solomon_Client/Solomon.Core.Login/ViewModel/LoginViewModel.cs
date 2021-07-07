@@ -12,6 +12,11 @@ namespace Solomon.Core.Login.ViewModel
 {
     public class LoginViewModel : BindableBase
     {
+        private LoginService loginService;
+
+        public delegate void OnLoginResultRecievedHandler(object sender, bool success);
+        public event OnLoginResultRecievedHandler OnLoginResultRecieved;
+
         #region Property
         private string _id;
         public string Id
@@ -56,20 +61,18 @@ namespace Solomon.Core.Login.ViewModel
         }
         #endregion
 
-        #region Delegate 
-        public delegate void OnLoginResultRecievedHandler(object sender, bool success);
-        public event OnLoginResultRecievedHandler OnLoginResultRecieved;
-        #endregion
-
         #region Command
         public ICommand LoginCommand { get; set; }
         #endregion
 
-        public LoginViewModel()
+        #region Constructor
+        public LoginViewModel(LoginService loginService)
         {
+            this.loginService = loginService;
             LoginCommand = new DelegateCommand(OnLogin);
             //_btnLoginEnabled = true;
         }
+        #endregion
 
         internal async void OnLogin()
         {
@@ -87,11 +90,10 @@ namespace Solomon.Core.Login.ViewModel
             Debug.WriteLine($"{_btnLoginEnabled} OnLogin");
 
             Response<TokenInfo> loginArgs = null;
-            var loginService = new LoginService();
+            
             try
             {
                 loginService.SettingHttpRequest(ServerAddress);
-
                 loginArgs = await loginService.Login(Id, Password);
             }
             catch (Exception e)
@@ -105,14 +107,12 @@ namespace Solomon.Core.Login.ViewModel
             if (loginArgs == null || loginArgs.Status != (int)HttpStatusCode.OK)  
             {
                 SendOnLoginResultRecievedEvent(false);
-                Desc = "로그인에 실패하였습니다!";
-                Debug.WriteLine(Desc);
+                Desc = "로그인에 실패하였습니다.";
             }
             else
             {
                 SendOnLoginResultRecievedEvent(true);
-                Desc = "로그인에 성공하였습니다!";
-                Debug.WriteLine(Desc);
+                Desc = "로그인에 성공하였습니다.";
             }
 
             BtnLoginEnabled = true;

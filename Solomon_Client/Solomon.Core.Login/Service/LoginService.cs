@@ -11,14 +11,18 @@ namespace Solomon.Core.Login.Service
 {
     public class LoginService
     {
-        private NetworkManager networkManager = new NetworkManager();
-
-        private readonly Encoding encoding = Encoding.UTF8;
+        private NetworkManager networkManager;
+        //private readonly Encoding encoding = Encoding.UTF8;
 
         private const string MEMBER_URL = "/members";
         private const string LOGIN_URL = "/auth/login";
         private const string LOGOUT_URL = MEMBER_URL + "logout";
         private const string TOKEN_REFRESH_URL = "/token/refresh";
+
+        public LoginService(NetworkManager networkManager)
+        {
+            this.networkManager = networkManager;
+        }
 
         public async Task<Response<TokenInfo>> Login(string id, string pw)
         {

@@ -1,10 +1,16 @@
-﻿using Solomon.Core.Login.ViewModel;
+﻿using Solomon.Core.Login.Service;
+using Solomon.Core.Login.ViewModel;
 
 namespace Solomon.Core.Login
 {
     public class LoginData
     {
-        public LoginViewModel loginViewModel = new LoginViewModel();
+        public LoginViewModel loginViewModel;
+
+        public LoginData(LoginService loginService)
+        {
+            loginViewModel = new LoginViewModel(loginService);
+        }
 
         public void Login()
         {

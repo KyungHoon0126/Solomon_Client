@@ -16,8 +16,8 @@ namespace Solomon_Client
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            CtrlLogin.SignUpReceived += CtrlLogin_SignUpReceived;
-            App.signUpData.signUpViewModel.SignUpResultRecieved += this.SignUpViewModel_SignUpResultRecieved;
+            CtrlLogin.SignUpResultReceived += CtrlLogin_SignUpReceived;
+            App.signUpData.signUpViewModel.SignUpResultRecieved += SignUpViewModel_SignUpResultRecieved;
             CtrlSignup.BackWardLoginPage += CtrlSignup_BackWardLoginPage;
         }
 
@@ -31,7 +31,7 @@ namespace Solomon_Client
         {   
             CtrlSignup.Visibility = Visibility.Collapsed;
             CtrlLogin.Visibility = Visibility.Visible;
-            App.signUpData.signUpViewModel.InitVariables();
+            InitSignUpData();
         }
 
         private void SignUpViewModel_SignUpResultRecieved(Response<Nothing> signUpArgs)
@@ -39,9 +39,9 @@ namespace Solomon_Client
             if (signUpArgs.Status == 201)
             {
                 CtrlSignup.Visibility = Visibility.Collapsed;
-                MessageBox.Show("회원가입을 성공하였습니다.");
                 CtrlLogin.Visibility = Visibility.Visible;
-                App.signUpData.signUpViewModel.InitVariables();
+                MessageBox.Show("회원가입에 성공하였습니다.");
+                InitSignUpData();
                 CtrlSignup.DeselectGender();
             }
         }
@@ -51,12 +51,15 @@ namespace Solomon_Client
             if (success)
             {
                 CtrlLogin.Visibility = Visibility.Collapsed;
-                MessageBox.Show("로그인에 성공하셨습니다.");
-                
                 ctrlNavi.Visibility = Visibility.Visible;
                 ctrlNavi.ctrlBulletin.LoadDataAsync();
                 ctrlNavi.InitView();
             }
+        }
+
+        private void InitSignUpData()
+        {
+            App.signUpData.InitVariables();
         }
     }
 }
